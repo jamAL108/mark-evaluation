@@ -5,7 +5,6 @@ import StudentReducer from "./studentreducer";
 
 export default combineReducers({
   admin: AdminReducer,
-  errors: ErrorReducer,
   faculty: FacultyReducer,
   student: StudentReducer,
 });
