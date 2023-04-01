@@ -1,0 +1,74 @@
+ 
+ .main{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.main-container{
+    position: absolute;
+    top:6% ;
+    width: 95%;
+    bottom: 6%;
+    margin: auto;
+    background-color:#f4f6fa ;
+    border-radius: 30px ;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container .header{
+    width: 100%;
+    height: 8%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.main-container .header img {
+       width: auto;
+       height: 100%;
+       transform: translateX(-6rem);
+}
+
+.main-container .header h3{
+  font-style: semibold;
+  color: black;
+}
+
+.main-container .logout{
+    display: flex;
+    flex-direction: row;
+    transform: translateX(6rem);
+}
+
+.logout p{
+    color: black;
+    font-size: small;
+}
+.logout button{
+    border: none;
+    background-color: #f4f6fa;
+    width: auto;
+    height: auto;
+}
+
+.main-container .sub{
+display: grid;
+grid-template-columns: 18% 82%;
+
+
+}
+.main-container .sidebar {
+    height: 100%;
+}
+.main-container .sidebar .side{
+    border: 1px solid black;
+}
+
+.sidebar h1 {
+    color: black;
+    font-size: 0.7rem;
+} 
