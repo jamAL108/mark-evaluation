@@ -1,6 +1,5 @@
 import { combineReducers } from "redux";
 import AdminReducer from "./adminreducer";
-import ErrorReducer from "./errorreducer.js";
 import FacultyReducer from "./facultyreducer";
 import StudentReducer from "./studentreducer";
 
