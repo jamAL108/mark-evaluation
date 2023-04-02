@@ -181,13 +181,9 @@ export const initiateclass = (data) => async(dispatch)=>{
    }
 }
 
-
-
-
-export const ourfaculty = (data,navigate) => async(dispatch)=>{
-  try{
-    console.log(data);
-      const respon = await fetch("http://localhost:8000/adminn/ourfacul",{
+export const getcc = (data)=>async(dispatch)=>{
+   try{
+      const respon = await fetch("http://localhost:8000/adminn/ourcc",{
         method: "POST",
         headers: {
           "Content-Type":"application/json"
@@ -196,11 +192,35 @@ export const ourfaculty = (data,navigate) => async(dispatch)=>{
         });
        const msg = await respon.json();
        console.log(msg);
+       console.log(msg.css);
+       if(respon.status === 200 ){
+        dispatch({type: CCS , payload:msg.ccs})
+    }
+   }catch(err){
+    console.log(err);
+   }
+};
+
+
+export const ourfaculty = (data) => async(dispatch)=>{
+  try{
+    console.log(data);
+    console.log("helo");
+      const respon = await fetch("http://localhost:8000/adminn/ourfacul",{
+        method: "POST",
+        headers: {
+          "Content-Type":"application/json"
+         },
+        body: JSON.stringify(data)
+        });
+        console.log("got it");
+       const msg = await respon.json();
+       console.log(msg);
        console.log(msg.response);
        if(respon.status === 200 ){
             dispatch({type: GET_ALL_FACULTY ,payload:msg.response})
             dispatch({type: CCS , payload:msg.ccs})
-    }else if(respon.status===404 || respon.status===400){
+    }else if(respon.status===404){
       dispatch({type: GET_ALL_FACULTY_ERROR  ,payload:msg.error })
     }
     }

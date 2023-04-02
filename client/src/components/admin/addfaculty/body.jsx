@@ -2,7 +2,6 @@ import React ,{useEffect, useState }from 'react';
 import  {useNavigate} from 'react-router-dom';
 import {useDispatch , useSelector} from 'react-redux';
 import Swal from "sweetalert2";
-import '../../similarcompo/addsomeone.css';
 import { addfaculty , addfacultyerror } from '../../../redux/action/adminaction';
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";

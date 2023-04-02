@@ -16,9 +16,6 @@ const ccSchema = new Schema({
      },
      depart:{
         tyep:String
-     },
-     sem:{
-        type:String
      }
 })
 

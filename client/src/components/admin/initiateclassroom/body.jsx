@@ -1,8 +1,8 @@
 import React  , {useState , useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
-import { ourfaculty , getsubject, initiateclass} from '../../../redux/action/adminaction';
-import { GET_ALL_FACULTY , GET_ALL_FACULTY_ERROR, GET_SUBJECT_ERROR, GET_SUBJECT, INITIATE_CLASS, INITIATE_CLASS_ERROR} from '../../../redux/actiontype';
+import { ourfaculty , getsubject, initiateclass , getcc } from '../../../redux/action/adminaction';
+import { GET_ALL_FACULTY , GET_ALL_FACULTY_ERROR, GET_SUBJECT_ERROR, GET_SUBJECT, INITIATE_CLASS, INITIATE_CLASS_ERROR, CCS} from '../../../redux/actiontype';
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 const Body = () => {
@@ -14,6 +14,7 @@ const Body = () => {
     subject:"",
     attempts:0
  })
+  const [cc , setcc] = useState(false);
   const store = useSelector((state)=>state);
   const [facult , setfacul] = useState([]);
   const [profil , setprofil] = useState(false);
@@ -24,7 +25,8 @@ const Body = () => {
   const [main , setmain] = useState([]);
   const [ccs , setccs] = useState([]);
   const [classCC , setclassCC] = useState({});
-  const [appoint , setappoint] = useState(false);
+  const [lead , setlead] = useState(false);
+  const [appoint , setappoint] = useState(true);
   const [finalerr , setfinalerr] = useState({});
   const [faculerror , setfaculerror] = useState("");
     const[value ,setValue] = useState({
@@ -41,14 +43,23 @@ const Body = () => {
 
     useEffect(()=>{
       setccs(store.admin.ccs);
+      console.log(store.admin.ccs);
     },[store.admin.ccs])
 
+    useEffect(()=>{
+      dispatch(getcc(value));
+    },[value.year , value.division])
 
     useEffect(()=>{
         setfacul(store.admin.faculties);
     },[store.admin.faculties])
 
     useEffect(()=>{
+       console.log(facult);
+    },[facult])
+
+    useEffect(()=>{
+      if(store.admin.initialclass===true){
       settemp({
         ...temp ,
         year:0,
@@ -58,18 +69,28 @@ const Body = () => {
       })
        dispatch({type:INITIATE_CLASS , payload:false})
        dispatch({type:INITIATE_CLASS_ERROR , payload:{}})
+    }
     },[store.admin.initialclass])
 
     useEffect(()=>{
       setsubject(store.admin.subjects)
       console.log(store.admin.subjects)
     },[store.admin.subjects])
+     
+    useEffect(()=>{
+      dispatch({type:INITIATE_CLASS_ERROR , payload:{}})
+      setfinalerr({});
+      seterror({});
+      setfaculerror("");
+    },[temp.year , temp.division , temp.subject])
 
 
     const search = async(e)=>{
         e.preventDefault();
-        dispatch(ourfaculty(value,navigate));
+        dispatch(ourfaculty(value));
     }
+
+
 
     const reset = async(e)=>{
       setValue({
@@ -86,7 +107,13 @@ const Body = () => {
       setsubject([]);
       setmain([]);
       setfaculerror("");
-      
+      setclassCC({})
+      setlead(false);
+      setappoint(true);
+      setfinalerr({});
+      dispatch({type:CCS , payload:[]});
+      setccs([]);
+      setcc(false);
   }
 
     const filling = async(e)=>{
@@ -97,21 +124,40 @@ const Body = () => {
 
     const Assign = async(e)=>{
       e.preventDefault();
-      dispatch(initiateclass(temp));
+      const obj = {
+        temp:temp,
+        ccs:cc
+      }
+      dispatch(initiateclass(obj));
     }
 
 
     const classcordi = async(division , year)=>{
+      console.log(division);
+      console.log("hiiiiiiiad");
+      console.log(year);
         if(ccs.length===0){
           setappoint(true);
         }else{
+          console.log(ccs);
             for(var k=0;k<ccs.length;k++){
-               if(ccs[k].division === division && ccs[k].year === year){
+               if(ccs[k].division === division && ccs[k].year === Number(year)){
                    setclassCC(ccs[k])
+                   setappoint(false);
                    return;
                }
+               setappoint(true);
             }
         }
+    };
+
+    const handlecheckbox = async(e)=>{
+      if (e.target.checked) {
+        setcc(true);
+        console.log("heyyy");
+      } else {
+        setcc(false);
+      }
     };
 
   return (
@@ -147,56 +193,60 @@ const Body = () => {
 
     {Object.keys(error).length === 0 &&
               facult?.length !== 0 && (
-        <div className="list-item">
-             <div className="grid grid-cols-12">
-                    <h1 className="heading">
-                      Sr no.
-                    </h1>
-                    <h1 className="heading">
-                      Name
-                    </h1>
-                    <h1 className="heading">
-                      Email
-                    </h1>
-                  </div>
-            {facult.map((fac,idx)=>(
-              <button type='submit' key={idx} onClick={(e)=>{
-                e.preventDefault();
-                if(fac.attempts===0){
-                  setfaculerror("limit reached u cant add more classes to this faculty");
-                }else{
-                console.log(value.depart);
-                setfaculerror("");
-                dispatch(getsubject(value));
-                console.log("hello");
-                settemp({
-                  ...temp , 
-                  name:fac.name,
-                  email:fac.email,
-                  attempts:fac.attempts
-                })
-                setprofil(true);  
-              }        
-              }}>
-   <div
-         key={idx}
-     className="cont">
-        <h1
-      className="cont">
-      {idx + 1}
-     </h1>
-     <h1
-     className="cont">
-     {fac.name}
-        </h1>
-    <h1
-    className="cont">
-    {fac.email}
-    </h1>
-    </div>
-    </button>
- ) )}
-   </div>
+
+    <table className='styled-table'>
+<thead>
+ <tr>
+       <th className="heading">
+         Sr no.
+       </th>
+       <th className="heading">
+         Name
+       </th>
+       <th className="heading">
+         Email
+       </th>
+       </tr>
+     </thead>
+     <tbody>
+{facult.map((fac,idx)=>(
+<tr
+key={idx}
+className="contiii" type='submit'  onClick={(e)=>{
+  e.preventDefault();
+  if(fac.attempts===0){
+    setfaculerror("limit reached u cant add more classes to this faculty");
+  }else{
+  console.log(value.depart);
+  setfaculerror("");
+  dispatch(getsubject(value));
+  console.log("hello");
+  settemp({
+    ...temp , 
+    name:fac.name,
+    email:fac.email,
+    attempts:fac.attempts
+  })
+  setprofil(true);  
+}}}>
+<td
+className="cont">
+{idx + 1}
+</td>
+<td
+className="cont">
+{fac.name}
+</td>
+<td
+className="cont">
+{fac.email}
+</td>
+</tr>
+) )}
+</tbody>
+</table>
+
+
         )}
 
     <div className="mainside
@@ -242,7 +292,8 @@ const Body = () => {
                     onChange={(e) =>{
                       settemp({ ...temp, division: e.target.value })
                       filling()
-                      classcordi(e.target.value , value.year);
+                      classcordi(e.target.value , temp.year);
+                      setlead(true);
                     }
                     }>
                     <MenuItem value="">None</MenuItem>
@@ -252,8 +303,15 @@ const Body = () => {
                   </Select>
                 </div>
     
-    {setappoint===true && (
-       <h2>class- {value.division} : {classCC.name} </h2>
+    {appoint===false && lead===true && (
+       <h2>class co-ordinator - {value.division} : {classCC.name} </h2>
+    )}
+
+    {appoint===true && lead ===true &&(
+        <div className="form">
+          <input type="checkbox" value={ "YES" || "" } onChange={handlecheckbox}/>
+          <h2>Assign the teacher as Class Co-ordinator....</h2>
+        </div>
     )}
      
     <div className="form-group">
@@ -293,3 +351,58 @@ const Body = () => {
 }
 
 export default Body;
+
+
+
+
+
+{/* <div className="list-item">
+<div className="grid grid-cols-12">
+       <h1 className="heading">
+         Sr no.
+       </h1>
+       <h1 className="heading">
+         Name
+       </h1>
+       <h1 className="heading">
+         Email
+       </h1>
+     </div>
+{facult.map((fac,idx)=>(
+ <button type='submit' key={idx} onClick={(e)=>{
+   e.preventDefault();
+   if(fac.attempts===0){
+     setfaculerror("limit reached u cant add more classes to this faculty");
+   }else{
+   console.log(value.depart);
+   setfaculerror("");
+   dispatch(getsubject(value));
+   console.log("hello");
+   settemp({
+     ...temp , 
+     name:fac.name,
+     email:fac.email,
+     attempts:fac.attempts
+   })
+   setprofil(true);  
+ }        
+ }}>
+<div
+key={idx}
+className="cont">
+<h1
+className="cont">
+{idx + 1}
+</h1>
+<h1
+className="cont">
+{fac.name}
+</h1>
+<h1
+className="cont">
+{fac.email}
+</h1>
+</div>
+</button>
+) )}
+</div> */}

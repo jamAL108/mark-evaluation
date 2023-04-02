@@ -8,7 +8,8 @@ import { Addfaculty ,
     Getsubject , 
     Initiateclass,
     monthlydefaulter ,
-    Upgradeyear
+    Upgradeyear , 
+    getcc
 } from "../controller/admincont.js";
 
 const router = express.Router();
@@ -24,4 +25,5 @@ router.post("/getsubj", Getsubject);
 router.post("/Initiate" , Initiateclass);
 router.post("/generatedef" ,monthlydefaulter );
 router.get("/upgradeyr" , Upgradeyear);
+router.post("/ourcc" ,getcc)
 export default router;

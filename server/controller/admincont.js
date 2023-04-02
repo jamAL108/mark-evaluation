@@ -10,7 +10,7 @@ import alumini from "../models/alumini.js";
 import prevsemdata from "../models/prevsemdata.js";
 import result from "../models/result.js";
 import examination from "../models/examination.js";
-import cc from "../models/cc.js";
+import ccss from "../models/cc.js";
 
 export const Addfaculty = async (req,res)=>{
   const errors={BackendError:String , emailerror:String}
@@ -130,24 +130,50 @@ export const Getsubject = async (req,res)=>{
   }
 }
 
+export const getcc = async(req,res)=>{
+  const errors = {backenderror:String }
+  try{
+    const {depart} = req.body;
+    const ccs = await ccss.find({depart:depart});
+    return res.status(200).send({message:"take cc" , ccs:ccs})
+  }catch(err){
+    errors.backenderror = "backend error";
+    return res.status(404).send({error:errors});
+  }
+}
+
 
 export const Initiateclass = async(req,res)=>{
    const errors = {backenderror:String , initiateerror:String , limiterror:String}
    try{
-      const {name , email , year , division ,  subject , attempts} = req.body;
-      
-      const data = await FacultySetUp.findOne({email})
-      const subj = await Subjects.findOne({subjectName:subject})
+      const {temp , ccs } = req.body;
+      console.log(temp);
+      console.log(ccs);
+      const data = await FacultySetUp.findOne({email:temp.email})
+      console.log(data);
+      const subj = await Subjects.findOne({subjectName:temp.subject})
+      if( ccs === true){
+        const obj ={
+          faculty:data._id,
+          name:data.name,
+          division:temp.division,
+          year:temp.year,
+          depart:data.depart
+        }
+        const user = new ccss(obj);
+        await user.save();
+        console.log(user);
+      }
       if(data.class.length!==0){
         var i=0;
-          const existingsubject = await FacultySetUp.findOne({class:{$elemMatch:{division:division , subject:subject}}})
+          const existingsubject = await FacultySetUp.findOne({class:{$elemMatch:{division:temp.division , subject:temp.subject}}})
           if(existingsubject){
             errors.initiateerror="the faculty has already been aassigned to this subject in respective division"
             return res.status(404).send({error:errors})
       }else{
-        if(attempts>0){
+        if(temp.attempts>0){
         const obj = {
-          year:year , division:division , subject:subject , practical:subj.practical
+          year:temp.year , division:temp.division , subject:temp.subject , practical:subj.practical
         }
         data.class.push(obj);
         data.attempts=data.attempts-1;
@@ -160,7 +186,7 @@ export const Initiateclass = async(req,res)=>{
     }
     }else{
       const obj = {
-        year:year , division:division , subject:subject , practical:subj.practical
+        year:temp.year , division:temp.division , subject:temp.subject , practical:subj.practical
       }
       data.class.push(obj);
       data.attempts=data.attempts-1;
@@ -185,7 +211,8 @@ export const Ourfaculty =async(req,res)=>{
     console.log(depart);
     const data = await FacultySetUp.find({depart});
     console.log(data);
-    const ccs = await cc.find({depart:depart});
+    const ccs = await ccss.find({depart:depart});
+    console.log(ccs);
     if(!data){
       errors.facultynotfound="no faculty exits in this department";
       return res.status(400).send({error:errors})
@@ -194,6 +221,7 @@ export const Ourfaculty =async(req,res)=>{
       return res.status(200).send({message:"faculty found" , response:data , ccs:ccs})
     }
   }catch(err){
+    console.log(err);
     errors.backenderror=err;
     res.status(404).send({error:errors})
   }
