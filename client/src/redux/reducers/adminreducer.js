@@ -12,6 +12,7 @@ import {
    ,CREATE_NOTICE
    ,GET_NOTICE,
    FACULTY_LOGIN,
+   CCS ,
    GENERATE_DEFUALTER
    , ADD_FACULTY_ERROR
    , GET_ALL_FACULTY_ERROR 
@@ -45,6 +46,7 @@ const initialstate ={
     logout:false,
     defaulter:false,
     timer:29,
+    ccs:[],
     alldepartments:["MECH" , "IT" , "CSE" , "ECE"],
     departmentadded:false,
     studentadded:false,
@@ -111,6 +113,10 @@ const admin =  (state=initialstate , action)=>{
             return{
                     ...state , getfacultyerror:action.payload
                 }
+        case CCS:
+            return{
+                ...state , ccs:action.payload
+            }        
         case GET_ALL_STUDENT:
             return{
                     ...state , students:action.payload

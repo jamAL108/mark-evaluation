@@ -10,6 +10,7 @@ import alumini from "../models/alumini.js";
 import prevsemdata from "../models/prevsemdata.js";
 import result from "../models/result.js";
 import examination from "../models/examination.js";
+import cc from "../models/cc.js";
 
 export const Addfaculty = async (req,res)=>{
   const errors={BackendError:String , emailerror:String}
@@ -113,8 +114,6 @@ export const Addsubject = async (req,res)=>{
 export const Getsubject = async (req,res)=>{
   const errors ={backenderror:String, subjecterror:String}
   try{
-    console.log("hi from getsubject");
-       console.log("mudiyalada sammi")
        const {depart} = req.body;
        console.log(depart);
        const subjects = await Subjects.find({depart})
@@ -122,6 +121,7 @@ export const Getsubject = async (req,res)=>{
         errors.subjecterror="no subject exists in this department please add more ";
          return res.status(404).send({error:errors});
        }
+       
        console.log("done");
        return res.status(200).send({message:"subject received" , success:"OK" , response:subjects});
   }catch(err){
@@ -137,6 +137,7 @@ export const Initiateclass = async(req,res)=>{
       const {name , email , year , division ,  subject , attempts} = req.body;
       
       const data = await FacultySetUp.findOne({email})
+      const subj = await Subjects.findOne({subjectName:subject})
       if(data.class.length!==0){
         var i=0;
           const existingsubject = await FacultySetUp.findOne({class:{$elemMatch:{division:division , subject:subject}}})
@@ -146,7 +147,7 @@ export const Initiateclass = async(req,res)=>{
       }else{
         if(attempts>0){
         const obj = {
-          year:year , division:division , subject:subject
+          year:year , division:division , subject:subject , practical:subj.practical
         }
         data.class.push(obj);
         data.attempts=data.attempts-1;
@@ -159,7 +160,7 @@ export const Initiateclass = async(req,res)=>{
     }
     }else{
       const obj = {
-        year:year , division:division , subject:subject
+        year:year , division:division , subject:subject , practical:subj.practical
       }
       data.class.push(obj);
       data.attempts=data.attempts-1;
@@ -184,18 +185,21 @@ export const Ourfaculty =async(req,res)=>{
     console.log(depart);
     const data = await FacultySetUp.find({depart});
     console.log(data);
+    const ccs = await cc.find({depart:depart});
     if(!data){
       errors.facultynotfound="no faculty exits in this department";
       return res.status(400).send({error:errors})
     }else{
       console.log("hello");
-      return res.status(200).send({message:"faculty found" , response:data})
+      return res.status(200).send({message:"faculty found" , response:data , ccs:ccs})
     }
   }catch(err){
     errors.backenderror=err;
     res.status(404).send({error:errors})
   }
 };
+
+
 
 export const Ourstudent =async(req,res)=>{
   const errors ={studentnotfound:String , backenderror:String}
@@ -449,7 +453,7 @@ export const changetoeven = async(req,res)=>{
           sem:sem,
           result:result
         }
-        const prev =await prevsemdata.findOne({student:students._id})
+        const prev =await prevsemdata.findOne({student:students[j]._id})
         prev.result.push(obj);
         if(result.kt>0){
           const obj1 ={

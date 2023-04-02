@@ -22,6 +22,9 @@ const subject = mongoose.Schema({
       type: Number,
       required: true,
     },
+    practical:{
+      type:Boolean
+    },
     attendence: {
       type: Schema.Types.ObjectId,
       ref: "attendence",

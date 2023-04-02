@@ -1,7 +1,7 @@
 import React, { useEffect , useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHANGE_TIMER } from '../../redux/actiontype';
-import { monthlydefaulter , upgradeyear , changetoodd } from '../../redux/action/adminaction'; 
+import { monthlydefaulter , upgradeyear , changetoodd , changetoeven } from '../../redux/action/adminaction'; 
 import { ODD_SEM_UPDATE , EVEN_SEM_UPDATE , YEAR_UPDATE ,  } from '../../redux/actiontype';
 function Body(){
     const dispatch = useDispatch();
@@ -30,11 +30,11 @@ function Body(){
       dispatch(upgradeyear());
     };
     
-    const upgradodd= async()=>{
+    const upgradodd= async(e)=>{
       e.preventDefault();
       dispatch(changetoodd());
    };
-   const upgradeven= async()=>{
+   const upgradeven= async(e)=>{
     e.preventDefault();
     dispatch(changetoeven());
  };

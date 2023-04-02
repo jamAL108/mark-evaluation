@@ -1,5 +1,5 @@
 import  mongoose from "mongoose";
-
+import { Schema } from "mongoose";
 const result = mongoose.Schema({
     student:{
         type:Schema.Types.ObjectId,

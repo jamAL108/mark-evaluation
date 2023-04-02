@@ -10,6 +10,7 @@ const Body = () => {
     year:"",
     subjectName:"",
     subjectCode:"",
+    practical:false
    })
    const [proceed , setproceed] = useState(false);
    const store = useSelector((state)=>state);
@@ -27,7 +28,8 @@ const Body = () => {
          subjectName:"",
          subjectCode:"",
          depart:value.depart,
-         year:value.year
+         year:value.year,
+         practical:false
       })
       dispatch({type:ADD_SUBJECT_ERROR , payload:{}})
       dispatch({type:ADD_SUBJECT , payload:false})
@@ -98,6 +100,15 @@ const Body = () => {
                             <input type="text" name="subcode" placeholder="Enter subject code" id="pass" className="form-control" value={value.subjectCode} onChange={(e)=>{setValue({...value , subjectCode:e.target.value})
                             seterror({}) }} />
                         </div>
+                        <div onChange={(e)=>{
+                          const val = e.target.value;
+                          if(val==="yes"){
+                            setValue({...value , practical:true})
+                          }
+                        }}>
+                          <input type="radio" value="yes" name="practical" /> Yes
+                          <input type="radio" value="no" name="practical" /> No
+                         </div>
       </div>
    )
    }

@@ -6,6 +6,7 @@ import Examination from "../models/examination.js";
 import bcrypt from "bcryptjs"
 import attendance from "../models/attendance.js";
 import attenddates from "../models/attend_dates.js";
+import examination from "../models/examination.js";
  export const Facultylogn = async(req,res)=>{
   const errors={passwordError:String , emailError:String , backenderror:String}
     try{
@@ -98,12 +99,13 @@ export const Getstudent = async(req,res)=>{
               const tempdata = await Examination.findOne({
                 exam:data.exam , student:students[i]._id , subjectCode:subjects.subjectCode
               })
+              console.log(tempdata);
             const stud = {
-                Rollno:students[i].Rollno , name:students[i].name , _id:students[i]._id , mark: tempdata.mark || -1 
+                Rollno:students[i].Rollno , name:students[i].name , _id:students[i]._id , mark: tempdata.mark || -1 ,
+                termmarks: tempdata.termwork || -1 , orals:tempdata.orals || -1
             }
             array.push(stud); 
           }
-          console.log(array);
         return res.status(200).send({message:"student sended" , response:array});
       }
   }catch(err){
@@ -118,7 +120,6 @@ export const Uploadmark = async(req,res)=>{
   const errors = {backenderror:String , uploaderror:String}
   try{
     const data = req.body;
-    console.log(data);
     const subjectc =await Subject.findOne({subjectName:data.subject})
     const templates = await Examination.find({depart:data.depart , exam:data.exam , subjectCode:subjectc.subjectCode })
     
@@ -127,18 +128,40 @@ export const Uploadmark = async(req,res)=>{
       return res.status(404).send({error:errors})
     }else{
       const array=[];
-      for(var i=0;i<data.marks.length;i++){
-         const studentid = data.marks[i]._id;
+      const array1=[];
+
+      //// for practical marks
+      if(data.practical===true){
+        for(var i=0;i<data.termmarks.length;i++){
+          const studentid = data.termmarks[i]._id;
+          const testtemp = await Examination.findOne({depart:data.depart , exam:data.exam , subjectCode:subjectc.subjectCode , student:studentid})
+    const markofstudent = await Examination.findByIdAndUpdate({_id:testtemp._id } , {$set:{termwork:data.termmarks[i].value}});
+        array1.push(markofstudent);
+        }
+
+    for(var j=0;j<data.oralmarks.length;j++){
+      const studentid = data.oralmarks[j]._id;
+      const testtemp = await Examination.findOne({depart:data.depart , exam:data.exam , subjectCode:subjectc.subjectCode , student:studentid})
+const markofstudent = await Examination.findByIdAndUpdate({_id:testtemp._id } , {$set:{orals:data.oralmarks[j].value}});
+     array.push(markofstudent);
+     }
+
+
+     ///// fro normal marks
+    }else{
+      for(var k=0;k<data.marks.length;k++){
+         const studentid = data.marks[k]._id;
          const testtemp = await Examination.findOne({depart:data.depart , exam:data.exam , subjectCode:subjectc.subjectCode , student:studentid})
          console.log(testtemp._id);
-   const markofstudent = await Examination.findByIdAndUpdate({_id:testtemp._id , depart:data.depart , exam:data.exam , subjectCode:subjectc.subjectCode , student:studentid} , {$set:{mark:data.marks[i].value}});
+   const markofstudent = await Examination.findByIdAndUpdate({_id:testtemp._id } , {$set:{mark:data.marks[k].value}});
     array.push(markofstudent);
     }
-    console.log("done");
-    return res.status(200).send({message:"marks uploaded"  , response:array});
+  }
+    return res.status(200).send({message:"marks uploaded"  , response:array , anotherresponse:array1});
     }
   }catch(err){
     errors.backenderror=err;
+    console.log(err);
     return res.status(404).send({error:errors})
   }
 };
@@ -276,7 +299,6 @@ export const Markattendance = async(req,res)=>{
   const errors = {backenderror:String , uploaderror:String}
   try{
      const data = req.body;
-     console.log(data);
      const subjet = await Subject.findOne({subjectName:data.subj.subject});
       const lecturecount = await attendance.find({depart:data.subj.depart , year:data.subj.year , division:data.subj.division , subject:subjet._id })
       const date = new Date();
@@ -310,6 +332,8 @@ export const Markattendance = async(req,res)=>{
     return res.status(404).send({error:errors})
   }
 };
+
+
 
 
 

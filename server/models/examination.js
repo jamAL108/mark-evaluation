@@ -16,9 +16,18 @@ const Examination = mongoose.Schema({
     mark:{
         type:Number,
         default:-1
-    },    
+    },
+    termwork:{
+        type:Number,
+        default:-1
+    },
+    orals:{
+        type:Number,
+        default:-1
+    },
     exam:{
-        type:String
+        type:String,
+        required:true
     }
 })
 

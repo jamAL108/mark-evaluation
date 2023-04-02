@@ -48,6 +48,9 @@ const facultydetails = mongoose.Schema({
    attempts:{
     type:Number,
     default:4
+   },
+   cc:{
+    type:{}
    }
 });
 

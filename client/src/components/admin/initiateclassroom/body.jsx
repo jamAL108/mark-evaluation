@@ -22,6 +22,10 @@ const Body = () => {
   const [error , seterror] = useState({});
   const [subjet , setsubject] = useState([]);
   const [main , setmain] = useState([]);
+  const [ccs , setccs] = useState([]);
+  const [classCC , setclassCC] = useState({});
+  const [appoint , setappoint] = useState(false);
+  const [finalerr , setfinalerr] = useState({});
   const [faculerror , setfaculerror] = useState("");
     const[value ,setValue] = useState({
         depart:"",
@@ -32,8 +36,35 @@ const Body = () => {
     },[store.admin.getfacultyerror])
 
     useEffect(()=>{
+      setfinalerr(store.admin.initialclasserror)
+   },[store.admin.initialclasserror])
+
+    useEffect(()=>{
+      setccs(store.admin.ccs);
+    },[store.admin.ccs])
+
+
+    useEffect(()=>{
         setfacul(store.admin.faculties);
     },[store.admin.faculties])
+
+    useEffect(()=>{
+      settemp({
+        ...temp ,
+        year:0,
+        division:"",
+        subject:"",
+        attempts:temp.attempts-1
+      })
+       dispatch({type:INITIATE_CLASS , payload:false})
+       dispatch({type:INITIATE_CLASS_ERROR , payload:{}})
+    },[store.admin.initialclass])
+
+    useEffect(()=>{
+      setsubject(store.admin.subjects)
+      console.log(store.admin.subjects)
+    },[store.admin.subjects])
+
 
     const search = async(e)=>{
         e.preventDefault();
@@ -57,10 +88,6 @@ const Body = () => {
       setfaculerror("");
       
   }
-    useEffect(()=>{
-      setsubject(store.admin.subjects)
-      console.log(store.admin.subjects)
-    },[store.admin.subjects])
 
     const filling = async(e)=>{
       setmain(subjet.filter(sub => sub.year === temp.year))
@@ -73,22 +100,19 @@ const Body = () => {
       dispatch(initiateclass(temp));
     }
 
-    const [finalerr , setfinalerr] = useState({});
-    useEffect(()=>{
-       setfinalerr(store.admin.initialclasserror)
-    },[store.admin.initialclasserror])
 
-    useEffect(()=>{
-      settemp({
-...temp ,
-        year:0,
-        division:"",
-        subject:"",
-        attempts:temp.attempts-1
-      })
-       dispatch({type:INITIATE_CLASS , payload:false})
-       dispatch({type:INITIATE_CLASS_ERROR , payload:{}})
-    },[store.admin.initialclass])
+    const classcordi = async(division , year)=>{
+        if(ccs.length===0){
+          setappoint(true);
+        }else{
+            for(var k=0;k<ccs.length;k++){
+               if(ccs[k].division === division && ccs[k].year === year){
+                   setclassCC(ccs[k])
+                   return;
+               }
+            }
+        }
+    };
 
   return (
     <div className="our faculty" style={{background:"white"}}>
@@ -218,6 +242,7 @@ const Body = () => {
                     onChange={(e) =>{
                       settemp({ ...temp, division: e.target.value })
                       filling()
+                      classcordi(e.target.value , value.year);
                     }
                     }>
                     <MenuItem value="">None</MenuItem>
@@ -226,6 +251,11 @@ const Body = () => {
                     <MenuItem value="C">C</MenuItem>
                   </Select>
                 </div>
+    
+    {setappoint===true && (
+       <h2>class- {value.division} : {classCC.name} </h2>
+    )}
+     
     <div className="form-group">
           <h1 className="section">Subject :</h1>
                    <Select

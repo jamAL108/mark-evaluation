@@ -15,6 +15,7 @@ import {
     , GET_SUBJECT ,
     GET_SUBJECT_ERROR,
     GENERATE_DEFUALTER,
+    CCS ,
     GENERATE_DEFUALTER_ERROR,
     UPGRADE_YEAR,
     UPGRADE_YEAR_ERROR,
@@ -198,6 +199,7 @@ export const ourfaculty = (data,navigate) => async(dispatch)=>{
        console.log(msg.response);
        if(respon.status === 200 ){
             dispatch({type: GET_ALL_FACULTY ,payload:msg.response})
+            dispatch({type: CCS , payload:msg.ccs})
     }else if(respon.status===404 || respon.status===400){
       dispatch({type: GET_ALL_FACULTY_ERROR  ,payload:msg.error })
     }
