@@ -10,10 +10,12 @@ import { overallattendance } from '../../redux/action/studentaction';
 const Body = () => {
   const user = JSON.parse(localStorage.getItem("user"));
     const [value, onChange] = useState(new Date());
-    const [percentage , setpercentage] = useState(0);
+    const [percentag , setpercentage] = useState(0);
     const [color , setcolor] = useState("#808080");
     const store = useSelector((state)=>state);
     const [attendance , setattendance] = useState({});
+    const [lectureatt , setlectureatt] = useState("--");
+    const [overall , setoverall] = useState("--");
     const dispatch = useDispatch();
     useEffect(()=>{
       const data = {
@@ -22,15 +24,7 @@ const Body = () => {
         year:user.data.year
       }
        dispatch(overallattendance(data))
-       if(percentage>=0 && percentage<=35){
-        setcolor("#f54242");
-       }else if(percentage>35 && percentage<=50){
-        setcolor("#f5a442");
-       }else if(percentage>60 && percentage<=75){
-        setcolor("#e6f542");
-       }else if(percentage>75 && percentage<=100){
-        setcolor("#69f542")
-       }
+       console.log("heeey");
     },[dispatch])
 
      useEffect(()=>{
@@ -39,10 +33,25 @@ const Body = () => {
      },[store.student.overallattend])
 
      useEffect(()=>{
-      const percent = parseFloat(attendance.percentage).toFixed(2);
+      const dat = attendance.percentage;
+      console.log(attendance.percentage);
+      const percent = parseFloat(dat).toFixed(2);
       setpercentage(percent);
-      console.log(attendance);
+      setlectureatt(attendance.lectureattended);
+      setoverall(attendance.overrallec);
      },[attendance])
+
+     useEffect(()=>{
+      if(percentag>=0 && percentag<=35){
+        setcolor("#f54242");
+       }else if(percentag>35 && percentag<=50){
+        setcolor("#f5a442");
+       }else if(percentag>60 && percentag<=75){
+        setcolor("#e6f542");
+       }else if(percentag>75 && percentag<=100){
+        setcolor("#69f542")
+       }
+     },[percentag])
 
      useEffect(()=>{
        setattendance(store.student.overralatterror);
@@ -53,10 +62,10 @@ const Body = () => {
         <div className="upper">
           <div className="attenchart">
             <h1>overall Attendance</h1>
-            <div className="circle" style={{width:"200px" , height:"200px"}}>
+            <div className="circle" style={{width:"250px" , height:"250px" , paddingBottom:"20px"}}>
             <CircularProgressbar
-  value={percentage}
-  text={`${percentage}%`}
+  value={percentag}
+  text={`${percentag}%`}
   style={{}}
   styles={buildStyles({
     rotation: 0,
@@ -69,7 +78,7 @@ const Body = () => {
     backgroundColor: '#3e98c7'
   })}
 />
-<p>{attendance.lectureattended}/{attendance.overrallec}</p>
+<h2>{lectureatt}/{overall}</h2>
 </div>
           </div>
         <div className="calendar">

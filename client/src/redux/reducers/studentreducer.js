@@ -18,6 +18,7 @@ import {
      TEST_RESULT_ERROR 
      , ATTENDANCE
      , ATTENDANCE_ERROR
+     , ATTENDANCE_DATES
 } from '../actiontype.js';
 
 const initialstate={
@@ -28,6 +29,8 @@ const initialstate={
     studentupdated:false,
     testresult:[],
     attendance:[],
+    attendanceerror:"",
+    dates:[],
     notice:[],
     faculties:[],
     viewfacultyerror:"",
@@ -54,10 +57,13 @@ const student =(state=initialstate , action) =>{
         return{
             authordata:null,
             studentlogin:false,
+            overallattend:"",
             studentloginerror:"",
             studentupdated:false,
             testresult:[],
             attendance:[],
+            attendanceerror:"",
+            dates:[],
             notice:[],
             faculties:[],
             viewfacultyerror:"",
@@ -65,7 +71,9 @@ const student =(state=initialstate , action) =>{
             studupdatepassword:false,
             studupdatepassworderror:"",
             marks:[],
-            getmarkerror:"",
+            getmarkerror:"", 
+            overralatterror:""
+
         }
     case STUD_UPDATE_PASSWORD: 
          return{
@@ -106,7 +114,19 @@ const student =(state=initialstate , action) =>{
     case OVERALL_ATTEND_ERROR:
         return{
             ...state , overralatterror:action.payload
-        }                        
+        }
+    case ATTENDANCE:
+        return{
+            ...state , attendance:action.payload
+        }
+    case ATTENDANCE_ERROR:
+        return{
+            ...state , attendanceerror:action.payload
+        }
+    case ATTENDANCE_DATES:
+        return{
+            ...state , dates:action.payload
+        }                                    
     default:
         return state;
 }

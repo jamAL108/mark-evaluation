@@ -9,7 +9,10 @@ import { STUDENT_LOGIN,
    GET_MARKS ,
    OVERALL_ATTEND , 
    OVERALL_ATTEND_ERROR , 
-   GET_MARKS_ERROR } from "../actiontype";
+   GET_MARKS_ERROR ,
+   ATTENDANCE , 
+  ATTENDANCE_ERROR ,
+  ATTENDANCE_DATES  } from "../actiontype";
 
 export const studentlogin =(formdata , navigate) => async (dispatch) =>{
     try{
@@ -134,7 +137,7 @@ export const overallattendance = (formdata) => async(dispatch)=>{
    },
      body:JSON.stringify(formdata)
     });
-    console.log(formdata);
+    //console.log(formdata);
     const msg = await data.json();
     console.log(msg);
     if(data.status===200){
@@ -146,4 +149,51 @@ export const overallattendance = (formdata) => async(dispatch)=>{
   }catch(err){
     console.log(err);
   }
-}
+};
+
+
+
+export const viewattendance = (formdata) =>async(dispatch)=>{
+   try{
+    const data = await fetch("http://localhost:8000/stud/specificattend", {
+      method:"POST",
+      headers:{
+       "Content-Type":"application/json"
+   },
+     body:JSON.stringify(formdata)
+    });
+    console.log(formdata);
+    const msg = await data.json();
+    console.log(msg);
+    if(data.status===200){
+     dispatch({type:ATTENDANCE , payload:msg.response})
+    }else if(data.status===404){
+     dispatch({type:ATTENDANCE_ERROR , payload:msg.error})
+    }
+   }catch(err){
+    console.log(err);
+   }
+};
+
+
+export const getdates = (formdata)=>async(dispatch)=>{
+    try{
+      const data = await fetch("http://localhost:8000/stud/attenddates", {
+        method:"POST",
+        headers:{
+         "Content-Type":"application/json"
+     },
+       body:JSON.stringify(formdata)
+      });
+      console.log(formdata);
+    const msg = await data.json();
+    console.log(msg);
+    if(data.status===200){
+     dispatch({type:ATTENDANCE_DATES , payload:msg.dates})
+    }else if(data.status===404){
+     dispatch({type:ATTENDANCE_ERROR , payload:msg.error})
+    }
+    }catch(err){
+    console.log(err);
+   }
+};

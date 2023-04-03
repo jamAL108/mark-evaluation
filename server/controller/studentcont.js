@@ -24,6 +24,7 @@ import attendance from "../models/attendance.js";
       }
     }catch(err){
       errors.backenderror=err;
+      console.log(err);
       return res.status(404).send({error:errors})
     }
 };
@@ -198,5 +199,78 @@ export const Getattendance = async(req,res)=>{
     console.log(err);
     return res.status(404).send({error:errors})
   }
+};
 
+export const viewattendance = async(req,res)=>{
+  const errors = {backenderror:String , atterror:String}
+  try{
+     const {_id,depart , year , division , month , overall} = req.body;
+     const monnth = 0;
+     if(month==="jan"){
+        monnth=0;
+     }else if(month==="feb"){
+      monnth=1;
+     }else if(month==="mar"){
+         monnth=2;
+       }else if(month==="apr"){
+    monnth=3;
+     }else if(month==="may"){
+  monnth=4;
+      }else if(month==="jun"){
+  monnth=5;
+     }else if(month==="jul"){
+  monnth=6;
+     }else if(month==="aug"){
+  monnth=7;
+    }else if(month==="sep"){
+  monnth=8;
+    }else if(month==="oct"){
+  monnth=9;
+    }else if(month==="nov"){
+  monnth=10;
+   }else if(month==="dec"){
+  monnth=11;
+   } 
+    const subjects = await Subjects.find({year:year , depart:depart});
+    let array=[];
+    for(var i=0;i<subjects.length;i++){
+       const subi = await attendance.findOne({student:_id , subject:subjects[i]._id});
+       if(overall===true){
+        let totallec=0;
+        let attended=0;
+         for(var j=0;j<12;j++){
+          totallec = totallec + subi.totalLecturesByFaculty[j].value;
+          attended = attended + subi.lectureAttended[j].value;
+         }
+          let percent = attended/totallec*100;
+         const obj ={
+          subject:subi[i].subjectName,
+          subjectCode:subi[i].subjectCode,
+          overall:totallec,
+          lectureattended:attended,
+          percentage:percent
+         }
+         array.push(obj);
+       }else{
+          let totallec=0;
+          let attended=0;
+          totallec = totalLecturesByFaculty[monnth].value;
+          attended = lectureAttended[monnth].value;
+          let percent = attended/totallec*100;
+          const obj={
+            subject:subi[i].subjectName,
+            subjectCode:subi[i].subjectCode,
+            overall:totallec,
+            lectureattended:attended,
+            percentage:percent
+          }
+          array.push(obj);
+       }
+    }
+    return res.status(200).send({message:"data sended" , response:array});
+  }catch(err){
+    errors.backenderror=err;
+    console.log(err);
+    return res.status(404).send({error:errors})
+  }
 };

@@ -30,7 +30,8 @@ import {
    UPGRADE_YEAR_ERROR,
    YEAR_UPDATE ,  
     ODD_SEM_UPDATE , ODD_SEM_UPDATE_ERROR,
-    EVEN_SEM_UPDATE ,  EVEN_SEM_UPDATE_ERROR
+    EVEN_SEM_UPDATE ,  EVEN_SEM_UPDATE_ERROR ,
+    DEFAULTER_PERCENT
 } from '../actiontype';
 
 const initialstate ={
@@ -69,7 +70,7 @@ const initialstate ={
     yearupdated:false,
     oddsemupdated:false,
     evensemupdated:false,
-
+    percent:{}
 }
 
 const admin =  (state=initialstate , action)=>{
@@ -153,6 +154,10 @@ const admin =  (state=initialstate , action)=>{
             return{
                 ...state , defaulter:action.payload
             }
+        case DEFAULTER_PERCENT:
+            return{
+                ...state , percent:action.payload
+            }    
         case CHANGE_TIMER:
             return{
                 ...state , timer:action.payload

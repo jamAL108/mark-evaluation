@@ -2,7 +2,7 @@ import React, { useEffect , useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHANGE_TIMER } from '../../redux/actiontype';
 import { monthlydefaulter , upgradeyear , changetoodd , changetoeven } from '../../redux/action/adminaction'; 
-import { ODD_SEM_UPDATE , EVEN_SEM_UPDATE , YEAR_UPDATE ,  } from '../../redux/actiontype';
+import { ODD_SEM_UPDATE , EVEN_SEM_UPDATE , YEAR_UPDATE , DEFAULTER_PERCENT } from '../../redux/actiontype';
 function Body(){
     const dispatch = useDispatch();
     const store = useSelector((state)=>state);
@@ -16,15 +16,21 @@ function Body(){
     const [unlockyear , setunlockyear] = useState(true);
     const [unlockodd , setunlockodd] = useState(false);
     const [unlockeven , setunlockeven] = useState(false);
+
+
     useEffect(()=>{
       const date = new Date();
        const dat = date.getDate();
        if(dat!==store.admin.timer){
-          dispatch(monthlydefaulter(percent));
+          dispatch(monthlydefaulter(store.admin.percent.per));
           dispatch({type:CHANGE_TIMER , payload:dat});
        }
     },[dispatch])
 
+
+    useEffect(()=>{
+     dispatch({type:DEFAULTER_PERCENT , payload:percent});
+    },[percent.per])
     const upgradeyer =async(e)=>{
       e.preventDefault();
       dispatch(upgradeyear());

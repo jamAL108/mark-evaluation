@@ -1,8 +1,14 @@
-import React from "react";
+import React , {useEffect}from "react";
 import { Link } from "react-router-dom";
 import './abc.css';
 import Logo from '../../images/logo.png';
+import { CHANGE_TIMER  } from '../../redux/actiontype';
+import { monthlydefaulter } from '../../redux/action/adminaction';
+import { useDispatch, useSelector } from "react-redux";
 const Login = () => {
+
+
+
   return (
     <div className="logn">
       <div className="container">
