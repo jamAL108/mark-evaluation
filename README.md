@@ -5,12 +5,13 @@
  # TechStack
  
  1. Reactjs
- 2. css
- 3. Material UI icons
- 2. Node
- 3. expressjs
- 4. mongoose
- 5. mongoDB atlas
+ 2. Redux
+ 3. css
+ 4. Material UI icons
+ 5. Node
+ 6. expressjs
+ 7. mongoose
+ 8. mongoDB atlas
  
  
 # Features
