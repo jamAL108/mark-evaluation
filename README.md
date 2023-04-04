@@ -1,6 +1,5 @@
 # mark-evaluation
-Designing parts are still pending 
- 
+  mark-evaluation and attendance managemnet system using mern stack 
  
  
  # TechStack
@@ -14,12 +13,12 @@ Designing parts are still pending
  5. mongoDB atlas
  
  #Features
- 1. fully fuunctional admin , faculty , student options
+ 1. fully functional admin , faculty , student options
  2. admin can add student , add faculty , add subject  to respective department of that year
  3. The project is build on a large scale which cover all department and 4 years of students
  4. admin can create notice 
  5. admin has to initiate classroom ... like initiating a teacher to class ,  every teacher can be assigned with maximum four classes
- 6. admin's home page will have a option of upgrade year ..... by clicking that option all the students'year will be incremented and 4th year students data will       be removed from database and they will be sended into alumini lists , there is also an option to start odd semester and even semester 
+ 6. admin's home page will have a option of upgrade year ..... by clicking that option all the student's year will be incremented and 4th year students data         will be removed from database and they will be sended into alumini lists , there is also an option to start odd semester and even semester 
  7. student, subject , faculty can be deleted by admin
  8. when the student/faculty login for the first time they have to change thier password compulsorily
  9. faculty can enter students marks for IA/MIDSEM/ENDSEM , once entered it can be changed in future if necessary , if a subject has practical then termwork and     oral marks should be entered  teachers will be credit points to each student                                                                                
