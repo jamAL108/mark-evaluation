@@ -12,7 +12,9 @@
  4. mongoose
  5. mongoDB atlas
  
- #Features
+ 
+# Features
+
  1. fully functional admin , faculty , student options
  2. admin can add student , add faculty , add subject  to respective department of that year
  3. The project is build on a large scale which cover all department and 4 years of students
@@ -32,7 +34,8 @@
  
  
  
- #Features to be added later in future
+# Features to be added later in future
+
  1. forgot password options
  2. contest for students
  3. mobile responsiveness and css
