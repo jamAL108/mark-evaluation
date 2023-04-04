@@ -238,9 +238,11 @@ export const Ourstudent =async(req,res)=>{
       errors.facultynotfound="no student exits in this division";
       return res.status(400).send({error:errors})
     }else{
+      console.log(data);
       return res.status(200).send({message:"student found" , response:data})
     }
   }catch(err){
+    console.log(err);
     errors.backenderror=err;
     res.status(404).send({error:errors})
   }

@@ -12,9 +12,12 @@ const Body = () => {
   const dispatch = useDispatch();
   const [arrow , setarrow] = useState(false); 
   const [data , setdata] = useState([]);
+  const [main , setmain] = useState([]);
   const [dates , setdates] = useState([]);
   const [display , setdisplay] = useState(false);
   const [month , setmonth] = useState("");
+  const [make , setmake] = useState(false);
+  const array =["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
   const [value , setvalue] = useState({
     _id:user.data._id,
     depart:user.data.depart,
@@ -23,24 +26,52 @@ const Body = () => {
   });
 
   useEffect(()=>{
-    dispatch(viewattendance({value}));
+    console.log(value);
+    dispatch(viewattendance(value));
   },[dispatch])
   
   useEffect(()=>{
+    setdisplay(false);
+    if(store.student.overallattendance && store.student.monthattendance){
+      console.log("inside month change effect");
+      console.log(store.student.overallattendance)
+      console.log(store.student.monthattendance)
    if(month==="Overall"){
       setdata(store.student.overallattendance);
    }else{
+    console.log("wanakam");
     setdata(store.student.monthattendance);
    }
+   setmake(true);
+  }
   },[month])
   
+  useEffect(()=>{
+    if(data.length!==0 && make===true){
+    console.log("data milgaya");
+    console.log(array);
+    if(month!=="Overall"){
+    for(var i=0;i<array.length;i++){
+      if(array[i]===month){
+        setmain(data[i]);
+        console.log(data[i]);
+      }
+    }
+  }else{
+    console.log("namaste");
+    setmain(data);
+  }
+  setmake(false);
+}
+},[make,data])
 
   useEffect(()=>{
-    setdisplay(true)
-    if(month==="jan"){
-      setdata(data[])
+    if(main.length!==0){
+      setdisplay(true)
+    }else{
+      console.log("nkdsvjbs");
     }
-},[data])
+  },[main])
  
 
   const getattendancedate = async(subject)=>{
@@ -82,7 +113,7 @@ const Body = () => {
                     <MenuItem value="dec">dec</MenuItem>
                   </Select>
                 </div>
-        {display===true && data.length!==0 && (
+        {display===true && main.length!==0 && (
             <table className='styled-table'>
             <thead>
              <tr>
@@ -104,7 +135,7 @@ const Body = () => {
                                 </tr>
                                 </thead>
                               <tbody>
-                        {data?.map((attend,idx)=>(
+                        {main?.map((attend,idx)=>(
                <tr
                      key={idx}
                  className="cont">
@@ -124,11 +155,11 @@ const Body = () => {
                 </td>
                 <td
                 className="cont">
-                  {attend.lectureattended} / {attend.overall}
+                  {attend.attended} / {attend.totallec}
                 </td>
                 <td
                 className="cont">
-                  {attend.percentage}
+                  {attend.percentage || 0}
                 </td>
                 </tr>
                      ) )}

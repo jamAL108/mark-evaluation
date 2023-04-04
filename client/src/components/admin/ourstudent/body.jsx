@@ -39,6 +39,11 @@ const Body = ()=>{
         setstudent([]);
         dispatch({type:GET_ALL_STUDENT_ERROR , payload:{}})
         dispatch({type:GET_ALL_STUDENT , payload:[]})
+        setValue({
+          year:"",
+          depart:"",
+          division:""
+        })
     }
    
     return(

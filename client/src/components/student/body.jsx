@@ -51,6 +51,7 @@ const Body = () => {
        }else if(percentag>75 && percentag<=100){
         setcolor("#69f542")
        }
+       console.log(percentag);
      },[percentag])
 
      useEffect(()=>{

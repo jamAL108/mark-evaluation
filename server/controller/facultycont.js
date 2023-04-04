@@ -314,6 +314,7 @@ export const Markattendance = async(req,res)=>{
       const atte = await attendance.findOne({student:data.checkedValue[j] , subject:subjet._id})
       const lecattend = atte.lectureAttended[mont-1].value +1 ;
      await  attendance.updateOne({_id:atte._id , "lectureAttended.id":mont} , {$set: {"lectureAttended.$.value":lecattend}});
+     console.log(lecattend);
       const date = new Date();
       const month = date.getMonth() +1;
       const neew = new attenddates({
@@ -324,7 +325,9 @@ export const Markattendance = async(req,res)=>{
       })
       await neew.save();
       array.push(neew);
+      console.log(await attendance.findOne({_id:atte._id}));
     }
+
     return res.status(200).send({message:"attendance marked" ,response:array})
      }catch(err){
     errors.backenderror=err;

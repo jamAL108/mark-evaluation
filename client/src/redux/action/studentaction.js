@@ -10,8 +10,9 @@ import { STUDENT_LOGIN,
    OVERALL_ATTEND , 
    OVERALL_ATTEND_ERROR , 
    GET_MARKS_ERROR ,
-   ATTENDANCE , 
+   MONTH_ATTENDANCE , 
   ATTENDANCE_ERROR ,
+  OVERALL_ATTENDANCE,
   ATTENDANCE_DATES  } from "../actiontype";
 
 export const studentlogin =(formdata , navigate) => async (dispatch) =>{
@@ -162,11 +163,12 @@ export const viewattendance = (formdata) =>async(dispatch)=>{
    },
      body:JSON.stringify(formdata)
     });
-    console.log(formdata);
     const msg = await data.json();
-    console.log(msg);
     if(data.status===200){
-     dispatch({type:ATTENDANCE , payload:msg.response})
+     dispatch({type:MONTH_ATTENDANCE , payload:msg.month})
+     dispatch({type:OVERALL_ATTENDANCE, payload:msg.overall})
+     console.log(msg.month);
+     console.log(msg.overall);
     }else if(data.status===404){
      dispatch({type:ATTENDANCE_ERROR , payload:msg.error})
     }

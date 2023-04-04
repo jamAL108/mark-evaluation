@@ -165,6 +165,7 @@ export const Getattendance = async(req,res)=>{
   try{
      const data = req.body;
      const student = await Student.findOne({_id:data._id})
+     console.log(student);
      const subjects = await Subjects.find({depart:data.depart , year:data.year})
      if(!subjects){
       const obj = {
@@ -201,76 +202,64 @@ export const Getattendance = async(req,res)=>{
   }
 };
 
-export const viewattendance = async(req,res)=>{
+export const viewattendanc = async(req,res)=>{
   const errors = {backenderror:String , atterror:String}
   try{
-     const {_id,depart , year , division , month , overall} = req.body;
-     const monnth = 0;
-     if(month==="jan"){
-        monnth=0;
-     }else if(month==="feb"){
-      monnth=1;
-     }else if(month==="mar"){
-         monnth=2;
-       }else if(month==="apr"){
-    monnth=3;
-     }else if(month==="may"){
-  monnth=4;
-      }else if(month==="jun"){
-  monnth=5;
-     }else if(month==="jul"){
-  monnth=6;
-     }else if(month==="aug"){
-  monnth=7;
-    }else if(month==="sep"){
-  monnth=8;
-    }else if(month==="oct"){
-  monnth=9;
-    }else if(month==="nov"){
-  monnth=10;
-   }else if(month==="dec"){
-  monnth=11;
-   } 
-    const subjects = await Subjects.find({year:year , depart:depart});
-    let array=[];
-    for(var i=0;i<subjects.length;i++){
-       const subi = await attendance.findOne({student:_id , subject:subjects[i]._id});
-       if(overall===true){
-        let totallec=0;
-        let attended=0;
-         for(var j=0;j<12;j++){
-          totallec = totallec + subi.totalLecturesByFaculty[j].value;
-          attended = attended + subi.lectureAttended[j].value;
-         }
-          let percent = attended/totallec*100;
-         const obj ={
-          subject:subi[i].subjectName,
-          subjectCode:subi[i].subjectCode,
-          overall:totallec,
-          lectureattended:attended,
-          percentage:percent
-         }
-         array.push(obj);
-       }else{
-          let totallec=0;
-          let attended=0;
-          totallec = totalLecturesByFaculty[monnth].value;
-          attended = lectureAttended[monnth].value;
-          let percent = attended/totallec*100;
-          const obj={
-            subject:subi[i].subjectName,
-            subjectCode:subi[i].subjectCode,
-            overall:totallec,
-            lectureattended:attended,
-            percentage:percent
-          }
-          array.push(obj);
-       }
-    }
-    return res.status(200).send({message:"data sended" , response:array});
+     const data = req.body;
+     console.log(data);
+     const student = await Student.findOne({_id:data._id})
+     const subjects = await Subjects.find({depart:data.depart , year:data.year});
+
+     ///overall
+     let overal=[];
+     for(var i=0;i<subjects.length;i++){
+      const atte = await attendance.findOne({student:data._id , subject:subjects[i]._id});
+      let totallec=0;
+      let attended=0;
+      for(var j=0;j<12;j++){
+         totallec+=atte.totalLecturesByFaculty[j].value;
+         attended+=atte.lectureAttended[j].value;
+      }
+      let percentage= (attended/totallec)*100;
+      const obj={
+        _id:atte._id,
+        subject:subjects[i].subjectName,
+        subjectCode:subjects[i].subjectCode,
+        totallec:totallec,
+        attended:attended,
+        percentage:percentage
+      }
+      overal.push(obj);
+     }
+
+
+     ////monthly 
+     let monthly=[];
+     for(var m=0;m<12;m++){
+      let temp=[];
+        for(var p=0;p<subjects.length;p++){
+            const atte = await attendance.findOne({student:data._id , subject:subjects[p]._id});
+
+            let percentage= (atte.totalLecturesByFaculty[m].value/atte.lectureAttended[m].value)*100;
+             const obj={
+              _id:atte._id,
+              subject:subjects[p].subjectName,
+              subjectCode:subjects[p].subjectCode,
+              totallec:atte.totalLecturesByFaculty[m].value,
+              attended:atte.lectureAttended[m].value,
+              percentage:percentage
+             }
+             temp.push(obj);
+        }
+        monthly.push(temp);
+     }
+     console.log(monthly[3]);
+     console.log(overal);
+     return res.status(200).send({message:"sended",month:monthly , overall:overal});
   }catch(err){
     errors.backenderror=err;
     console.log(err);
     return res.status(404).send({error:errors})
   }
-};
+
+}

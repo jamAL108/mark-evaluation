@@ -16,7 +16,8 @@ import {
     OVERALL_ATTEND,
     TEST_RESULT ,
      TEST_RESULT_ERROR 
-     , ATTENDANCE
+     , MONTH_ATTENDANCE
+     , OVERALL_ATTENDANCE
      , ATTENDANCE_ERROR
      , ATTENDANCE_DATES
 } from '../actiontype.js';
@@ -39,7 +40,9 @@ const initialstate={
     studupdatepassworderror:"",
     marks:[],
     getmarkerror:"", 
-    overralatterror:""
+    overralatterror:"",
+    monthattendance:[],
+    overallattendance:[]
 }
 
 const student =(state=initialstate , action) =>{
@@ -61,7 +64,8 @@ const student =(state=initialstate , action) =>{
             studentloginerror:"",
             studentupdated:false,
             testresult:[],
-            attendance:[],
+            monthattendance:[],
+            overallattendance:[],
             attendanceerror:"",
             dates:[],
             notice:[],
@@ -72,7 +76,9 @@ const student =(state=initialstate , action) =>{
             studupdatepassworderror:"",
             marks:[],
             getmarkerror:"", 
-            overralatterror:""
+            overralatterror:"",
+            monthattendance:[],
+            overallattendance:[]
 
         }
     case STUD_UPDATE_PASSWORD: 
@@ -108,17 +114,17 @@ const student =(state=initialstate , action) =>{
             ...state , getmarkerror:action.payload
         }
     case OVERALL_ATTEND:
+         return{
+        ...state , overallattend:action.payload
+       }
+    case  OVERALL_ATTENDANCE:
         return{
-            ...state , overallattend:action.payload
+            ...state , overallattendance:action.payload
         }
-    case OVERALL_ATTEND_ERROR:
+    case MONTH_ATTENDANCE:
         return{
-            ...state , overralatterror:action.payload
-        }
-    case ATTENDANCE:
-        return{
-            ...state , attendance:action.payload
-        }
+            ...state , monthattendance:action.payload
+        }        
     case ATTENDANCE_ERROR:
         return{
             ...state , attendanceerror:action.payload
