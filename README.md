@@ -17,16 +17,15 @@
 # Features
 
  1. fully functional admin , faculty , student options
- 2. admin can add student , add faculty , add subject  to respective department of that year
- 3. The project is build on a large scale which cover all department and 4 years of students
+ 2. admin can add student , add faculty , add subject  to respective departments of that year
+ 3. The project is build on a large scale which cover all departments and students of all Four year
  4. admin can create notice 
- 5. admin has to initiate classroom ... like initiating a teacher to class ,  every teacher can be assigned with maximum four classes
- 6. admin's home page will have a option of upgrade year ..... by clicking that option all the student's year will be incremented and 4th year students data         will be removed from database and they will be sended into alumini lists , there is also an option to start odd semester and even semester 
+ 5. admin has to initiate classroom ... like assigning a teacher to class ,  every teacher can be assigned with maximum four classes
+ 6. The admin's home page will have an option to upgrade the year. Clicking this option will increment all student's year levels, removes fourth-year student's data       from the database, and send them to alumni lists. Additionally, there is an option to start the odd semester and even semester.
  7. student, subject , faculty can be deleted by admin
  8. when the student/faculty login for the first time they have to change thier password compulsorily
- 9. faculty can enter students marks for IA/MIDSEM/ENDSEM , once entered it can be changed in future if necessary , if a subject has practical then termwork and     oral marks should be entered  teachers will be credit points to each student                                                                                
- 10. admin can generate result for the ongoing semester ..... in which SGPI for every student will be generated according to the marks entered by their teachers
-    if a student fails in any subject then his/her result will be incomplete
+ 9. Faculty can enter student's marks for IA/MIDSEM/ENDSEM, and once entered, they can be changed in the future if necessary. If a subject has a practical sessions,       then term work and oral marks should also be entered. Teachers will give credit points to each student based on their behavior during lectures and interactions with teachers..                                                                
+ 10. The admin can generate results for the ongoing semester, in which the SGPI for every student will be calculated based on the marks entered by their teachers. If a student fails in any subject, their result will be incomplete
     
  11. faculty can also record attendance of students and monthly defaulter list will be released automatically on the first day of every month
  
