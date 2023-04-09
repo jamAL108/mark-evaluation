@@ -11,6 +11,8 @@ import prevsemdata from "../models/prevsemdata.js";
 import result from "../models/result.js";
 import examination from "../models/examination.js";
 import ccss from "../models/cc.js";
+import mongoose from 'mongoose';
+
 
 export const Addfaculty = async (req,res)=>{
   const errors={BackendError:String , emailerror:String}
@@ -233,6 +235,7 @@ export const Ourstudent =async(req,res)=>{
   const errors ={studentnotfound:String , backenderror:String}
   try{
     const {year, depart , division} = req.body;
+    console.log(year);
     const data = await StudentSetUp.find({year ,depart , division});
     if(!data){
       errors.facultynotfound="no student exits in this division";
@@ -252,55 +255,69 @@ export const Ourstudent =async(req,res)=>{
 export const monthlydefaulter = async(req,res)=>{
   const errors ={studentnotfound:String , backenderror:String}
   try{
-     const data = req.body;
+    await defaulter.deleteMany({});
+    const data = req.body;
      const date = new Date();
-     let month = date.getMonth();
+     let month = date.getMonth()+1;
+     let moon ;
+     if(month===1){
+        moon=12;
+     }else{
+      moon=month-1;
+     }
     let depart=["MECH" , "IT" , "CSE" , "ECE"];
     let divi=["A","B","C"];
-    for(var i=1;i<4;i++){
-      for(var j=0;j<3;j++){
+    for(var i=1;i<=4;i++){
+      for(var j=0;j<=3;j++){
         for(var m=0;m<3;m++){
     const students = await StudentSetUp.find({year:i , depart:depart[j] , division:divi[m]})
-    if(students){
-      const subjects = await Subjects.find({depart:depart[j] , year:i})
-          const neew = new defaulter({
-            year:i,
-            division:divi[m],
-            depart:depart[j],
-            month:month,
-            defaulter:[]
-          })
-          await neew.save();
-      for(var k=0;k<students.length;i++){
-        let sum =0;
-        for(var l=0;l<subjects.length;l++){
-           const atte = await attendance.find({student:students[k]._id , subject:subjects[l].subjectCode });
-           const totallec = atte.totalLecturesByFaculty[month].value;
-           const lecattended = atte.lectureAttended[month].value;
-           const percen = (totallec/lecattended)*100;
-           sum+=percen;    
-        }
-        let avg = sum/subjects.length;
-        if(avg<data.per){
-        const def = await defaulter.findOne({year:i , division:divi[m],month:month , depart:depart[j]})
-         const obj={
-           name:students[k].name,
-           Rollno:students[k].Rollno,
-           percent:avg
-         }
-         def.defaulter.push(obj);
-         await def.save();
-        }
+    const dee =[];
+    if(students.length!==0 && students.length!==1){
+      const subjects = await Subjects.find({depart:depart[j] , year:i});
+      const obbj ={
+        year:i,
+        division:divi[m],
+        depart:depart[j],
+        month:moon,
+        defaulter:dee,
+        status:false
       }
-    }
+          const neew = new defaulter(obbj);
+          await neew.save();
+          const deff = await defaulter.findOne({year:i,division:divi[m],
+            depart:depart[j]});
+            let array=[];
+         for(var z=0;z<students.length;z++){
+          let sum =0;
+         for(var p=0;p<subjects.length;p++){
+          const lecturecount = await attendance.findOne({depart:depart[j] , year:i , division:divi[m] , subject:subjects[p]._id , student:students[z]._id})
+              const totallec = lecturecount.totalLecturesByFaculty[moon].value;
+              const lecattended = lecturecount.lectureAttended[moon].value;
+              const percen = (lecattended/totallec)*100;
+              sum=sum+percen; 
+          }
+          const avg = sum/subjects.length;
+          if(avg<data.per){
+            const obj={
+              _id:students[z]._id,
+              name:students[z].name,
+              Rollno:students[z].Rollno,
+              percent:avg
+            }
+            array.push(obj);
+          }
+         }
+         await defaulter.findByIdAndUpdate({_id:deff._id},{$set:{defaulter:array,status:true}});
+        }
     }
     } 
     }
-
-    const defau = await defaulter.find({});
-    return res.status(200).send({response:defau});
+       await defaulter.deleteMany({status:false});
+       const deffo = await defaulter.find({status:true});
+       return res.status(200).send({response:deffo});
   }catch(err){
     errors.backenderror=err;
+    console.log(err);
    return res.status(404).send({error:errors})
   }
 };
@@ -317,7 +334,15 @@ export const otp = async(req,res)=>{
 };
 
 
-
+export const result = async(req,res)=>{
+  const errors ={marknotentered:String , backenderror:String}
+  try{
+     
+  }catch(err){
+    errors.backenderror=err;
+    return res.status(404).send({error:errors})
+  }
+};
 
 
 export const Upgradeyear = async(req,res)=>{
@@ -345,9 +370,10 @@ export const Upgradeyear = async(req,res)=>{
      //attendances
      const del = await attendance.deleteMany({year:i});
      if(i===4){
+      if(students.length!==0){
       const date = new Date();
-      const year = data.getyear();
-      const delet = await StudentSetUp.deleteMany({year:i});
+      const year = date.getyear();
+      await StudentSetUp.deleteMany({year:i});
       for(var j=0;j<students.length;j++){
           const user = new alumini({
             name:students[j].name,
@@ -359,6 +385,7 @@ export const Upgradeyear = async(req,res)=>{
           })
           await user.save();
       }
+    }
      }else{
        for(var k=0;k<students.length;k++){
         const update = await StudentSetUp.findByIdAndUpdate({_id:students[k]._id} , {$set:{year:i+1}})

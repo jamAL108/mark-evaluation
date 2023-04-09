@@ -13,8 +13,11 @@ const dateSchema = new Schema({
      },
      time:{
         type:String
+     },
+     status:{
+      type:String
      }
-})
+});
 
 
 export default mongoose.model("date", dateSchema);

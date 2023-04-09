@@ -28,6 +28,7 @@ const Body = () => {
   useEffect(()=>{
     console.log(value);
     dispatch(viewattendance(value));
+    dispatch(getdates(value));
   },[dispatch])
   
   useEffect(()=>{
@@ -74,9 +75,36 @@ const Body = () => {
   },[main])
  
 
+
+  useEffect(()=>{
+    if(store.student.dates){
+      setdates(store.student.dates)
+      console.log(store.student.dates)
+    }
+  },[store.student.dates])
+
+  useEffect(()=>{
+    if(dates.length!==0){
+      setarrow(true);
+    }
+  },[dates])
+
+
   const getattendancedate = async(subject)=>{
-    dispatch({type:ATTENDANCE_DATES , payload:[]})
-      dispatch(getdates(subject));
+    const date = new Date();
+    const curmonth = date.getMonth();
+    let prevmonth;
+    if(curmonth===0){
+      prevmonth=11;
+    }else{
+      prevmonth = curmonth-1;
+    }
+    for(var i=0;i<array.length;i++){
+      if(array[i]===month){
+         if(i===curmonth || i===prevmonth){
+
+      }
+    }
   };
 
   return (
@@ -169,7 +197,7 @@ const Body = () => {
     </div>
         )}
 
-        {arrow===true && (
+        {arrow===true && dates.length!==0 &&  (
            <div className="secondpage">
                <ArrowBackIcon onClick={(e)=>{
             setarrow(false);
@@ -227,5 +255,5 @@ const Body = () => {
      </div>
   )
 }
-
+}
 export default Body;

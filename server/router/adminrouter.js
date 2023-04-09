@@ -23,7 +23,7 @@ router.post("/ourstud", Ourstudent);
 router.post("/adsubj", Addsubject);
 router.post("/getsubj", Getsubject);
 router.post("/Initiate" , Initiateclass);
-router.post("/generatedef" ,monthlydefaulter );
+router.post("/generatedef" ,monthlydefaulter);
 router.get("/upgradeyr" , Upgradeyear);
 router.post("/ourcc" ,getcc)
 export default router;

@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs"
 import Examination from "../models/examination.js";
 import Subjects from "../models/subject.js";
 import attendance from "../models/attendance.js";
+import attenddates from '../models/attend_dates.js';
  export const Studentlogn = async(req,res)=>{
   const errors={passwordError:String , emailError:String , backenderror:String}
     try{
@@ -206,10 +207,8 @@ export const viewattendanc = async(req,res)=>{
   const errors = {backenderror:String , atterror:String}
   try{
      const data = req.body;
-     console.log(data);
      const student = await Student.findOne({_id:data._id})
      const subjects = await Subjects.find({depart:data.depart , year:data.year});
-
      ///overall
      let overal=[];
      for(var i=0;i<subjects.length;i++){
@@ -231,15 +230,12 @@ export const viewattendanc = async(req,res)=>{
       }
       overal.push(obj);
      }
-
-
      ////monthly 
      let monthly=[];
      for(var m=0;m<12;m++){
       let temp=[];
         for(var p=0;p<subjects.length;p++){
             const atte = await attendance.findOne({student:data._id , subject:subjects[p]._id});
-
             let percentage= (atte.totalLecturesByFaculty[m].value/atte.lectureAttended[m].value)*100;
              const obj={
               _id:atte._id,
@@ -253,13 +249,35 @@ export const viewattendanc = async(req,res)=>{
         }
         monthly.push(temp);
      }
-     console.log(monthly[3]);
-     console.log(overal);
      return res.status(200).send({message:"sended",month:monthly , overall:overal});
   }catch(err){
     errors.backenderror=err;
     console.log(err);
     return res.status(404).send({error:errors})
   }
-
 }
+
+export const viewdates = async(req,res)=>{
+  const errors = {backenderror:String , atterror:String}
+  try{
+      const data =req.body;
+      const subjects = await Subjects.find({depart:data.depart , year:data.year})
+      let curmonth=[];
+      let prevmonth=[];
+      for(var i=0;i<subjects.length;i++){
+        const date = new Date();
+        const month = date.getMonth()+1;
+        const vaar = await attendance.findOne({student:data._id , subject:subjects[i]._id});
+         const curdates = await attenddates.find({attendance:vaar._id , month:month});
+         curmonth(curdates);
+         const prevdates = await attenddates.find({attendance:vaar._id , month:month-1});
+         prevmonth
+      }
+      }catch(err){
+    errors.backenderror=err;
+    console.log(err);
+    return res.status(404).send({error:errors})
+  }
+};
+
+

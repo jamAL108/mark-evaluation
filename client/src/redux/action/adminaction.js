@@ -262,6 +262,7 @@ export const monthlydefaulter = (formdata) =>async(dispatch)=>{
        },
        body: JSON.stringify(formdata)
       });
+      console.log(formdata);
       const msg = await respon.json();
       console.log(msg);
       console.log(msg.response);

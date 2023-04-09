@@ -2,19 +2,28 @@ import  mongoose from "mongoose";
 import { Schema } from "mongoose";
 const Defaulter = mongoose.Schema({
     year:{
-        type:Number
+        type:Number,
+        required:true
     },
     division:{
-        type:String
+        type:String,
+        required:true
     },
     depart:{
-        type:String
+        type:String,
+        required:true
     },
     month:{
-        type:Number
+        type:Number,
+        required:true
     },
     defaulter:{
-        type:[{}]
+        type:[{}],
+        required:true
+    },
+    status:{
+        type:Boolean,
+        required:true
     }
 })
 

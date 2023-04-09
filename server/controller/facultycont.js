@@ -306,6 +306,16 @@ export const Markattendance = async(req,res)=>{
       for(var i=0;i<lecturecount.length;i++){
         const totallec = lecturecount[i].totalLecturesByFaculty[month-1].value +1 ;
          await attendance.updateOne({_id:lecturecount[i]._id , "totalLecturesByFaculty.id":month} , {$set: {"totalLecturesByFaculty.$.value":totallec}});
+         const date = new Date();
+         const month = date.getMonth() +1;
+         const neew = new attenddates({
+           attendance:lecturecount[i]._id,
+           month: month,
+           date:data.value.date,
+           time:data.value.time,
+           status:"ABSENT"
+         })
+         await neew.save();
       }
       let array=[];
       const da = new Date();
@@ -317,14 +327,12 @@ export const Markattendance = async(req,res)=>{
      console.log(lecattend);
       const date = new Date();
       const month = date.getMonth() +1;
-      const neew = new attenddates({
-        attendance:atte._id,
-        month: month,
+let temp1 = await attenddates.findOne({attendance:atte._id ,month: month,
         date:data.value.date,
-        time:data.value.time
-      })
-      await neew.save();
-      array.push(neew);
+        time:data.value.time});
+        temp1.status="PRESENT";
+        await temp1.save();
+      array.push(temp1);
       console.log(await attendance.findOne({_id:atte._id}));
     }
 

@@ -70,7 +70,7 @@ const initialstate ={
     yearupdated:false,
     oddsemupdated:false,
     evensemupdated:false,
-    percent:{}
+    percent:75
 }
 
 const admin =  (state=initialstate , action)=>{

@@ -1,6 +1,7 @@
 import React, { useEffect , useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHANGE_TIMER } from '../../redux/actiontype';
+import Schedule from 'react-schedule-job'
 import { monthlydefaulter , upgradeyear , changetoodd , changetoeven } from '../../redux/action/adminaction'; 
 import { ODD_SEM_UPDATE , EVEN_SEM_UPDATE , YEAR_UPDATE , DEFAULTER_PERCENT } from '../../redux/actiontype';
 function Body(){
@@ -27,10 +28,13 @@ function Body(){
        }
     },[dispatch])
 
-
     useEffect(()=>{
-     dispatch({type:DEFAULTER_PERCENT , payload:percent});
+      if(percent.per!==temp){
+     dispatch({type:DEFAULTER_PERCENT , payload:percent.per});
+     settemp(percent.per);
+      }
     },[percent.per])
+
     const upgradeyer =async(e)=>{
       e.preventDefault();
       dispatch(upgradeyear());
@@ -69,10 +73,28 @@ function Body(){
       }
     },[store.admin.evensemupdated])
 
+    const function_1 = () => {
+      const obj ={
+        per:store.admin.percent
+      }
+      dispatch(monthlydefaulter(obj));
+    };
+    
+  const jobs = [
+        {
+          fn: function_1,
+          id: '1',
+          schedule: '0 0 1 * *',
+        }
+  ];
 
     return(
     <div className="body">
-      
+             <Schedule 
+        jobs={jobs}
+        timeZone='UTC'
+        dashboard={{ hidden: true }}
+      />
       <div className="attendance-percent">
          <h1>monthly defaulter will be released according to the percentage mentioned here</h1>
          <input type="text" name="percent" id="age" autoComplete='off' className="form-control" value={temp} onChange={(e)=>{

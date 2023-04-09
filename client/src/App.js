@@ -1,33 +1,9 @@
-// import logo from './logo.svg';
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
 
 // export default App;
 import React from 'react';
 import { Routes , Route } from 'react-router-dom';
 import Login from './components/login/login';
 import './App.css';
-
 // admin
 import AdminHome from './components/admin/adminhome';
 import Addstudent  from './components/admin/addstudent/addstudent';
@@ -72,9 +48,7 @@ function App() {
   return (
        <Routes>
          <Route path='/' element={<Login/>}/>
-         
 
-        
           {/* // admin  */}
          <Route path="/admin" element={<AdminHome/>}/>
          <Route path='/admin/addstudent' element={<Addstudent/>}/>
@@ -117,9 +91,6 @@ function App() {
         <Route path='/student/faqs' element={<SFaqs/>}/>
 
         
-               
-
-
        </Routes>
 
 

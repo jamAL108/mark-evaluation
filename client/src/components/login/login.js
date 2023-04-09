@@ -6,11 +6,12 @@ import { CHANGE_TIMER  } from '../../redux/actiontype';
 import { monthlydefaulter } from '../../redux/action/adminaction';
 import { useDispatch, useSelector } from "react-redux";
 const Login = () => {
-
-
+  const dispatch = useDispatch();
+  const store = useSelector((state)=>state);
 
   return (
     <div className="logn">
+
       <div className="container">
         <img src={Logo} alt="" />
         <h1 className="select">
