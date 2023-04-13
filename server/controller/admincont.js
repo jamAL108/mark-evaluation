@@ -174,8 +174,12 @@ export const Initiateclass = async(req,res)=>{
             return res.status(404).send({error:errors})
       }else{
         if(temp.attempts>0){
+          let sort = 0;
+          if(ccs===true){
+            sort=1;
+          }
         const obj = {
-          year:temp.year , division:temp.division , subject:temp.subject , practical:subj.practical
+          year:temp.year , division:temp.division , subject:temp.subject , practical:subj.practical , sort:sort
         }
         data.class.push(obj);
         data.attempts=data.attempts-1;
@@ -187,8 +191,12 @@ export const Initiateclass = async(req,res)=>{
       }
     }
     }else{
+      let sort = 0;
+          if(ccs===true){
+            sort=1;
+          }
       const obj = {
-        year:temp.year , division:temp.division , subject:temp.subject , practical:subj.practical
+        year:temp.year , division:temp.division , subject:temp.subject , practical:subj.practical , sort:sort
       }
       data.class.push(obj);
       data.attempts=data.attempts-1;
@@ -334,15 +342,15 @@ export const otp = async(req,res)=>{
 };
 
 
-export const result = async(req,res)=>{
-  const errors ={marknotentered:String , backenderror:String}
-  try{
+// export const result = async(req,res)=>{
+//   const errors ={marknotentered:String , backenderror:String}
+//   try{
      
-  }catch(err){
-    errors.backenderror=err;
-    return res.status(404).send({error:errors})
-  }
-};
+//   }catch(err){
+//     errors.backenderror=err;
+//     return res.status(404).send({error:errors})
+//   }
+// };
 
 
 export const Upgradeyear = async(req,res)=>{

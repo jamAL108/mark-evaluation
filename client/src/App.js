@@ -28,7 +28,7 @@ import Myclass from './components/teacher/myclass/myclass';
 import Uploadmark from './components/teacher/uploadmarks/marks';
 import TAttendance from './components/teacher/attendance/attendance';
 import TFaqs from './components/teacher/faqs/faqs';
-
+import Defaulter from './components/teacher/defaulter/defaulter';
 
 
 
@@ -74,6 +74,7 @@ function App() {
         <Route path='/teacher/uploadmark' element={<Uploadmark/>}/>
         <Route path='/teacher/attendance' element={<TAttendance/>}/>
         <Route path='/teacher/faqs' element={<TFaqs/>}/>
+        <Route path='/teacher/defaulter' element={<Defaulter/>}/>
 
 
 

@@ -17,7 +17,10 @@ import {
     ATTENDANCE_MARKED_ERROR , 
     TEACHER_LOGOUT,
     TEACH_UPDATE_PASSWORD,
-    TEACH_UPDATE_PASSWORD_ERROR
+    TEACH_UPDATE_PASSWORD_ERROR,
+    GET_DEFAULTER,
+    CC_DEFAULTER,
+    GET_DEFAULTER_ERROR
   } from "../actiontype";
 
 const initialstate={
@@ -37,7 +40,10 @@ const initialstate={
     notice:[],
     getnoticeerror:"",
     attendancedone:false,
-    attendanceerror:""
+    attendanceerror:"",
+    ccdef:[],
+    otherdef:[],
+    deferror:""
 }  
 const faculty =(state=initialstate , action) =>{
     switch(action.type){
@@ -70,7 +76,10 @@ const faculty =(state=initialstate , action) =>{
             techupdatepassword:false,
             techupdatepassworderror:"",
             notice:[],
-            getnoticeerror:""
+            getnoticeerror:"",
+            ccdef:[],
+            otherdef:[],
+            deferror:""
         }
     case TEACH_UPDATE_PASSWORD: 
          return{
@@ -111,7 +120,19 @@ const faculty =(state=initialstate , action) =>{
     case ATTENDANCE_MARKED_ERROR:
         return{
             ...state , attendanceerror:action.payload
-        }                           
+        }
+    case GET_DEFAULTER:
+        return{
+            ...state , otherdef:action.payload
+        }  
+    case CC_DEFAULTER:
+        return{
+            ...state , ccdef:action.payload
+        }
+    case GET_DEFAULTER_ERROR:
+        return{
+            ...state , deferror:action.payload
+        }                                
     default:
         return state;
 }

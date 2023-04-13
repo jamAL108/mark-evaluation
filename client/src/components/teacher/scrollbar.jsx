@@ -52,6 +52,15 @@ function scrollbar () {
         <BorderColorIcon className="" />
         <h1 className="font-normal">Attendance</h1>
       </NavLink>
+
+      <NavLink
+        to="/teacher/defaulter"
+        className={({ isActive }) =>
+          isActive ? isActiveStyle : isNotActiveStyle
+        }>
+        <BorderColorIcon className="" />
+        <h1 className="font-normal">Defaulter</h1>
+      </NavLink>
     </div>
 
     <div className="">  

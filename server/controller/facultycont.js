@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs"
 import attendance from "../models/attendance.js";
 import attenddates from "../models/attend_dates.js";
 import examination from "../models/examination.js";
+import defaulter from "../models/defaulter.js";
  export const Facultylogn = async(req,res)=>{
   const errors={passwordError:String , emailError:String , backenderror:String}
     try{
@@ -344,6 +345,90 @@ let temp1 = await attenddates.findOne({attendance:atte._id ,month: month,
   }
 };
 
+
+export const Getdefaulter = async(req,res)=>{
+     const errors = {backenderror:String , defaultererror:String}
+     try{
+        const data = req.body;
+        console.log(data);
+        let cc={
+          sort:1,
+          overall:[],
+          monthly:[]
+        };
+        let other=[];
+        if(data.class.length!==0){
+            for(var i=0;i<data.class.length;i++){
+              if(data.class[i].sort===0){
+              let clas ={
+                  sort:0,
+                  year:data.class[i].year,
+                  division:data.class[i].division,
+                  overall:[],
+                  monthly:[]
+              }
+            }
+                if(data.class[i].sort===1){
+                   const overal = await defaulter.find({depart:data.depart , division:data.class[i].division , year:data.class[i].year ,status:true })
+                   
+                   cc.overall=overal;
+                }
+                const subbbj = await Subject.findOne({subjectName:data.class[i].subject})
+                const ownsubjstud = await attendance.find({subject:subbbj._id , division:data.class[i].division , year:data.class[i].year})
+                let monthly=[];
+                for(var j=0;j<12;j++){
+                  let month=[];
+                   for(var k=0;k<ownsubjstud.length;k++){
+                   const totallec=ownsubjstud[k].totalLecturesByFaculty[j].value;
+                    const lecattend=ownsubjstud[k].lectureAttended[j].value;
+                    const perc = (lecattend/totallec)*100;
+                    if(perc<data.percent){
+                        const obj = {
+                          _id:ownsubjstud[k].student,
+                          percentage:perc
+                         }
+                         month.push(obj);
+                    }
+                  }
+                monthly.push(month);
+                }
+                if(data.class[i].sort===1){
+                  cc.monthly=monthly;
+                }else{
+                  clas.monthly=monthly;
+                }
+                let overaaal=[];
+                if(data.class[i].sort===0){
+                for(var q=0;q<ownsubjstud.length;q++){
+                  let lecattend;
+                  let totallec;
+                for(var p=0;p<12;p++){
+                    lecattend+=ownsubjstud[q].totalLecturesByFaculty[p].value;
+                    totallec+=ownsubjstud[q].lectureAttended[p].value;
+                }
+                let percen = (lecattend/totallec)*100;
+                if(percen<data.percent){
+                  const obj = {
+                    _id:ownsubjstud[k].student,
+                    percentage:final
+                   }
+                   overaaal.push(obj);
+                }
+              }
+              clas.overall=overaaal;
+              other.push(clas);
+            }
+          }
+        }
+        console.log(cc);
+        console.log(other);
+        return res.status(200).send({cc:cc,other:other})
+     }catch(err){
+      errors.backenderror=err;
+      console.log(err);
+      return res.status(404).send({error:errors})
+     }
+}
 
 
 
