@@ -10,6 +10,7 @@ const Body = () => {
     year:"",
     subjectName:"",
     subjectCode:"",
+    short:"",
     practical:false
    })
    const [proceed , setproceed] = useState(false);
@@ -29,6 +30,7 @@ const Body = () => {
          subjectCode:"",
          depart:value.depart,
          year:value.year,
+         short:"",
          practical:false
       })
       dispatch({type:ADD_SUBJECT_ERROR , payload:{}})
@@ -96,6 +98,10 @@ const Body = () => {
                             <input type="text" name="subjectname" placeholder="Enter subject name" id="name" className="form-control" value={value.subjectName} onChange={(e)=>{setValue({...value , subjectName:e.target.value})
                                seterror({}) }} />
                         </div>
+           <div className="form-group">
+                       <input type="text" name="Shortform" placeholder="Enter subject shortname" id="shortname" className="form-control" value={value.subjectName} onChange={(e)=>{setValue({...value , short:e.target.value})
+                      seterror({}) }} />
+                        </div>              
                         <div className="form-group">
                             <input type="text" name="subcode" placeholder="Enter subject code" id="pass" className="form-control" value={value.subjectCode} onChange={(e)=>{setValue({...value , subjectCode:e.target.value})
                             seterror({}) }} />

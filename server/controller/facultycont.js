@@ -359,46 +359,124 @@ export const Getdefaulter = async(req,res)=>{
         let other=[];
         if(data.class.length!==0){
             for(var i=0;i<data.class.length;i++){
-              if(data.class[i].sort===0){
-              let clas ={
-                  sort:0,
-                  year:data.class[i].year,
-                  division:data.class[i].division,
-                  overall:[],
-                  monthly:[]
-              }
-            }
                 if(data.class[i].sort===1){
+                  const subjects = await Subject.find({depart:data.depart,year:data.class[i].year})
                    const overal = await defaulter.find({depart:data.depart , division:data.class[i].division , year:data.class[i].year ,status:true })
-                   
-                   cc.overall=overal;
+                   for(var a=0;a<overal.length;a++){
+                    const month = overal[a].month;
+                    const moth={
+                      month:month,
+                      student:[]
+                    }
+                    for(var q =0;q<overal[a].defaulter.length;q++){
+                      const stud={
+                        student:overal[a].defaulter[q].name,
+                        Rollno:overal[a].defaulter[q].Rollno,
+                        subjects:[],
+                        overall:0
+                      }
+                      let overrrrr=0;
+                         for(var z=0;z<subjects.length;z++){
+                            const studdata = await attendance.findOne({student:overal[a].defaulter[q]._id , subject:subjects[z]._id})
+                             const percet =  (studdata.lectureAttended[month].value/studdata.totalLecturesByFaculty[month].value)*100
+                              const subj1={
+                                subject:subjects[z]._id,
+                                percent:percet
+                              }
+                              stud.subjects.push(subj1);
+                              overrrrr+=percet;
+                           }
+                           stud.overall=overrrrr/subjects.length;
+                           moth.student.push(stud);
+                       }
+                       cc.monthly.push(moth);
+                   }
+                   const students = await Student.find({depart:data.depart , division:data.class[i].division , year:data.class[i].year})
+                   for(var w =0;w<students.length;w++){
+                        let ovvver=0;
+                        let studd=[];
+                           for(var v=0;v<subjects.length;v++){
+                              const stud = await attendance.findOne({student:students[w]._id , subject:subjects[v]._id});
+                              let totallec=0;
+                              let lecattend=0;
+                              for(var m=0;m<12;m++){
+                                 totallec+=stud.totalLecturesByFaculty[m].value;
+                                 lecattend+=stud.lectureAttended[m].value;
+                              }
+                              let percent = (lecattend/totallec)*100;
+                              ovvver+=percent;
+                              const subjj = {
+                                subject:subjects[v]._id,
+                                percent:percent
+                              }
+                              studd.push(subjj);
+                           }
+                           const per = ovvver/subjects.length;
+                           if(per<75){
+                            const obj={
+                              student:students[w].name,
+                              Rollno:students[w].Rollno,
+                              overall:ovvver/subjects.length,
+                              subjects:studd
+                            }
+                            cc.overall.push(obj);
+                           }
+                   }
                 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                if(data.class[i].sort===0){
                 const subbbj = await Subject.findOne({subjectName:data.class[i].subject})
                 const ownsubjstud = await attendance.find({subject:subbbj._id , division:data.class[i].division , year:data.class[i].year})
+                  let clas ={
+                      sort:0,
+                      year:data.class[i].year,
+                      division:data.class[i].division,
+                      overall:[],
+                      monthly:[]
+                  }
                 let monthly=[];
                 for(var j=0;j<12;j++){
-                  let month=[];
+                  let month={
+                    month:j+1,
+                    students:[]
+                  };
                    for(var k=0;k<ownsubjstud.length;k++){
                    const totallec=ownsubjstud[k].totalLecturesByFaculty[j].value;
                     const lecattend=ownsubjstud[k].lectureAttended[j].value;
                     const perc = (lecattend/totallec)*100;
+                    const sttttud = await Student.findOne({_id:ownsubjstud[k].student})
                     if(perc<data.percent){
                         const obj = {
-                          _id:ownsubjstud[k].student,
+                          student:sttttud.name,
+                          ROllno:sttttud.Rollno,
                           percentage:perc
                          }
-                         month.push(obj);
+                         month.students.push(obj);
                     }
                   }
                 monthly.push(month);
                 }
-                if(data.class[i].sort===1){
-                  cc.monthly=monthly;
-                }else{
-                  clas.monthly=monthly;
-                }
+                clas.monthly=monthly;
+
+
                 let overaaal=[];
-                if(data.class[i].sort===0){
+
                 for(var q=0;q<ownsubjstud.length;q++){
                   let lecattend;
                   let totallec;
@@ -408,8 +486,10 @@ export const Getdefaulter = async(req,res)=>{
                 }
                 let percen = (lecattend/totallec)*100;
                 if(percen<data.percent){
+                  const sttttud = await Student.findOne({_id:ownsubjstud[q].student})
                   const obj = {
-                    _id:ownsubjstud[k].student,
+                    student:sttttud.name,
+                    Rollno:sttttud.Rollno,
                     percentage:final
                    }
                    overaaal.push(obj);
@@ -417,10 +497,9 @@ export const Getdefaulter = async(req,res)=>{
               }
               clas.overall=overaaal;
               other.push(clas);
-            }
           }
         }
-        console.log(cc);
+        }
         console.log(other);
         return res.status(200).send({cc:cc,other:other})
      }catch(err){
@@ -428,6 +507,24 @@ export const Getdefaulter = async(req,res)=>{
       console.log(err);
       return res.status(404).send({error:errors})
      }
+}
+
+export const Getsubject = async (req,res)=>{
+  const errors ={backenderror:String, subjecterror:String}
+  try{
+       const {depart,year} = req.body;
+       console.log(depart);
+       const subjects = await Subject.find({depart,year})
+       if(!subjects){
+        errors.subjecterror="no subject exists in this department please add more ";
+         return res.status(404).send({error:errors});
+       }
+       console.log("done");
+       return res.status(200).send({message:"subject received" , success:"OK" , response:subjects});
+  }catch(err){
+    errors.backenderror = "backend error";
+    return res.status(404).send({error:errors});
+  }
 }
 
 

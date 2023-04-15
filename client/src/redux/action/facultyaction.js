@@ -1,4 +1,5 @@
-import { FACULTY_LOGIN, FACULTY_LOGIN_ERROR, TEACH_UPDATE_PASSWORD , TEACH_UPDATE_PASSWORD_ERROR , FACULTY_LOG , TEACH_GET_NOTICE , TEACH_GET_NOTICE_ERROR , T_GET_ALL_STUDENT_ERROR , T_GET_ALL_STUDENT ,MARKS_UPLOADED , MARKS_UPLOAD_ERROR, ATTENDANCE_MARKED , ATTENDANCE_MARKED_ERROR , CC_DEFAULTER , GET_DEFAULTER , GET_DEFAULTER_ERROR} from "../actiontype";
+import { formControlLabelClasses } from "@mui/material";
+import { FACULTY_LOGIN, FACULTY_LOGIN_ERROR, TEACH_UPDATE_PASSWORD , TEACH_UPDATE_PASSWORD_ERROR , FACULTY_LOG , TEACH_GET_NOTICE , TEACH_GET_NOTICE_ERROR , T_GET_ALL_STUDENT_ERROR , T_GET_ALL_STUDENT ,MARKS_UPLOADED , MARKS_UPLOAD_ERROR, ATTENDANCE_MARKED , ATTENDANCE_MARKED_ERROR , CC_DEFAULTER , GET_DEFAULTER , GET_DEFAULTER_ERROR , T_SUBJECT} from "../actiontype";
 
 export const facultylogin =(formdata , navigate) => async (dispatch) =>{
     try{
@@ -168,7 +169,6 @@ export const getdefaulter = (formdata)=>async(dispatch)=>{
         body: JSON.stringify(formdata)
         });
         const msg = await res.json();
-        console.log(msg.response);
         if(res.status===200){
          dispatch({type:GET_DEFAULTER , payload:msg.other})
          dispatch({type:CC_DEFAULTER , payload:msg.cc})
@@ -178,5 +178,26 @@ export const getdefaulter = (formdata)=>async(dispatch)=>{
     }catch(err){
       console.log(err);
     }
+};
+
+export const getsubjects = (formdata) =>async(dispatch)=>{
+   try{
+    const res = await fetch("http://localhost:8000/facult/getsubject",{
+      method: "POST",
+      headers: {
+        "Content-Type":"application/json"
+       },
+      body: JSON.stringify(formdata)
+      });
+      const msg = await res.json();
+        console.log(msg.response);
+        if(res.status===200){
+           dispatch({type:T_SUBJECT , payload:msg.response})
+        }else if(res.status===404){
+         console.log(msg.error);
+      }
+   }catch(err){
+    console.log(err);
+   }
 };
 

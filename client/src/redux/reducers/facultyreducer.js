@@ -20,7 +20,8 @@ import {
     TEACH_UPDATE_PASSWORD_ERROR,
     GET_DEFAULTER,
     CC_DEFAULTER,
-    GET_DEFAULTER_ERROR
+    GET_DEFAULTER_ERROR,
+    T_SUBJECT
   } from "../actiontype";
 
 const initialstate={
@@ -41,9 +42,10 @@ const initialstate={
     getnoticeerror:"",
     attendancedone:false,
     attendanceerror:"",
-    ccdef:[],
-    otherdef:[],
-    deferror:""
+    ccdef:{},
+    otherdef:{},
+    deferror:"",
+    subject:[]
 }  
 const faculty =(state=initialstate , action) =>{
     switch(action.type){
@@ -77,9 +79,10 @@ const faculty =(state=initialstate , action) =>{
             techupdatepassworderror:"",
             notice:[],
             getnoticeerror:"",
-            ccdef:[],
-            otherdef:[],
-            deferror:""
+            ccdef:{},
+            otherdef:{},
+            deferror:"",
+            subject:[]
         }
     case TEACH_UPDATE_PASSWORD: 
          return{
@@ -132,7 +135,11 @@ const faculty =(state=initialstate , action) =>{
     case GET_DEFAULTER_ERROR:
         return{
             ...state , deferror:action.payload
-        }                                
+        }
+    case T_SUBJECT:
+        return{
+            ...state , subject:action.payload
+        }                                    
     default:
         return state;
 }

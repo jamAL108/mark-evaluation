@@ -342,15 +342,6 @@ export const otp = async(req,res)=>{
 };
 
 
-// export const result = async(req,res)=>{
-//   const errors ={marknotentered:String , backenderror:String}
-//   try{
-     
-//   }catch(err){
-//     errors.backenderror=err;
-//     return res.status(404).send({error:errors})
-//   }
-// };
 
 
 export const Upgradeyear = async(req,res)=>{

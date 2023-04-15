@@ -22,6 +22,9 @@ const subject = mongoose.Schema({
       type: Number,
       required: true,
     },
+    short:{
+      type:String
+    },
     practical:{
       type:Boolean
     },
