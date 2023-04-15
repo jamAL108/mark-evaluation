@@ -426,20 +426,6 @@ export const Getdefaulter = async(req,res)=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 if(data.class[i].sort===0){
                 const subbbj = await Subject.findOne({subjectName:data.class[i].subject})
                 const ownsubjstud = await attendance.find({subject:subbbj._id , division:data.class[i].division , year:data.class[i].year})
@@ -478,11 +464,11 @@ export const Getdefaulter = async(req,res)=>{
                 let overaaal=[];
 
                 for(var q=0;q<ownsubjstud.length;q++){
-                  let lecattend;
-                  let totallec;
+                  let lecattend=0;
+                  let totallec=0;
                 for(var p=0;p<12;p++){
-                    lecattend+=ownsubjstud[q].totalLecturesByFaculty[p].value;
-                    totallec+=ownsubjstud[q].lectureAttended[p].value;
+                    lecattend+=ownsubjstud[q].lectureAttended[p].value;
+                    totallec+=ownsubjstud[q].totalLecturesByFaculty[p].value;
                 }
                 let percen = (lecattend/totallec)*100;
                 if(percen<data.percent){
@@ -490,7 +476,7 @@ export const Getdefaulter = async(req,res)=>{
                   const obj = {
                     student:sttttud.name,
                     Rollno:sttttud.Rollno,
-                    percentage:final
+                    percentage:percen
                    }
                    overaaal.push(obj);
                 }
@@ -500,7 +486,6 @@ export const Getdefaulter = async(req,res)=>{
           }
         }
         }
-        console.log(other);
         return res.status(200).send({cc:cc,other:other})
      }catch(err){
       errors.backenderror=err;
