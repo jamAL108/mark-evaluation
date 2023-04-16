@@ -15,7 +15,7 @@ import { STUDENT_LOGIN,
   OVERALL_ATTENDANCE,
   ATTENDANCE_DATES  } from "../actiontype";
   import {BASE_URL} from '../helper.js';
-const URL= BASE_URL  ;
+const URL= BASE_URL;
 
 export const studentlogin =(formdata , navigate) => async (dispatch) =>{
     try{

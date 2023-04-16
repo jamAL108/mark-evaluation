@@ -1,9 +1,12 @@
 import { formControlLabelClasses } from "@mui/material";
 import { FACULTY_LOGIN, FACULTY_LOGIN_ERROR, TEACH_UPDATE_PASSWORD , TEACH_UPDATE_PASSWORD_ERROR , FACULTY_LOG , TEACH_GET_NOTICE , TEACH_GET_NOTICE_ERROR , T_GET_ALL_STUDENT_ERROR , T_GET_ALL_STUDENT ,MARKS_UPLOADED , MARKS_UPLOAD_ERROR, ATTENDANCE_MARKED , ATTENDANCE_MARKED_ERROR , CC_DEFAULTER , GET_DEFAULTER , GET_DEFAULTER_ERROR , T_SUBJECT} from "../actiontype";
+import {BASE_URL} from '../helper.js';
+const URL= BASE_URL;
 
 export const facultylogin =(formdata , navigate) => async (dispatch) =>{
     try{
-        const res = await fetch("http://localhost:8000/facult/facullogn",{
+        const api = `${URL}/facult/facullogn`;
+        const res = await fetch(api,{
           method:"POST",
           headers:{
               "Content-Type":"application/json"
@@ -32,7 +35,8 @@ export const facultylogin =(formdata , navigate) => async (dispatch) =>{
 
 export const passwordupd = (data,navigate)=>async(dispatch)=>{
   try{
-    const resp = await fetch("http://localhost:8000/facult/faculpass",{
+    const api = `${URL}/facult/faculpass`
+    const resp = await fetch(api,{
       method:"POST",
       headers:{
           "Content-Type":"application/json"
@@ -54,7 +58,7 @@ export const passwordupd = (data,navigate)=>async(dispatch)=>{
 
 export const getnotice = ()=>async(dispatch)=>{
    try{
-     const data = await fetch("http://localhost:8000/facult/getnoti", {
+     const data = await fetch(`${URL}/facult/getnoti`, {
        method:"GET",
        headers:{
         "Content-Type":"application/json"
@@ -76,7 +80,7 @@ export const getnotice = ()=>async(dispatch)=>{
 
 export const getstudent = (data) => async(dispatch)=>{
   try{
-      const respon = await fetch("http://localhost:8000/facult/getstud",{
+      const respon = await fetch(`${URL}/facult/getstud`,{
         method: "POST",
         headers: {
           "Content-Type":"application/json"
@@ -98,7 +102,7 @@ export const getstudent = (data) => async(dispatch)=>{
 
 export const uploadmark = (formdata) => async(dispatch)=>{
    try{
-    const res = await fetch("http://localhost:8000/facult/uploadmark",{
+    const res = await fetch(`${URL}/facult/uploadmark`,{
       method: "POST",
       headers: {
         "Content-Type":"application/json"
@@ -119,7 +123,7 @@ export const uploadmark = (formdata) => async(dispatch)=>{
 
 export const attendancestudentfetch =(formdata) =>async(dispatch)=>{
     try{
-      const res = await fetch("http://localhost:8000/facult/studfetch",{
+      const res = await fetch(`${URL}/facult/studfetch`,{
         method: "POST",
         headers: {
           "Content-Type":"application/json"
@@ -140,7 +144,7 @@ export const attendancestudentfetch =(formdata) =>async(dispatch)=>{
 
 export const MarkAttendance = (formdata) => async (dispatch)=>{
     try{
-      const res = await fetch("http://localhost:8000/facult/markattendance",{
+      const res = await fetch(`${URL}/facult/markattendance`,{
         method: "POST",
         headers: {
           "Content-Type":"application/json"
@@ -161,7 +165,7 @@ export const MarkAttendance = (formdata) => async (dispatch)=>{
 
 export const getdefaulter = (formdata)=>async(dispatch)=>{
     try{
-        const res = await fetch("http://localhost:8000/facult/getdef",{
+        const res = await fetch(`${URL}/facult/getdef`,{
         method: "POST",
         headers: {
           "Content-Type":"application/json"
@@ -182,7 +186,7 @@ export const getdefaulter = (formdata)=>async(dispatch)=>{
 
 export const getsubjects = (formdata) =>async(dispatch)=>{
    try{
-    const res = await fetch("http://localhost:8000/facult/getsubject",{
+    const res = await fetch(`${URL}/facult/getsubject`,{
       method: "POST",
       headers: {
         "Content-Type":"application/json"
