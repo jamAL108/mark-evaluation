@@ -19,7 +19,8 @@ const URL= BASE_URL;
 
 export const studentlogin =(formdata , navigate) => async (dispatch) =>{
     try{
-        const res = await fetch(`${URL}/stud/studlogn`,{
+      const api = `${URL}/stud/studlogn`;
+        const res = await fetch(api,{
           method:"POST",
           headers:{
               "Content-Type":"application/json"
@@ -49,7 +50,8 @@ export const studentlogin =(formdata , navigate) => async (dispatch) =>{
 
 export const passwordupd = (data,navigate)=>async(dispatch)=>{
   try{
-    const resp = await fetch("http://localhost:8000/stud/studpass",{
+    const api = `${URL}/stud/studpass`
+    const resp = await fetch(api,{
       method:"POST",
       headers:{
           "Content-Type":"application/json"
@@ -72,7 +74,8 @@ export const passwordupd = (data,navigate)=>async(dispatch)=>{
 
 export const getnotice = ()=>async(dispatch)=>{
   try{
-    const data = await fetch("http://localhost:8000/stud/getnoti", {
+    const api=`${URL}/stud/getnoti`;
+    const data = await fetch(api, {
       method:"GET",
       headers:{
        "Content-Type":"application/json"
@@ -92,7 +95,8 @@ export const getnotice = ()=>async(dispatch)=>{
 
 export const Viewfaculty = (formdata)=>async(dispatch)=>{
    try{
-    const data = await fetch("http://localhost:8000/stud/viewfacult", {
+    const api = `${URL}/stud/viewfacult`;
+    const data = await fetch(api, {
       method:"POST",
       headers:{
        "Content-Type":"application/json"
@@ -113,7 +117,8 @@ export const Viewfaculty = (formdata)=>async(dispatch)=>{
 
 export const getmarks =(formdata) =>async(dispatch)=>{
   try{
-    const data = await fetch("http://localhost:8000/stud/getmarks", {
+    const api = `${URL}/stud/getmarks`;
+    const data = await fetch(api, {
       method:"POST",
       headers:{
        "Content-Type":"application/json"
@@ -133,7 +138,8 @@ export const getmarks =(formdata) =>async(dispatch)=>{
 
 export const overallattendance = (formdata) => async(dispatch)=>{
   try{
-    const data = await fetch("http://localhost:8000/stud/overallattend", {
+    const api = `${URL}/stud/overallattend`;
+    const data = await fetch(api, {
       method:"POST",
       headers:{
        "Content-Type":"application/json"
@@ -158,7 +164,8 @@ export const overallattendance = (formdata) => async(dispatch)=>{
 
 export const viewattendance = (formdata) =>async(dispatch)=>{
    try{
-    const data = await fetch("http://localhost:8000/stud/specificattend", {
+    const api = `${URL}/stud/specificattend`;
+    const data = await fetch(api, {
       method:"POST",
       headers:{
        "Content-Type":"application/json"
@@ -182,7 +189,8 @@ export const viewattendance = (formdata) =>async(dispatch)=>{
 
 export const getdates = (formdata)=>async(dispatch)=>{
     try{
-      const data = await fetch("http://localhost:8000/stud/attenddates", {
+      const api = `${URL}/stud/attenddates`
+      const data = await fetch(api,{
         method:"POST",
         headers:{
          "Content-Type":"application/json"
