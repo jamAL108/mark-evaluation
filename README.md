@@ -27,7 +27,7 @@
  9. Faculty can enter student's marks for IA/MIDSEM/ENDSEM, and once entered, they can be changed in the future if necessary. If a subject has a practical sessions,       then term work and oral marks should also be entered. Teachers will give credit points to each student based on their behavior during lectures and interactions with teachers..                                                                
  10. The admin can generate results for the ongoing semester, in which the SGPI for every student will be calculated based on the marks entered by their teachers. If a student fails in any subject, their result will be incomplete
     
- 11. faculty can also record attendance of students and monthly defaulter list will be released automatically on the first day of every month
+ 11. faculty can also record attendance of students and monthly defaulter list will be released automatically on the first day of every month ,Teachers can download the defaulter list in excel format
  
  12. students can check their IA/MIDSEM/ENDSEM marks their final result.
  13. students can also check thier overall attendance of ongoing semester or monthly attendance of every subjects
