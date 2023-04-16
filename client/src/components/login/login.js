@@ -12,7 +12,7 @@ const Login = () => {
   return (
     <div className="logn">
 
-      <div className="container">
+      <div className="logincontainer">
         <img src={Logo} alt="" />
         <h1 className="select">
           choose anyone to proceed

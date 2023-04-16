@@ -253,15 +253,12 @@ const Body = () => {
           setdisplay(true)
           setdatafrprac(false);
       }}>IA</button>
+
         <button onClick={(e)=>{
           setvalue({...value , exam:"MIDSEM"  , practical:false})
           setdisplay(true)
           setdatafrprac(false);
           }}>MIDSEM</button>
-
-
-
-
 
     {practical===true && (
         <button onClick={(e)=>{
@@ -272,14 +269,17 @@ const Body = () => {
       )
         }
 
-
-
         <button onClick={(e)=>{
           setvalue({...value , exam:"ENDSEM"  , practical:false})
           setdisplay(true)
           setdatafrprac(false);
           }}>ENDSEM</button>
 
+        <button onClick={(e)=>{
+          setvalue({...value , exam:"CREDITS"  , practical:false})
+          setdisplay(true)
+          setdatafrprac(false);
+          }}>CREDITS</button>
 
       </div>
        {display===true && datafrprac===false && (

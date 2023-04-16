@@ -2,6 +2,9 @@ body{
     font-family: 'Montserrat' , sans-serif;
 }
 .logn{
+    background-image: url("../../images/logologin.jpg");
+    background-position: center;
+    background-size: cover;
     height: 100vh;
     width: 100vw;
     display: flex;
@@ -9,7 +12,7 @@ body{
     align-items: center;
     position: relative;
 }
-.logn .container{
+.logn .logincontainer{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,16 +21,16 @@ body{
     background-color: #fff;
     border-radius: 0.69rem;
 }
-.container img{
+.logincontainer img{
     margin-top: 1.3rem;
         width: 30%;
         height: 30%;
 }
-.container .box{
+.logincontainer .box{
     width: 80%;
     margin-top: 4rem;
 }
-.container .box .field{
+.logincontainer .box .field{
     margin-bottom:1.6rem;
 }
 h1{
@@ -36,7 +39,7 @@ h1{
     font-weight: 400;
     font-size: 1.35rem;
 }
-.container button {
+.logincontainer button {
     background-image: linear-gradient(to right, #181d43 0%, #4657a3 51%, #181d43 100%);
     width: 83%;
     margin: auto;
@@ -54,11 +57,11 @@ h1{
     cursor: pointer;
 
 }
-.container .student{
+.logincontainer .student{
     margin-bottom: 3rem;
 }
 
-.container button:hover {
+.logincontainer button:hover {
     background-position: right center;
     /* change the direction of the change here */
     color: #fff;
@@ -79,7 +82,7 @@ footer {
     html{
     font-size: 53%;
     }
-    .logn .container{
+    .logn .logincontainer{
         height: auto;
         position: absolute;
         top: 20%;
@@ -91,13 +94,13 @@ footer {
     html{
     font-size: 47%;
     }
-    .logn .container{
+    .logn .logincontainer{
         height: auto;
         position: absolute;
         top: 20%;
         width: 55%;
     }
-    .container img{
+    .logincontainer img{
         width: 8rem;
         height: 6.7rem;
     }
@@ -115,7 +118,7 @@ footer {
     html{
         font-size: 34%;
     }
-    .logn .container{
+    .logn .logincontainer{
         height: auto;
         position: absolute;
         top: 20%;
@@ -130,7 +133,7 @@ footer {
     html,body{
         font-size: 29%;
     }
-    .logn .container{
+    .logn .logincontainer{
         height: auto;
         position: absolute;
         top: 20%;

@@ -31,7 +31,6 @@ import {
 import Swal from "sweetalert2";
 
 
-
 export const addfaculty = (formdata , navigate) => async (dispatch) =>{
     try{
         const res = await fetch("http://localhost:8000/adminn/adfacul",{

@@ -14,10 +14,12 @@ import { STUDENT_LOGIN,
   ATTENDANCE_ERROR ,
   OVERALL_ATTENDANCE,
   ATTENDANCE_DATES  } from "../actiontype";
+  import {BASE_URL} from '../helper.js';
+const URL= BASE_URL  ;
 
 export const studentlogin =(formdata , navigate) => async (dispatch) =>{
     try{
-        const res = await fetch("http://localhost:8000/stud/studlogn",{
+        const res = await fetch(`${URL}/stud/studlogn`,{
           method:"POST",
           headers:{
               "Content-Type":"application/json"

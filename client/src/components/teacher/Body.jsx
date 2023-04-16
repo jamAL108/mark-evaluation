@@ -1,6 +1,7 @@
 import React , {useState}from 'react'
 import Notice from './notice';
 import Calender from 'react-calendar'
+import './Body.css';
 const Body = () => {
     const [value, onChange] = useState(new Date());
   return (

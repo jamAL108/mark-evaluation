@@ -4,19 +4,22 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-body {
+/* body {
     background-image: url("../../images/logologin.jpg");
     background-position: center;
     background-size: cover;
     height: 100vh;
     width: 100%;
-}
+} */
 html{
     font-size: 62.5%;
 }
 
 
 .containerlogin {
+    background-image: url("../../images/logologin.jpg");
+    background-position: center;
+    background-size: cover;
     position: 50vh;
     display: flex;
     flex-direction: column;
