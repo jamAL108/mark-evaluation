@@ -147,10 +147,6 @@ const Body = () => {
       }
     },[othermain])
 
-
-
-
-
     const handledeff = async(fac)=>{
          if(fac.sort===1){
           const obj={
@@ -409,11 +405,11 @@ className="cont">
                        </td>
                      <td
                     className="cont">
-               {fac.student || ""}
+               {fac.student || "-"}
                  </td>
                     <td
                      className="cont">
-                    {fac.Rollno || ""}
+                    {fac.Rollno || "-"}
                          </td>
                        <td
                        className="cont" >

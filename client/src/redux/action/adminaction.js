@@ -29,11 +29,13 @@ import {
 
 } from '../actiontype';
 import Swal from "sweetalert2";
-
+import {BASE_URL} from '../helper.js';
+const URL= "http://localhost:8000";
 
 export const addfaculty = (formdata , navigate) => async (dispatch) =>{
     try{
-        const res = await fetch("http://localhost:8000/adminn/adfacul",{
+      const api = `${URL}/adminn/adfacul`;
+        const res = await fetch(api,{
           method: "POST",
           headers: {
             "Content-Type":"application/json"

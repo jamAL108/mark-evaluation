@@ -15,7 +15,7 @@ import { STUDENT_LOGIN,
   OVERALL_ATTENDANCE,
   ATTENDANCE_DATES  } from "../actiontype";
   import {BASE_URL} from '../helper.js';
-const URL= BASE_URL;
+const URL= "http://localhost:8000";
 
 export const studentlogin =(formdata , navigate) => async (dispatch) =>{
     try{
@@ -176,11 +176,10 @@ export const viewattendance = (formdata) =>async(dispatch)=>{
     if(data.status===200){
      dispatch({type:MONTH_ATTENDANCE , payload:msg.month})
      dispatch({type:OVERALL_ATTENDANCE, payload:msg.overall})
-     console.log(msg.month);
-     console.log(msg.overall);
     }else if(data.status===404){
      dispatch({type:ATTENDANCE_ERROR , payload:msg.error})
     }
+    console.log("hi");
    }catch(err){
     console.log(err);
    }
@@ -201,6 +200,7 @@ export const getdates = (formdata)=>async(dispatch)=>{
     const msg = await data.json();
     console.log(msg);
     if(data.status===200){
+      console.log("hiiiii");
      dispatch({type:ATTENDANCE_DATES , payload:msg.dates})
     }else if(data.status===404){
      dispatch({type:ATTENDANCE_ERROR , payload:msg.error})

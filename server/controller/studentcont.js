@@ -165,6 +165,7 @@ export const Getattendance = async(req,res)=>{
   const errors = {backenderror:String , atterror:String}
   try{
      const data = req.body;
+     console.log(data);
      const student = await Student.findOne({_id:data._id})
      console.log(student);
      const subjects = await Subjects.find({depart:data.depart , year:data.year})
@@ -249,6 +250,8 @@ export const viewattendanc = async(req,res)=>{
         }
         monthly.push(temp);
      }
+     console.log(monthly);
+     console.log(overal);
      return res.status(200).send({message:"sended",month:monthly , overall:overal});
   }catch(err){
     errors.backenderror=err;
