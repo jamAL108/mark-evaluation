@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ourfaculty , getsubject, initiateclass , getcc } from '../../../redux/action/adminaction';
 import { GET_ALL_FACULTY , GET_ALL_FACULTY_ERROR, GET_SUBJECT_ERROR, GET_SUBJECT, INITIATE_CLASS, INITIATE_CLASS_ERROR, CCS} from '../../../redux/actiontype';
 import Select from "@mui/material/Select";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MenuItem from "@mui/material/MenuItem";
 const Body = () => {
   const [temp , settemp] = useState({
@@ -29,6 +30,7 @@ const Body = () => {
   const [appoint , setappoint] = useState(true);
   const [finalerr , setfinalerr] = useState({});
   const [faculerror , setfaculerror] = useState("");
+  const [display , setdisplay] = useState(false);
     const[value ,setValue] = useState({
         depart:"",
     })  
@@ -44,11 +46,15 @@ const Body = () => {
     useEffect(()=>{
       setccs(store.admin.ccs);
       console.log(store.admin.ccs);
+      console.log("nkjsbvkjrjbkwrbv");
     },[store.admin.ccs])
 
     useEffect(()=>{
+      if(temp.name!=="" , temp.year!=="" ) {
       dispatch(getcc(value));
-    },[value.year , value.division])
+      console.log("kjnwewget4htymujmmtujjtynjtnjtynjtnjtnjtynj");
+      }
+    },[temp])
 
     useEffect(()=>{
         setfacul(store.admin.faculties);
@@ -77,6 +83,12 @@ const Body = () => {
       console.log(store.admin.subjects)
     },[store.admin.subjects])
      
+   useEffect(()=>{
+     if(temp.division!=="" && temp.year!==""){
+      classcordi(temp.division , temp.year);
+     }
+   },[temp.division , temp.year])
+
     useEffect(()=>{
       dispatch({type:INITIATE_CLASS_ERROR , payload:{}})
       setfinalerr({});
@@ -124,18 +136,17 @@ const Body = () => {
 
     const Assign = async(e)=>{
       e.preventDefault();
+      setlead(false);
       const obj = {
         temp:temp,
-        ccs:cc
+        ccs:cc,
+        value:value
       }
       dispatch(initiateclass(obj));
     }
 
 
     const classcordi = async(division , year)=>{
-      console.log(division);
-      console.log("hiiiiiiiad");
-      console.log(year);
         if(ccs.length===0){
           setappoint(true);
         }else{
@@ -162,6 +173,8 @@ const Body = () => {
 
   return (
     <div className="our faculty" style={{background:"white"}}>
+      {display===false && (
+      <div className="departselect">
      <div className="head">
          assign teachers with thier repective classes
         </div>
@@ -214,6 +227,7 @@ const Body = () => {
 key={idx}
 className="contiii" type='submit'  onClick={(e)=>{
   e.preventDefault();
+  setdisplay(true);
   if(fac.attempts===0){
     setfaculerror("limit reached u cant add more classes to this faculty");
   }else{
@@ -245,12 +259,27 @@ className="cont">
 ) )}
 </tbody>
 </table>
+  )}
+</div>
+
+)}
 
 
-        )}
 
+
+
+{display===true && (
     <div className="mainside
     ">
+         <ArrowBackIcon onClick={(e)=>{
+    setdisplay(false);
+    settemp({
+      ...temp ,
+      year:0,
+      division:"",
+      subject:""
+    })
+       }}/>
       <span>{faculerror}</span>
     { profil ===true && faculerror==="" && (
        <div className="assignstudent">
@@ -269,9 +298,10 @@ className="cont">
                     sx={{ height: 36 }}
                     inputProps={{ "aria-label": "Without label" }}
                     value={temp.year || ""}
-                    onChange={(e) =>
+                    onChange={(e) =>{
                  settemp({ ...temp, year: Number(e.target.value) })
-                    
+                 setfaculerror("");
+                    }
                     }>
                     <MenuItem value="">None</MenuItem>
                     <MenuItem value="1">1</MenuItem>
@@ -292,8 +322,8 @@ className="cont">
                     onChange={(e) =>{
                       settemp({ ...temp, division: e.target.value })
                       filling()
-                      classcordi(e.target.value , temp.year);
                       setlead(true);
+                      setfaculerror("");
                     }
                     }>
                     <MenuItem value="">None</MenuItem>
@@ -346,6 +376,9 @@ className="cont">
 
 
     </div>
+
+)}
+
     </div>
   )
 }

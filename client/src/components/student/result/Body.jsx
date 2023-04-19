@@ -2,8 +2,8 @@ import React from 'react'
 
 const Body = () => {
   return (
-    <h1>hi da fool</h1>
-  )
+    <h1>helo</h1>
+  );
 }
 
 export default Body;

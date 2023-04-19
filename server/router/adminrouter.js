@@ -1,5 +1,5 @@
 import express from "express";
-import { Addfaculty ,
+import { AdminLogin , Changeper , Addfaculty ,
     Addstudent ,
     Addnotice , 
     Ourfaculty , 
@@ -14,7 +14,8 @@ import { Addfaculty ,
 
 const router = express.Router();
 
-
+router.post("/login",AdminLogin);
+router.post("/changeper",Changeper);
 router.post("/adfacul" ,  Addfaculty);
 router.post("/adstud",  Addstudent);
 router.post("/adnotic", Addnotice);

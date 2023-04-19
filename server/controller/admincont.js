@@ -12,7 +12,48 @@ import result from "../models/result.js";
 import examination from "../models/examination.js";
 import ccss from "../models/cc.js";
 import mongoose from 'mongoose';
+import cc from "../models/cc.js";
+import admin from '../models/admin.js';
+import otherinfos from "../models/otherinfos.js";
 
+export const AdminLogin = async(req,res)=>{
+  const errors={passwordError:String , emailError:String , backenderror:String}
+  try{
+    const { email, password} = req.body;
+    const data =   
+    await admin.findOne({email})
+    if(!data){
+      errors.emailError="email doesnt exits";
+      return  res.status(404).send({error:errors});
+     }
+    const passwordcorrect =   
+    await admin.findOne({email,password})
+   if(passwordcorrect){
+    const daatas = await otherinfos.findOne({});
+    return res.status(200).send({message:"login successfull" , response:daatas});
+    }else if(!passwordcorrect){
+      errors.passwordError="invalid credentials";
+      return res.status(404).send({error:errors});
+    }
+  }catch(err){
+       errors.backenderror=e;
+       res.status(400).send({error:errors})
+  }
+}
+
+export const Changeper = async(req,res)=>{
+  const errors={backenderror:String , emailerror:String}
+  try{
+     const {percent} = req.body;
+     const data = await otherinfos.findOne({});
+     data.defpercent=percent;
+     await data.save();
+     console.log(data);
+  }catch(err){
+    errors.backenderror=e;
+    res.status(400).send({error:errors})
+  }
+};
 
 export const Addfaculty = async (req,res)=>{
   const errors={BackendError:String , emailerror:String}
@@ -41,8 +82,8 @@ export const Addfaculty = async (req,res)=>{
 };
 
 export const Addstudent = async (req,res)=>{
-  try{  
   const errors={BackendError:String , rollnoerror:String}
+  try{  
   const data = req.body;
   console.log(data);
   const {  name,
@@ -135,11 +176,14 @@ export const Getsubject = async (req,res)=>{
 export const getcc = async(req,res)=>{
   const errors = {backenderror:String }
   try{
-    const {depart} = req.body;
-    const ccs = await ccss.find({depart:depart});
+    const value = req.body;
+    console.log("nksjbjv");
+    const ccs = await ccss.find({depart:value.depart});
+    console.log(ccs);
     return res.status(200).send({message:"take cc" , ccs:ccs})
   }catch(err){
     errors.backenderror = "backend error";
+    console.log(err);
     return res.status(404).send({error:errors});
   }
 }
@@ -148,7 +192,8 @@ export const getcc = async(req,res)=>{
 export const Initiateclass = async(req,res)=>{
    const errors = {backenderror:String , initiateerror:String , limiterror:String}
    try{
-      const {temp , ccs } = req.body;
+      const {temp , ccs , value } = req.body;
+      console.log(value.depart);
       console.log(temp);
       console.log(ccs);
       const data = await FacultySetUp.findOne({email:temp.email})
@@ -160,7 +205,7 @@ export const Initiateclass = async(req,res)=>{
           name:data.name,
           division:temp.division,
           year:temp.year,
-          depart:data.depart
+          depart:value.depart
         }
         const user = new ccss(obj);
         await user.save();
@@ -215,19 +260,14 @@ export const Initiateclass = async(req,res)=>{
 export const Ourfaculty =async(req,res)=>{
   const errors ={facultynotfound:String , backenderror:String}
   try{
-    console.log("hi from our faculty");
-    console.log(req.body);
     const {depart } = req.body;
-    console.log(depart);
     const data = await FacultySetUp.find({depart});
-    console.log(data);
     const ccs = await ccss.find({depart:depart});
-    console.log(ccs);
+
     if(!data){
       errors.facultynotfound="no faculty exits in this department";
       return res.status(400).send({error:errors})
     }else{
-      console.log("hello");
       return res.status(200).send({message:"faculty found" , response:data , ccs:ccs})
     }
   }catch(err){
@@ -355,23 +395,29 @@ export const Upgradeyear = async(req,res)=>{
     for(var p=0;p<faculty.length;p++){
       const facul = await FacultySetUp.findOne({_id:faculty[p]._id});
       facul.class=[];
-      facul.attempts=5;
+      facul.attempts=4;
       await facul.save();
     }
 
+    await cc.deleteMany({});
+
     //defaulter
     const deldef = await defaulter.deleteMany({});
+    let array=[];
 
     //students
     for(var i=1;i<=4;i++){
-     const students = await StudentSetUp.find({year:i});
-     let array=[];
+      const year = Number(i);
+      console.log(year);
+     const students = await StudentSetUp.find({year:2});
+     console.log(students);
+
      //attendances
      const del = await attendance.deleteMany({year:i});
      if(i===4){
       if(students.length!==0){
       const date = new Date();
-      const year = date.getyear();
+      const yer = date.getYear();
       await StudentSetUp.deleteMany({year:i});
       for(var j=0;j<students.length;j++){
           const user = new alumini({
@@ -380,21 +426,27 @@ export const Upgradeyear = async(req,res)=>{
             dob:students[j].dob,
             Rollno:students[j].Rollno,
             depart:students[j].depart,
-            batch:year
+            batch:yer
           })
           await user.save();
       }
     }
      }else{
        for(var k=0;k<students.length;k++){
-        const update = await StudentSetUp.findByIdAndUpdate({_id:students[k]._id} , {$set:{year:i+1}})
-        array.push(update);
+        console.log("njfkevnej");
+        const updae = await StudentSetUp.findByIdAndUpdate({_id:students[k]._id} , {$set:{year:i}})
+        console.log(updae);
+        console.log("fuck u");
+        array.push(updae);
        }
      }
-     return res.status(200).send({message:"upgraded" , response:array});
     }
+     console.log(array);
+     return res.status(200).send({message:"upgraded" , response:array});
+
   }catch(err){
     errors.backenderror=err;
+    console.log(err);
    return res.status(404).send({error:errors})
   }
 };
@@ -410,8 +462,6 @@ export const changetoodd = async(req,res)=>{
       const students = await StudentSetUp.find({year:i})
       if(students){
       for(var j=0;j<students.length;i++){
-        
-
         //examination deletion
       const examdel = await examination.deleteMany({student:students[j]._id})
         const result = await result.findOne({student:students[j]._id})
@@ -436,7 +486,7 @@ export const changetoodd = async(req,res)=>{
           sem:sem,
           result:result
         }
-        const prev =await prevsemdata.findOne({student:students._id})
+        const prev =await prevsemdata.findOne({student:students[j]._id})
         prev.result.push(obj);
         if(result.kt>0){
           const obj1 ={
@@ -526,6 +576,24 @@ export const changetoeven = async(req,res)=>{
       }
       const deeelte = await result.deleteMany({});
       return res.status(200).send({message:"done" , response:prev})
+  }catch(err){
+    errors.backenderror=err;
+    return res.status(404).send({error:errors})
+  }
+};
+
+
+export const Result = async(req,res)=>{
+  const errors ={resulterror:String , backenderror:String}
+  try{
+    const departarray=["MECH","IT","CSE","ECE"];
+    const divi=["A","B","C"];
+     for(var i=0;i<departarray.length;i++){
+      for(var j=1;j<=4;j++){
+        const students = await StudentSetUp.find({year:j,depart:departarray[i]});
+        
+      }
+     }
   }catch(err){
     errors.backenderror=err;
     return res.status(404).send({error:errors})

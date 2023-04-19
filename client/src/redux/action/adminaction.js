@@ -25,12 +25,59 @@ import {
     INITIATE_CLASS_ERROR , 
     YEAR_UPDATE ,  
     ODD_SEM_UPDATE , ODD_SEM_UPDATE_ERROR,
-    EVEN_SEM_UPDATE ,  EVEN_SEM_UPDATE_ERROR
+    EVEN_SEM_UPDATE ,  EVEN_SEM_UPDATE_ERROR,
+    ADMIN_LOGIN , ADMIN_LOGIN_ERROR , CHANGE_DONE , RESULT_GENERATED
 
 } from '../actiontype';
 import Swal from "sweetalert2";
 import {BASE_URL} from '../helper.js';
 const URL= "http://localhost:8000";
+
+
+export const adminlogin = (formdata,navigate)=>async(dispatch)=>{
+  try{
+     const api =`${URL}/adminn/login`;
+     const res = await fetch(api,{
+      method: "POST",
+      headers: {
+        "Content-Type":"application/json"
+       },
+      body: JSON.stringify(formdata)
+      });
+     const msg = await res.json();
+     console.log(msg);
+     if(res.status === 200 ){
+          navigate("/admin");
+          dispatch({type:ADMIN_LOGIN ,payload:msg.response })
+  }else if(res.status === 400 || res.status===404){
+    console.log("mlfbnelrbn");
+    dispatch({type:ADMIN_LOGIN_ERROR ,payload:msg.error})
+  }
+  }catch(err){
+    console.log(err);
+  }
+}
+export const changeper = (formdata) =>async(dispatch)=>{
+    try{
+      console.log(formdata);
+      const api = `${URL}/adminn/changeper`;
+      const res = await fetch(api,{
+        method: "POST",
+        headers: {
+          "Content-Type":"application/json"
+         },
+        body: JSON.stringify(formdata)
+        });
+       const msg = await res.json();
+       console.log(msg);
+       if(res.status === 200 ){
+            dispatch({type:CHANGE_DONE ,payload:true })
+            console.log("hello")
+    }
+    }catch(err){
+      console.log(err);
+    }
+};
 
 export const addfaculty = (formdata , navigate) => async (dispatch) =>{
     try{
@@ -56,6 +103,7 @@ export const addfaculty = (formdata , navigate) => async (dispatch) =>{
       console.log(err);
     }
 }
+
 export const addstudent = (fordata , navigate) => async (dispatch) =>{
   try{
       const re = await fetch("http://localhost:8000/adminn/adstud",{
@@ -184,6 +232,7 @@ export const initiateclass = (data) => async(dispatch)=>{
 
 export const getcc = (data)=>async(dispatch)=>{
    try{
+    console.log("fuuuuuuck u");
       const respon = await fetch("http://localhost:8000/adminn/ourcc",{
         method: "POST",
         headers: {
@@ -192,7 +241,7 @@ export const getcc = (data)=>async(dispatch)=>{
         body: JSON.stringify(data)
         });
        const msg = await respon.json();
-       console.log(msg);
+       console.log("mil gayaaaaaaa");
        console.log(msg.css);
        if(respon.status === 200 ){
         dispatch({type: CCS , payload:msg.ccs})
@@ -341,3 +390,25 @@ export const changetoeven = () =>async(dispatch)=>{
     console.log(err);
    }
 };
+
+export const generateresult = ()=>async(dispatch)=>{
+  try{
+      const api = `${URL}/adminn/result`;
+      const res = await fetch(api,{
+        method: "GET",
+        headers: {
+          "Content-Type":"application/json"
+         },
+      });
+      const msg = await res.json();
+      console.log(msg);
+      console.log(msg.response);
+      if(res.status === 200 ){
+           dispatch({type:RESULT_GENERATED  ,payload:msg.response})
+       }else if(res.status===404){
+        console.log(msg.error);
+       }
+  }catch(err){
+    console.log(err);
+  }
+}

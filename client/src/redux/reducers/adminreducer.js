@@ -31,11 +31,14 @@ import {
    YEAR_UPDATE ,  
     ODD_SEM_UPDATE , ODD_SEM_UPDATE_ERROR,
     EVEN_SEM_UPDATE ,  EVEN_SEM_UPDATE_ERROR ,
-    DEFAULTER_PERCENT
+    DEFAULTER_PERCENT , ADMIN_LOGIN , ADMIN_LOGIN_ERROR , CHANGE_DONE , RESULT_GENERATED
 } from '../actiontype';
 
 const initialstate ={
+    result:[],
+    adminloginerror:"",
     authordata:null,
+    percentchanges:false,
     facultydeleted:false,
     studentdeleted:false,
     departmentdeleted:false,
@@ -69,18 +72,64 @@ const initialstate ={
     initialclasserror:"",
     yearupdated:false,
     oddsemupdated:false,
-    evensemupdated:false,
-    percent:75
+    evensemupdated:false
 }
 
 const admin =  (state=initialstate , action)=>{
    switch(action.type){
-    // case FACULTY_LOGIN:
-    //     localStorage.setItem("user", JSON.stringify({ ...action?.payload }));
-    //     console.log("hi im jamal");
-    //     return { ...state, authData: action?.payload };
+    case ADMIN_LOGIN:
+        const data = action.payload;
+        localStorage.setItem("user",JSON.stringify({data}));
+        return { ...state, authordata: action.payload };
+    case ADMIN_LOGIN_ERROR:
+        return{
+            ...state , adminloginerror:action.payload
+        }    
     case LOGOUT :
          localStorage.clear();
+          return{
+            adminloginerror:"",
+            authordata:null,
+            percentchanges:false,
+            facultydeleted:false,
+            studentdeleted:false,
+            departmentdeleted:false,
+            notices:[],
+            faculties:[],
+            students:[],
+            subjects:[],
+            getsubjecterror:"",
+            logout:false,
+            defaulter:false,
+            timer:29,
+            ccs:[],
+            alldepartments:["MECH" , "IT" , "CSE" , "ECE"],
+            departmentadded:false,
+            studentadded:false,
+            facultyadded:false,
+            noticeadded:false,
+            subjectadded:false,
+            subjectadderror:"",
+            getfaculties:false,
+            getstudent:false,
+            addfacultyerror:"",
+            addstudenterror:"",
+            getfacultyerror:"",
+            getstudenterror:"",
+            addsubjecterror:"",
+            createnoticeerror:"",
+            getnoticeerror:"",
+            getsubjecterror:"",
+            initialclass:false,
+            initialclasserror:"",
+            yearupdated:false,
+            oddsemupdated:false,
+            evensemupdated:false
+          }
+    case CHANGE_DONE:
+        return{
+            ...state , percentchanges:action.payload
+        }      
     case ADD_FACULTY:
         return{
             ...state , facultyadded:action.payload
@@ -181,7 +230,11 @@ const admin =  (state=initialstate , action)=>{
        case EVEN_SEM_UPDATE:
             return {
                     ...state , evensemupdated:action.payload
-            }               
+            }
+        case RESULT_GENERATED:
+            return{
+                ...state , result:action.payload
+            }                   
     default:
         return state;           
    }

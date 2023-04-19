@@ -162,12 +162,11 @@ export const Getmark = async(req,res)=>{
 };
 
 export const Getattendance = async(req,res)=>{
+  console.log("Hellooo");
   const errors = {backenderror:String , atterror:String}
   try{
      const data = req.body;
-     console.log(data);
      const student = await Student.findOne({_id:data._id})
-     console.log(student);
      const subjects = await Subjects.find({depart:data.depart , year:data.year})
      if(!subjects){
       const obj = {
@@ -182,10 +181,15 @@ export const Getattendance = async(req,res)=>{
      for(var i=0;i<subjects.length;i++){
         const atte = await attendance.findOne({student:data._id , subject:subjects[i]._id})
         console.log(atte);
+        console.log("HEEEELOO");
+        console.log(subjects[i].subjectName);
+        if(Object.keys(atte).length!==0){
         for(var j=0;j<12;j++){
           totallec=totallec+atte.totalLecturesByFaculty[j].value;
           lecattend=lecattend+atte.lectureAttended[j].value;
         }
+      }
+        console.log("wanakam");
      }
      console.log(totallec);
      console.log(lecattend);

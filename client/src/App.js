@@ -5,6 +5,7 @@ import { Routes , Route } from 'react-router-dom';
 import Login from './components/login/login';
 import './App.css';
 // admin
+import AdminLogin from './components/login/adminlogin';
 import AdminHome from './components/admin/adminhome';
 import Addstudent  from './components/admin/addstudent/addstudent';
 import Addfaculty from './components/admin/addfaculty/addfaculty';
@@ -50,6 +51,7 @@ function App() {
          <Route path='/' element={<Login/>}/>
 
           {/* // admin  */}
+         <Route path='/adminlogin' element={<AdminLogin/>}/>
          <Route path="/admin" element={<AdminHome/>}/>
          <Route path='/admin/addstudent' element={<Addstudent/>}/>
          <Route path='/admin/addfaculty' element={<Addfaculty/>}/>
@@ -93,7 +95,6 @@ function App() {
 
         
        </Routes>
-
 
        
   );

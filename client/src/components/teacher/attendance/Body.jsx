@@ -76,7 +76,6 @@ const uploadattendance=()=>{
 
   return (
     <div className="markattendance" style={{background:"white"}}>
-       <h1>hi im jamal</h1>
        {cond===false  && (
         <div className="select-class">
           {clas?.map((dat,idx)=>(

@@ -6,7 +6,6 @@ import Examination from "../models/examination.js";
 import bcrypt from "bcryptjs"
 import attendance from "../models/attendance.js";
 import attenddates from "../models/attend_dates.js";
-import examination from "../models/examination.js";
 import defaulter from "../models/defaulter.js";
  export const Facultylogn = async(req,res)=>{
   const errors={passwordError:String , emailError:String , backenderror:String}
@@ -291,6 +290,7 @@ export const Studentfetch = async(req,res)=>{
      }
   }catch(err){
     errors.backenderror=err;
+    console.log(err);
     return res.status(404).send({error:errors})
   }
 };
@@ -299,16 +299,16 @@ export const Studentfetch = async(req,res)=>{
 export const Markattendance = async(req,res)=>{
   const errors = {backenderror:String , uploaderror:String}
   try{
+    const date = new Date();
+    const month = date.getMonth() +1;
      const data = req.body;
      const subjet = await Subject.findOne({subjectName:data.subj.subject});
       const lecturecount = await attendance.find({depart:data.subj.depart , year:data.subj.year , division:data.subj.division , subject:subjet._id })
-      const date = new Date();
-      const month = date.getMonth() +1;
       for(var i=0;i<lecturecount.length;i++){
         const totallec = lecturecount[i].totalLecturesByFaculty[month-1].value +1 ;
          await attendance.updateOne({_id:lecturecount[i]._id , "totalLecturesByFaculty.id":month} , {$set: {"totalLecturesByFaculty.$.value":totallec}});
-         const date = new Date();
-         const month = date.getMonth() +1;
+        //  const date = new Date();
+        //  const month = date.getMonth() +1;
          const neew = new attenddates({
            attendance:lecturecount[i]._id,
            month: month,

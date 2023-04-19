@@ -43,6 +43,7 @@ useEffect(() => {
         year: "",
         division: "",
         batch: "",
+        email:"",
         password:"dypatil@123"
       });
       dispatch({ type: ADD_STUDENT_ERROR, payload: {} });

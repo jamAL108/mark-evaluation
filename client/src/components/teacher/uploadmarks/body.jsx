@@ -191,7 +191,6 @@ const Body = () => {
 ////jsx coddeee
   return (
     <div className="uploadmark" style={{background:"white"}}>
-      <h1>hi im jamal</h1>
        {cond===false  && (
         <div className="select-class">
           {clas?.map((dat,idx)=>(
@@ -227,7 +226,7 @@ const Body = () => {
        ) }
 
       {cond===true && (
-          <div className="main">
+          <div className="mainnnn">
                 <ArrowBackIcon onClick={(e)=>{
                setcond(false);
                setvalue({...value , year:"", division:"",subject:"",exam:"" , practical:false

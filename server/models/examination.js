@@ -25,6 +25,9 @@ const Examination = mongoose.Schema({
         type:Number,
         default:-1
     },
+    credits:{
+        type:String
+    },
     exam:{
         type:String,
         required:true

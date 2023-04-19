@@ -15,7 +15,7 @@ const ccSchema = new Schema({
       type:Number
      },
      depart:{
-        tyep:String
+        type:String
      }
 })
 
