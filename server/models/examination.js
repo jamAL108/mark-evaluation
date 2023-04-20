@@ -6,12 +6,13 @@ const Examination = mongoose.Schema({
         ref:"Studentdetails"
     },
     depart:{
-        type:String,
-        required:true
+        type:String
+    },
+    exam:{
+        type:String
     },
     subjectCode:{
-        type:String,
-        required:true
+        type:String
     },
     mark:{
         type:Number,
@@ -26,11 +27,8 @@ const Examination = mongoose.Schema({
         default:-1
     },
     credits:{
-        type:String
-    },
-    exam:{
-        type:String,
-        required:true
+        type:Number,
+        default:-1
     }
 })
 

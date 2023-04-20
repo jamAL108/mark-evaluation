@@ -6,6 +6,7 @@ import Examination from "../models/examination.js";
 import Subjects from "../models/subject.js";
 import attendance from "../models/attendance.js";
 import attenddates from '../models/attend_dates.js';
+import Results from "../models/result.js";
  export const Studentlogn = async(req,res)=>{
   const errors={passwordError:String , emailError:String , backenderror:String}
     try{
@@ -287,4 +288,23 @@ export const viewdates = async(req,res)=>{
   }
 };
 
+
+export const Result = async(req,res)=>{
+  const errors = {backenderror:String , resulterror:String}
+   try{
+    console.log(req.body);
+      const {_id} = req.body;
+      const result = await Results.findOne({student:_id});
+      console.log(result);
+      if(!result){
+        errors.resulterror="You're result in not yet generated .....!"
+        return res.status(404).send({error:errors});
+      }
+      return res.status(200).send({message:"take result" , response:result});
+   }catch(err){
+    errors.backenderror=err;
+    console.log(err);
+    return res.status(404).send({error:errors})
+   }
+};
 

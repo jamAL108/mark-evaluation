@@ -5,25 +5,33 @@ const result = mongoose.Schema({
         type:Schema.Types.ObjectId,
         ref:"Studentdetails"
     },
-    subjects:{
-       type:[]
+    grandtotal:{
+        type:Number
     },
-    subjectmarks:{
-        type:[{}]
+    totalcredit:{
+        type:Number
     },
-    attendance:{
+    totalCxG:{
         type:Number
     },
     SGPI:{
-        type:Number,
-        required:true
+        type:Number
+    },
+    listofkt:
+    {
+        type:[]
     },
     kt:{
-        type:Number,
-        default:0
+        type:Boolean
     },
-    ktsubject:{
-        type:[{}]
+    subjects:{
+        type:[]
+    },
+    practical:{
+        type:[]
+    },
+    totalsubject:{
+        type:Number
     }
 });
 

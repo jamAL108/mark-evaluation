@@ -9,7 +9,7 @@ import { AdminLogin , Changeper , Addfaculty ,
     Initiateclass,
     monthlydefaulter ,
     Upgradeyear , 
-    getcc
+    getcc,Result
 } from "../controller/admincont.js";
 
 const router = express.Router();
@@ -26,5 +26,6 @@ router.post("/getsubj", Getsubject);
 router.post("/Initiate" , Initiateclass);
 router.post("/generatedef" ,monthlydefaulter);
 router.get("/upgradeyr" , Upgradeyear);
-router.post("/ourcc" ,getcc)
+router.post("/ourcc" ,getcc);
+router.get("/result",Result);
 export default router;

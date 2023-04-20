@@ -13,7 +13,7 @@ import { STUDENT_LOGIN,
    MONTH_ATTENDANCE , 
   ATTENDANCE_ERROR ,
   OVERALL_ATTENDANCE,
-  ATTENDANCE_DATES  } from "../actiontype";
+  ATTENDANCE_DATES , RESULT ,RESULT_ERROR  } from "../actiontype";
   import {BASE_URL} from '../helper.js';
 const URL= "http://localhost:8000";
 
@@ -208,4 +208,27 @@ export const getdates = (formdata)=>async(dispatch)=>{
     }catch(err){
     console.log(err);
    }
+};
+
+export const getresult = (formdata)=>async(dispatch)=>{
+  try{
+    console.log(formdata);
+    const api = `${URL}/stud/getresult`
+    const data = await fetch(api,{
+      method:"POST",
+      headers:{
+       "Content-Type":"application/json"
+     },
+       body:JSON.stringify(formdata)
+    });
+  const msg = await data.json();
+  console.log(msg);
+  if(data.status===200){
+   dispatch({type:RESULT , payload:msg.response})
+  }else if(data.status===404){
+   dispatch({type:RESULT_ERROR , payload:msg.error})
+  }
+  }catch(err){
+  console.log(err);
+ }
 };

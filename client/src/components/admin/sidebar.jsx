@@ -66,12 +66,12 @@ function Sidebar(){
           </div>
           <div className="a">
             <NavLink
-              to="/admin/cgpa"
+              to="/admin/result"
               className={({ isActive }) =>
                 isActive ? isActiveStyle : isNotActiveStyle
               }>
               <HomeIcon className="a" />
-              <h1 className="font-normal">Dashboard</h1>
+              <h1 className="font-normal">RESULT GENERATE</h1>
             </NavLink>
             <NavLink
               to="/admin/initiateclass"

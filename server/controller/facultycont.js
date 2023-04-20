@@ -89,7 +89,6 @@ export const Getstudent = async(req,res)=>{
               const temp = await Examination.findOne({
                 exam:data.exam , student:students[i]._id , subjectCode:subjects.subjectCode , depart:data.depart
               })
-              console.log(temp);
               if(!temp){
                   const create = await new Examination({
                     exam:data.exam , student:students[i]._id , depart:data.depart , subjectCode:subjects.subjectCode  
@@ -97,12 +96,13 @@ export const Getstudent = async(req,res)=>{
                   await create.save();
               }
               const tempdata = await Examination.findOne({
-                exam:data.exam , student:students[i]._id , subjectCode:subjects.subjectCode
+                exam:data.exam , student:students[i]._id , depart:data.depart , subjectCode:subjects.subjectCode
               })
               console.log(tempdata);
             const stud = {
                 Rollno:students[i].Rollno , name:students[i].name , _id:students[i]._id , mark: tempdata.mark || -1 ,
-                termmarks: tempdata.termwork || -1 , orals:tempdata.orals || -1
+                termmarks: tempdata.termwork || -1 , orals:tempdata.orals || -1,
+                credits:tempdata.credits||-1
             }
             array.push(stud); 
           }
@@ -129,24 +129,29 @@ export const Uploadmark = async(req,res)=>{
     }else{
       const array=[];
       const array1=[];
-
+      const array2=[];
       //// for practical marks
-      if(data.practical===true){
+      console.log(data.creditmarks);
+      if(data.credits===true){
+           for(var i=0;i<data.creditmarks.length;i++){
+            const studentid = data.creditmarks[i]._id;
+            const testtemp = await Examination.findOne({depart:data.depart , exam:data.exam , subjectCode:subjectc.subjectCode , student:studentid})
+            const markofstudent = await Examination.findByIdAndUpdate({_id:testtemp._id } , {$set:{credits:data.creditmarks[i].value}});
+            array2.push(markofstudent);
+           }
+      }else if(data.practical===true){
         for(var i=0;i<data.termmarks.length;i++){
           const studentid = data.termmarks[i]._id;
           const testtemp = await Examination.findOne({depart:data.depart , exam:data.exam , subjectCode:subjectc.subjectCode , student:studentid})
     const markofstudent = await Examination.findByIdAndUpdate({_id:testtemp._id } , {$set:{termwork:data.termmarks[i].value}});
         array1.push(markofstudent);
         }
-
     for(var j=0;j<data.oralmarks.length;j++){
       const studentid = data.oralmarks[j]._id;
       const testtemp = await Examination.findOne({depart:data.depart , exam:data.exam , subjectCode:subjectc.subjectCode , student:studentid})
 const markofstudent = await Examination.findByIdAndUpdate({_id:testtemp._id } , {$set:{orals:data.oralmarks[j].value}});
      array.push(markofstudent);
      }
-
-
      ///// fro normal marks
     }else{
       for(var k=0;k<data.marks.length;k++){
@@ -157,7 +162,16 @@ const markofstudent = await Examination.findByIdAndUpdate({_id:testtemp._id } , 
     array.push(markofstudent);
     }
   }
-    return res.status(200).send({message:"marks uploaded"  , response:array , anotherresponse:array1});
+   
+  const daaataa = await Examination.find({});
+  for(var k=0;k<daaataa.length;k++){
+    console.log(daaataa[k]);
+    if(daaataa[k].mark===-1 && daaataa[k].termwork===-1 && daaataa[k].orals===-1 && daaataa[k].credits===-1){
+      await Examination.deleteOne({_id:daaataa[k]._id});
+    }
+  }
+
+    return res.status(200).send({message:"marks uploaded"  , response:array , anotherresponse:array1 , anoresponse:array2});
     }
   }catch(err){
     errors.backenderror=err;

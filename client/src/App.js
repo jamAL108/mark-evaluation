@@ -14,6 +14,7 @@ import Ourstudent from './components/admin/ourstudent/ourstudent';
 import Addnotice from './components/admin/addnotice/addnotice';
 import InitialState from './components/admin/initiateclassroom/initiateclass';
 import Addsubject from './components/admin/addsubject/addsubject';
+import Cpga from './components/admin/cpga/cpga';
 
 
 
@@ -61,6 +62,7 @@ function App() {
          <Route path='/admin/Addnotice' element={<Addnotice/>}/>
          <Route path='/admin/initiateclass' element={<InitialState/>}/>
          <Route path='/admin/addsubject' element={<Addsubject/>}/>
+         <Route path='/admin/result' element={<Cpga/>}/>
 
 
 

@@ -19,7 +19,9 @@ import {
      , MONTH_ATTENDANCE
      , OVERALL_ATTENDANCE
      , ATTENDANCE_ERROR
-     , ATTENDANCE_DATES
+     , ATTENDANCE_DATES,
+     RESULT ,
+     RESULT_ERROR
 } from '../actiontype.js';
 
 const initialstate={
@@ -42,7 +44,9 @@ const initialstate={
     getmarkerror:"", 
     overralatterror:"",
     monthattendance:[],
-    overallattendance:[]
+    overallattendance:[],
+    result:{},
+    resulterror:""
 }
 
 const student =(state=initialstate , action) =>{
@@ -78,7 +82,9 @@ const student =(state=initialstate , action) =>{
             getmarkerror:"", 
             overralatterror:"",
             monthattendance:[],
-            overallattendance:[]
+            overallattendance:[],
+            result:{},
+            resulterror:""
 
         }
     case STUD_UPDATE_PASSWORD: 
@@ -132,7 +138,15 @@ const student =(state=initialstate , action) =>{
     case ATTENDANCE_DATES:
         return{
             ...state , dates:action.payload
-        }                                    
+        }
+    case RESULT:
+        return{
+            ...state , result:action.payload
+        }
+    case RESULT_ERROR:
+        return{
+            ...state ,resulterror:action.payload
+        }                                            
     default:
         return state;
 }

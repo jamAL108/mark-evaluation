@@ -1,12 +1,13 @@
 import React from 'react'
-
+import { generateresult } from '../../../redux/action/adminaction';
+import { useDispatch } from 'react-redux';
 const Body = () => {
-
+  const dispatch = useDispatch();
+  
    const submit = async(e)=>{
      e.preventDefault();
-     dispatchEvent(generateresult());
+     dispatch(generateresult());
    }
-
 
   return (
     <div className="result">
@@ -23,4 +24,4 @@ const Body = () => {
   )
 }
 
-export default Body
+export default Body;

@@ -393,8 +393,8 @@ export const changetoeven = () =>async(dispatch)=>{
 
 export const generateresult = ()=>async(dispatch)=>{
   try{
-      const api = `${URL}/adminn/result`;
-      const res = await fetch(api,{
+      console.log("hellooo");
+      const res = await fetch("http://localhost:8000/adminn/result",{
         method: "GET",
         headers: {
           "Content-Type":"application/json"
@@ -411,4 +411,4 @@ export const generateresult = ()=>async(dispatch)=>{
   }catch(err){
     console.log(err);
   }
-}
+};

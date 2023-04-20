@@ -15,6 +15,7 @@ import mongoose from 'mongoose';
 import cc from "../models/cc.js";
 import admin from '../models/admin.js';
 import otherinfos from "../models/otherinfos.js";
+import Results from "../models/result.js";
 
 export const AdminLogin = async(req,res)=>{
   const errors={passwordError:String , emailError:String , backenderror:String}
@@ -586,17 +587,287 @@ export const changetoeven = async(req,res)=>{
 export const Result = async(req,res)=>{
   const errors ={resulterror:String , backenderror:String}
   try{
+    console.log("heeeeyyy");
+    await Results.deleteMany({});
+    const studres=[];
     const departarray=["MECH","IT","CSE","ECE"];
     const divi=["A","B","C"];
-     for(var i=0;i<departarray.length;i++){
-      for(var j=1;j<=4;j++){
-        const students = await StudentSetUp.find({year:j,depart:departarray[i]});
-        
+        const students = await StudentSetUp.find({year:2,depart:"CSE",division:"C"});
+        const subjects = await Subjects.find({depart:"CSE",year:2});
+        if(students.length!==0){
+        for(var k=0;k<students.length;k++){
+          console.log(students[k]);
+          const result={
+             grandtotal:0,
+             totalcredit:0,
+             totalCxG:0,
+             SGPI:0,
+             listofkt:[],
+             kt:false,
+             subjects:[],
+             practical:[]
+          }
+           for(var m=0;m<subjects.length;m++){
+              const subj1={
+                 subjectname:subjects[m].subjectName,
+                 subjectCode:subjects[m].subjectCode,
+                 practical:subjects[m].practical,
+                 credits:0,
+                 theory:{
+                  ESE:{
+                    marks:0,
+                    grade:"",
+                    minimummarks:0,
+                    maximummarks:0,
+                    kt:false
+                  },
+                  IA:{
+                    marks:0,
+                    grade:"",
+                    minimummarks:0,
+                    maximummarks:0,
+                    kt:false
+                  },
+                  MSE:{
+                    marks:0,
+                    grade:"",
+                    minimummarks:0,
+                    maximummarks:0,
+                    kt:false
+                  },
+                  total:{
+                    marks:0,
+                    grade:"",
+                    maximummarks:0,
+                    kt:false
+                  },
+                 gradepoint:0,
+                 CxG:0
+                },
+                practical:{
+                  termwork:{
+                    marks:0,
+                    grade:"",
+                    minimummarks:0,
+                    maximummarks:0,
+                  },
+                  orals:{
+                    marks:0,
+                    grade:"",
+                    minimummarks:0,
+                    maximummarks:0,
+                  },
+                  total:{
+                    marks:0,
+                    grade:"",
+                    maximummarks:0,
+                  },
+                  gradepoint:0,
+                  CxG:0
+                }
+              }
+              console.log(subj1);
+              const data = await examination.find({student:students[k]._id ,subjectCode:subjects[m].subjectCode });
+              console.log(data.length);
+              for(var l=0;l<data.length;l++){
+                if(data[l].exam==="CREDITS"){
+                  subj1.credits=data[l].credits;
+                  result.totalcredit+=subj1.credits;
+                }else if(data[l].exam==="IA"){
+                  subj1.theory.IA.marks=data[l].mark;
+                  if(data[l].mark<8){
+                    result.kt=true;
+                      console.log(result.theory.ESE.kt);
+                      subj1.theory.IA.kt=true;
+                      subj1.theory.total.kt=true;
+                      const obj={
+                        subject:subjects[m].subjectName,
+                        marks:data[l].mark
+                      }
+                      result.listofkt.push(obj);
+                  }
+                  const perr = (data[l].mark/20)*100;
+                  const per = Number((perr).toFixed(2))
+                  subj1.theory.IA.grade=percentage(per);
+                  subj1.theory.IA.minimummarks=8;
+                  subj1.theory.IA.maximummarks=20;
+                  console.log("nkusbw");
+                }else if(data[l].exam==="MIDSEM"){
+                  subj1.theory.MSE.marks=data[l].mark;
+                  if(data[l].mark<8){
+                    result.kt=true;
+                      subj1.theory.MSE.kt=true;
+                      subj1.theory.total.kt=true;
+                      const obj={
+                        subject:subjects[m].subjectName,
+                        marks:data[l].mark
+                      }
+                      result.listofkt.push(obj);
+                  }
+                  const perr = (data[l].mark/20)*100;
+                  const per = Number((perr).toFixed(2))
+                  subj1.theory.MSE.grade=percentage(per);
+                  subj1.theory.MSE.minimummarks=8;
+                  subj1.theory.MSE.maximummarks=20;
+                }else if(data[l].exam==="ENDSEM"){
+                  subj1.theory.ESE.marks=data[l].mark;
+                  if(data[l].mark<24){
+                      result.kt=true;
+                      subj1.theory.ESE.kt=true;
+                      subj1.theory.total.kt=true;
+                      const obj={
+                        subject:subjects[m].subjectName,
+                        marks:data[l].mark
+                      }
+                      result.listofkt.push(obj);
+                  }
+                  console.log("nkuvbw");
+                  const perr = (data[l].mark/60)*100;
+                  const per = Number((perr).toFixed(2))
+                  subj1.theory.ESE.grade=percentage(per);
+                  subj1.theory.ESE.minimummarks=24;
+                  subj1.theory.ESE.maximummarks=60;
+                }else if(data[l].exam==="PRACTICAL"){
+                  const attendanc = await attendance.findOne({student:students[k]._id ,subject:subjects[m]._id});
+                  let lecattend=0;
+                  let overallec=0;
+                  for(var z=0;z<12;z++){
+                    lecattend+=attendanc.lectureAttended[z].value;
+                    overallec+=attendanc.totalLecturesByFaculty[z].value;
+                  }
+                  const perrr = (lecattend/overallec)*100;
+                  const evaluation = (perrr/100)*25;
+                  console.log("uywyef");
+                  const termw = (evaluation+data[l].termwork)/2;
+                  subj1.practical.termwork.marks=termw;
+                  const perr = (termw/25)*100;
+                  const per = Number((perr).toFixed(2))
+                  subj1.practical.termwork.grade=percentage(per);
+                  subj1.practical.termwork.minimummarks=10;
+                  subj1.practical.termwork.maximummarks=25;
+
+                  subj1.practical.orals.marks=data[l].orals;
+                  const percent = (termw/25)*100;
+                  const perc = Number((percent).toFixed(2))
+                  subj1.practical.orals.grade=percentage(perc);
+                  subj1.practical.orals.minimummarks=10;
+                  subj1.practical.orals.maximummarks=25;
+
+                   const total = termw+data[l].orals;
+                   subj1.practical.total.marks=total;
+                   subj1.practical.total.maximummarks=50;
+                   result.grandtotal+=total;
+                   const percentt = (termw/50)*100;
+                  const pe = Number((percentt).toFixed(2))
+                  subj1.practical.total.grade=percentage(pe);
+                  console.log("nwiyevfw");
+                  subj1.practical.gradepoint=grade(subj1.practical.total.grade);
+                  subj1.practical.CxG=subj1.practical.gradepoint*2;
+                  result.totalCxG+=subj1.practical.CxG;
+                }
+              }
+              const total = subj1.theory.IA.marks + subj1.theory.MSE.marks + subj1.theory.ESE.marks
+              subj1.theory.total.marks=total;
+              subj1.theory.total.maximummarks=100;
+              result.grandtotal+=total;
+              const perr = (total/100)*100;
+              const per = Number((perr).toFixed(2))
+              subj1.theory.total.grade=percentage(per);
+              console.log("mwoi");
+              subj1.theory.gradepoint = grade(subj1.theory.total.grade);
+              subj1.theory.CxG=subj1.theory.gradepoint*subj1.credits;
+              /////////
+              result.totalCxG+=subj1.theory.CxG;
+              const subb ={
+                 subjectname:subjects[m].subjectName,
+                 subjectCode:subjects[m].subjectCode,
+                 credits:subj1.credits,
+                 theory:subj1.theory
+              }
+              result.subjects.push(subb);
+              if(subjects[m].practical===true){
+                const prac={
+                subjectname:subjects[m].subjectName,
+                 subjectCode:subjects[m].subjectCode,
+                 credits:2,
+                 practical:subj1.practical
+                }
+                console.log(prac);
+                result.practical.push(prac);
+              }
+           }
+           if(result.kt===false){
+              const totalsubj = subjects.length*100;
+              const per = (result.grandtotal/totalsubj)*100;
+              if(per>10){
+                result.SGPI=10;
+              }else{
+              result.SGPI=(per/9.5);
+              }
+           }
+           studres.push(result);
+           const infoo = new Results({
+            student:students[k]._id,
+            grandtotal:result.grandtotal,
+            totalcredit:result.totalcredit,
+            totalCxG:result.totalCxG,
+            totalsubject:subjects.length,
+            SGPI:result.SGPI,
+            listofkt:result.listofkt,
+            kt:result.kt,
+            subjects:result.subjects,
+            practical:result.practical
+           })
+           await infoo.save();
+        }
       }
-     }
+     return res.status(200).send({message:"DONE",response:studres});
   }catch(err){
     errors.backenderror=err;
+    console.log(err);
     return res.status(404).send({error:errors})
   }
 };
+
+
+const grade=(grad)=>{
+  if(grad==="O"){
+    return 10;
+  }else if(grad==="A"){
+    return 9;
+  }else if(grad==="B"){
+    return 8;
+  }else if(grad==="C"){
+    return 7;
+  }else if(grad==="D"){
+    return 6;
+  }else if(grad==="E"){
+    return 5;
+  }else if(grad==="P"){
+    return 4;
+  }else if(grad==="F"){
+    return 0;
+  }
+}
+
+
+const percentage =(per)=>{
+  if(per>=80.00){
+    return "O";
+  }else if(per<79.99 && per>75.00){
+    return "A";
+  }else if(per<74.99 && per>70.00){
+    return "B";
+  }else if(per<69.99 && per>60.00){
+    return "C";
+  }else if(per<59.99 && per>50.00){
+    return "D";
+  }else if(per<49.99 && per>45.00){
+    return "E";
+  }else if(per<49.99 && per>40.00){
+    return "P";
+  }else{
+   return "F";
+  }
+}
 

@@ -12,14 +12,16 @@ const Body = () => {
   const [display , setdisplay] = useState(false);
   const [marks , setmarks] = useState([]);
   const [practical , setpractical] = useState(false);
-  const [datafrprac , setdatafrprac] = useState(false);  
+  const [datafrprac , setdatafrprac] = useState(false); 
+  const [creditswitch , setcreditswitch] = useState(false); 
   const [value , setvalue] = useState({
     depart:user.data.depart,
     year:"",
     division:"",
     subject:"",
     exam:"",
-    practical:false
+    practical:false,
+    credits:false
   });
   const [error , seterror] =useState({});
   const store = useSelector((state)=>state)
@@ -29,6 +31,7 @@ const Body = () => {
   const [arraymark , setarraymark] = useState([]);
   const [arraypractermmark , setarraypractermmark] = useState([]);
   const [arraypracoralmark , setarraypracoralmark] = useState([]);
+  const [arraycreditmark , setarraycreditmark] = useState([]);
   useEffect(()=>{
     seterror(store.faculty.getstudenterror)
   },[store.faculty.getstudenterror])
@@ -43,11 +46,14 @@ const Body = () => {
 // mark updating into states
   useEffect(()=>{
     let array=[];
+    array.push(0);
     let practerm=[];
     practerm.push(0);
     let pracoral=[];
     pracoral.push(0);
-    array.push(0);
+    let creditss =[];
+    creditss.push(0);
+
 
     for(let i=0;i<students.length;i++){
       array.push(students[i].mark);
@@ -63,6 +69,11 @@ const Body = () => {
       pracoral.push(students[i].orals);
     }
     setarraypracoralmark(pracoral);
+    
+    for(let i=0;i<students.length;i++){
+      creditss.push(students[i].credits);
+    }
+    setarraycreditmark(creditss);
     
 },[students])
 
@@ -81,6 +92,10 @@ const Body = () => {
     arraypracoralmark[id]=value;
     setarraypracoralmark(arraypracoralmark);
   }
+  const creditvalue =(id,value)=>{
+    arraycreditmark[id]=value;
+    setarraycreditmark(arraycreditmark);
+  }
 
   
 
@@ -95,6 +110,11 @@ const Body = () => {
     }
     if(value.exam==="PRACTICAL"){
       setdatafrprac(true);
+    }
+    if(value.exam!=="CREDITS"){
+      setcreditswitch(false);
+    }else if(value.exam==="CREDITS"){
+      setcreditswitch(true);
     }
     setstudents({})
      dispatch(getstudent(value))
@@ -113,6 +133,9 @@ const Body = () => {
     }
     setmarks(newMarks);
   }
+
+
+
   const [termmarks , settermmarks] = useState([])
   const handleinput1 = (_id , value) =>{
     let newMarks = [...termmarks];
@@ -136,6 +159,18 @@ const Body = () => {
     setoralmarks(newMarks);
   }
 
+  const [creditmarks,setcreditmarks] = useState([])
+  const handleinput3 = (_id , value) =>{
+    let newMarks = [...creditmarks];
+    let index = newMarks.findIndex((m) => m._id === _id);
+    if (index === -1) {
+      newMarks.push({ _id, value });
+    } else {
+      newMarks[index].value = value;
+    }
+    setcreditmarks(newMarks);
+  }
+
 
 
 
@@ -146,7 +181,7 @@ const Body = () => {
     e.preventDefault();
     const uploadingdata={
       depart:value.depart , year:value.year , division:value.division , subject:value.subject , marks:marks , exam:value.exam , termmarks:termmarks , 
-      oralmarks:oralmarks , practical:value.practical
+      oralmarks:oralmarks , practical:value.practical , creditmarks:creditmarks , credits:value.credits
     }
     console.log(uploadingdata);
     dispatch(uploadmark(uploadingdata))
@@ -176,11 +211,14 @@ const Body = () => {
     setmarks([])
     setarraymark([])
     setpractical(false);
+    setcreditswitch(false);
     setarraypractermmark([])
     setarraypracoralmark([])
+    setarraycreditmark([])
     settermmarks([])
     setmarks([])
     setoralmarks([])
+    setcreditmarks([])
     dispatch({type:T_GET_ALL_STUDENT , payload:[]})
     dispatch({type:T_GET_ALL_STUDENT_ERROR , payload:{}})
   },[store.faculty.markuploaded])
@@ -237,10 +275,13 @@ const Body = () => {
                setmarks([])
                setarraymark([])
                setpractical(false);
+               setcreditswitch(false);
                settermmarks([])
                setoralmarks([])
                setarraypractermmark([])
                setarraypracoralmark([])
+               setarraycreditmark([])
+               setcreditmarks([])
                dispatch({type:T_GET_ALL_STUDENT , payload:[]})
                dispatch({type:T_GET_ALL_STUDENT_ERROR , payload:{}})
       }}/>
@@ -248,20 +289,20 @@ const Body = () => {
 
       <div className="exams">
         <button onClick={()=>{
-          setvalue({...value , exam:"IA" , practical:false})
+          setvalue({...value , exam:"IA" , practical:false , credits:false})
           setdisplay(true)
           setdatafrprac(false);
       }}>IA</button>
 
         <button onClick={(e)=>{
-          setvalue({...value , exam:"MIDSEM"  , practical:false})
+          setvalue({...value , exam:"MIDSEM"  , practical:false , credits:false})
           setdisplay(true)
           setdatafrprac(false);
           }}>MIDSEM</button>
 
     {practical===true && (
         <button onClick={(e)=>{
-          setvalue({...value , exam:"PRACTICAL" , practical:true})
+          setvalue({...value , exam:"PRACTICAL" , practical:true ,  credits:false})
           setdisplay(true)
           setdatafrprac(true);
           }}>PRACTICAL</button>
@@ -269,19 +310,20 @@ const Body = () => {
         }
 
         <button onClick={(e)=>{
-          setvalue({...value , exam:"ENDSEM"  , practical:false})
+          setvalue({...value , exam:"ENDSEM"  , practical:false ,  credits:false})
           setdisplay(true)
           setdatafrprac(false);
           }}>ENDSEM</button>
 
         <button onClick={(e)=>{
-          setvalue({...value , exam:"CREDITS"  , practical:false})
+          setvalue({...value , exam:"CREDITS"  , practical:false ,  credits:true})
           setdisplay(true)
           setdatafrprac(false);
+          setcreditswitch(true);
           }}>CREDITS</button>
 
       </div>
-       {display===true && datafrprac===false && (
+       {display===true && datafrprac===false && creditswitch===false && (
         <div className="marks">
          <h1>{value.exam} : marks</h1>
          <table className='styled-table'>
@@ -335,7 +377,7 @@ const Body = () => {
        )}
 
 
-        {display===true && datafrprac===true && (
+        {display===true && datafrprac===true && creditswitch===false && (
         <div className="marks">
          <h1>{value.exam} : marks</h1>
          <table className='styled-table'>
@@ -398,10 +440,63 @@ const Body = () => {
              <button onClick={uploadmarks}>Upload marks</button>
          </div>
        )}
-        
-        
- 
- 
+
+
+
+
+{display===true && datafrprac===false && creditswitch===true && (
+        <div className="marks">
+         <h1>{value.exam} : marks</h1>
+         <table className='styled-table'>
+                  <thead>
+                   <tr>
+                         <th className="heading">
+                           Sr no.
+                         </th>
+                         <th className="heading">
+                           Rollno
+                         </th>
+                         <th className="heading">
+                           Name
+                         </th>
+                         <th className="heading">
+                           Credits
+                         </th>
+                         </tr>
+                       </thead>
+                       <tbody>
+                 {students?.map((student,idx)=>(
+        <tr
+              key={idx}
+          className="cont">
+             <td
+           className="cont">
+           {idx + 1}
+          </td>
+          <td
+          className="cont">
+          {student.Rollno}
+             </td>
+             <td
+         className="cont">
+         {student.name}
+         </td>
+
+         <td
+         className="cont">
+          <input type="Number" value={ arraycreditmark[idx+1] || "" } onChange={(e)=>{handleinput3(student._id , e.target.value)
+           creditvalue(idx+1 , e.target.value)
+          } }/>
+         </td>
+
+         </tr>
+              ) )}
+                  </tbody>
+             </table>
+             <button onClick={uploadmarks}>Upload marks</button>
+         </div>
+       )}
+      
 
           </div>
       )}
