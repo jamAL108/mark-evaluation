@@ -1,8 +1,16 @@
 body{
-    background-image:linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.5)),url("../../images/background.jpg");
     background-position: center;
     background-size: cover;
     height: 100vh;
     width: 100vw;
+}
+
+
+.techsub .tsimilarbody{
+    position: absolute;
+    left: 17%;
+    width: 83%;
+    height: 100vh;
+    background-color: #E4DAE6;
 }
 

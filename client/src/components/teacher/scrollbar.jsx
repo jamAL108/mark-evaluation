@@ -1,80 +1,130 @@
-import React from 'react'
-import { NavLink, useNavigate } from "react-router-dom";
+import React,{useEffect, useState} from 'react'
+import './sidebar.css';
+import { Link , useNavigate} from 'react-router-dom';
+import {createImageFromInitials} from '../utils/createImageFromInitials';
 
-import ViewListIcon from '@mui/icons-material/ViewList';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-const isNotActiveStyle =
-"flex items-center px-5 gap-3 text-gray-500 hover:text-black transition-all duration-200 ease-in-out capitalize hover:bg-gray-200 py-2 my-1";
-const isActiveStyle =
-"flex items-center px-5 gap-3 text-blue-600 transition-all duration-200 ease-in-out capitalize hover:bg-gray-200 py-2 my-1";
-function scrollbar () {
+function Scrollbar () {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
+  const [dashboard , setdashboard]=useState(true);
+  const [myclass , setmyclass]=useState(false);
+  const [uploadmark,setuploadmark]=useState(false);
+  const [attendance,setattendance]=useState(false);
+  const [defaulter,setdefaulter]=useState(false);
+  const [faqs ,setfaqs]=useState(false);
+  const [depart , setdepart] =useState("");
+  let imgSrc = "";
+  const array1=["FE","SE","TE","BE"];
+  useEffect(()=>{      
+     if(user.data.depart==="CSE"){
+      setdepart("Comps Eng");
+     }else if(user.data.depart==="MECH"){
+      setdepart("Mech Eng");
+     }else if(user.data.depart==="IT"){
+      setdepart("IT depart");
+     }else{
+      setdepart("Electrical Eng");
+     }
+  },[user])
+
   return (
-    <div className="sidebar">
-      
-  <div className="">
-    <NavLink
-      to="/teacher/profile"
-      className={({ isActive }) =>
-        isActive ? isActiveStyle : isNotActiveStyle
-      }>
-      <AccountBoxIcon className="" />
-      <h1 className="font-normal">Profile</h1>
-    </NavLink>
-
-    <NavLink
-      to="/teacher/myclass"
-      className={({ isActive }) =>
-        isActive ? isActiveStyle : isNotActiveStyle
-      }>
-      <ViewListIcon className="" />
-      <h1 className="font-normal">My class</h1>
-    </NavLink>
-  </div>
-
-      <div className="">
-      <NavLink
-        to="/teacher/uploadmark"
-        className={({ isActive }) =>
-          isActive ? isActiveStyle : isNotActiveStyle
-        }>
-        <FileUploadIcon className="" />
-        <h1 className="font-normal">Upload mark</h1>
-      </NavLink>
-  
-      <NavLink
-        to="/teacher/attendance"
-        className={({ isActive }) =>
-          isActive ? isActiveStyle : isNotActiveStyle
-        }>
-        <BorderColorIcon className="" />
-        <h1 className="font-normal">Attendance</h1>
-      </NavLink>
-
-      <NavLink
-        to="/teacher/defaulter"
-        className={({ isActive }) =>
-          isActive ? isActiveStyle : isNotActiveStyle
-        }>
-        <BorderColorIcon className="" />
-        <h1 className="font-normal">Defaulter</h1>
-      </NavLink>
+    <nav className="sidebar">
+    <div class="text">
+    <img
+    id='preview'
+    src={
+      imgSrc.length <= 0
+        ? createImageFromInitials(500, user.data.name, "#C9243F")
+        : imgSrc
+    }
+    alt='profile-pic'
+  />
+    <div className="details">
+      <h4>{user.data.name}</h4>
+      <p>{`${depart}`}</p>
     </div>
+     </div>
 
-    <div className="">  
-      <NavLink
-        to="/teacher/faqs"
-        className={({ isActive }) =>
-          isActive ? isActiveStyle : isNotActiveStyle
-        }>
-        <QuestionAnswerIcon className="" />
-        <h1 className="font-normal">FaQs</h1>
-      </NavLink>
-    </div>
-    </div>
+    <ul>
+    <li  onClick={(e)=>{
+        e.preventDefault();
+        setdashboard(true);
+        setattendance(false);
+        setmyclass(false);
+        setdefaulter(false);
+        setuploadmark(false);
+        setfaqs(false);
+        navigate("/teacher");
+    }} className={dashboard ?  "active" : "notactive"} ><h4 className='h1' >DashBoard</h4> </li>
+
+
+    <li  onClick={(e)=>{
+       e.preventDefault();
+       setdashboard(false);
+       setattendance(false);
+       setmyclass(true);
+       setdefaulter(false);
+       setuploadmark(false);
+       setfaqs(false);
+      navigate("/teacher/myclass");
+    }} 
+     className={myclass ?  "active" : "notactive"} 
+    ><h4 className='h1' >My Class</h4></li> 
+
+
+     <li onClick={(e)=>{
+       e.preventDefault();
+       setdashboard(false);
+       setattendance(true);
+       setmyclass(false);
+       setdefaulter(false);
+       setuploadmark(false);
+       setfaqs(false);
+       navigate("/teacher/attendance");
+     }} className={attendance ?  "active" : "notactive"}  >
+      <h4 className='h1' >Attendance</h4></li>
+
+
+     <li onClick={(e)=>{
+                e.preventDefault();
+                setdashboard(false);
+                setattendance(false);
+                setmyclass(false);
+                setdefaulter(false);
+                setuploadmark(true);
+                setfaqs(false);
+                navigate("/teacher/uploadmark");
+     }}
+     className={uploadmark ?  "active" : "notactive"}  ><h4  className='h1' >Upload mark</h4></li>
+          
+     <li onClick={(e)=>{
+        e.preventDefault();
+        setdashboard(false);
+        setattendance(false);
+        setmyclass(false);
+        setdefaulter(true);
+        setuploadmark(false);
+        setfaqs(false);
+        navigate("/teacher/defaulter");
+     }}  className={defaulter ?  "active" : "notactive"} 
+     ><h4 className='h1' >defaulter</h4></li>
+
+
+     <li  onClick={(e)=>{
+                  e.preventDefault();
+                  setdashboard(false);
+                  setattendance(false);
+                  setmyclass(false);
+                  setdefaulter(false);
+                  setuploadmark(false);
+                  setfaqs(true);
+                  navigate("/teacher/faqs");
+     }} className={faqs ?  "active" : "notactive"} ><h4 className='h1' >FaQs</h4></li>
+    </ul>
+
+  </nav>
+
   );
 }
 
-export default scrollbar;
+export default Scrollbar;

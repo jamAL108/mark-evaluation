@@ -134,3 +134,6 @@ export const STUD_GET_NOTICE_ERROR = "STUD_GET_NOTICE_ERROR";
 
 export const RESULT = "RESULT";
 export const RESULT_ERROR ="RESULT_ERROR";
+
+export const CURRENT_DATES = "CURRENT_DATES";
+export const PREVIOUS_DATES= "PREVIOUS_DATES";

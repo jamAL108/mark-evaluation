@@ -1,0 +1,112 @@
+.studentsmarks{
+    position: absolute;
+    left: 17%;
+    width: 83%;
+    height: 100vh;
+    background-color: #E4DAE6 ;
+}
+.exams{
+    margin: 2rem;
+    height: 20%;
+    width: 100%;
+}
+.bttttn {
+    background-color: #C9243F;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center; 
+    text-decoration: none; 
+    display: inline-block; 
+    font-size: 16px; 
+    margin: 4px 2px; 
+    cursor: pointer;
+    border-radius: 8px; 
+    transition: all;
+}
+.bttttn:hover{
+    transition: 0.5s ease-out;
+    background-color: white;
+    border: none;
+    color: #C9243F;
+}
+
+
+.studentsmarks .error{
+    width: 100%;
+    height: 30%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.studentsmarks .error h1 .icon{
+    width: 3rem;
+    height: 3rem;
+    opacity: 0.7;
+}
+
+.studentsmarks .error h1{
+    font-family: 'Poppins', sans-serif;   
+     position: absolute;
+    left: 3rem;
+    margin-top: 0rem;
+    text-transform: capitalize;
+    font-weight: 300;
+    color: #808080;
+    font-size: 2.5rem;
+}
+
+
+
+
+.marks .tablee{
+    height: 80%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items:flex-start;
+}
+
+
+.marks .tablee table{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-collapse: collapse;
+    width: 80%;
+    height: 50%;
+    border: 1px solid #bdc3c7;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2), -1px -1px 8px rgba(0, 0, 0, 0.2);
+}
+
+.marks .tablee table tr {
+    transition: all .2s ease-in;
+    cursor: pointer;
+}
+
+.marks .tablee table tr th,
+.marks .tablee table tr td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.marks .tablee table #headering {
+    background-color: #C9243F;
+    color: #fff;
+}
+
+.marks .tablee table tr:hover {
+    background-color: #f5f5f5;
+    transform: scale(1.02);
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2), -1px -1px 8px rgba(0, 0, 0, 0.2);
+}
+.marks .tablee table tr .name{
+    text-transform: capitalize;
+}
+@media only screen and (max-width: 768px) {
+    .frontage .tablee table {
+        width: 90%;
+    }
+}

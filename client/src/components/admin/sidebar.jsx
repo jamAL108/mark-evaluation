@@ -14,7 +14,7 @@ const isActiveStyle =
 "flex items-center px-5 gap-3 text-blue-600 transition-all duration-200 ease-in-out capitalize hover:bg-gray-200 py-2 my-1";
 function Sidebar(){
     return(
-        <div className="sidebar">
+        <div className="sidebarr">
         <div className="side">
           <div className="a">
             <NavLink

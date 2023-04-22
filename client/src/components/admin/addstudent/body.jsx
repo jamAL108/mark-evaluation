@@ -72,7 +72,7 @@ const clear = async(e)=>{
 }
   return (
     <div className="addbody" style={{background:"white"}}> 
-    <div className="header">
+    <div className="heade">
         add Student
     </div>
     <form method="POST">

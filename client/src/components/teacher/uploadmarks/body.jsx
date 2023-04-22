@@ -4,6 +4,7 @@ import {useSelector} from 'react-redux';
 import { useDispatch } from 'react-redux';
 import {getstudent , uploadmark } from '../../../redux/action/facultyaction.js';
 import { MARKS_UPLOADED, MARKS_UPLOAD_ERROR, T_GET_ALL_STUDENT , T_GET_ALL_STUDENT_ERROR } from '../../../redux/actiontype.js';
+import './body.css';
 
 const Body = () => {
   const user = JSON.parse(localStorage.getItem("user"))

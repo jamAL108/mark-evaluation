@@ -1,0 +1,11 @@
+.dabba{
+    position: absolute;
+    left: 210px;
+    width: 83%;
+    height: 100vh;
+    display: flex;
+}
+
+.dabba .styled-table{
+    margin-top: 160px;
+}

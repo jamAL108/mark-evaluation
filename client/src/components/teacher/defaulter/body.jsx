@@ -6,6 +6,7 @@ import { getsubjects } from '../../../redux/action/facultyaction';
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import './body.css';
 const Body = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const clas = user.data.class;

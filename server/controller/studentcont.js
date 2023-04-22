@@ -68,13 +68,14 @@ export const Updatepassword = async(req,res)=>{
 export const Getnotice =async(req,res)=>{
   const errors = {backenderror:String , noticeerror:String}
   try{
-       const data = await Notice.find({too:"students"})
-       if(!data){
+       const data = await Notice.find({too:{ $in: ["Students", "All"] }})
+       if(data.length===0){
         errors.noticeerror = "no notice have being released in recent days"
         return res.status(404).send({error:errors})
-       }else{
-        return res.status(200).send({message:"notice fetched" , response:data})
        }
+        console.log(data);
+        return res.status(200).send({message:"notice fetched" , response:data})
+
   }catch(err){
     errors.backenderror=err;
     return res.status(404).send({error:errors})
@@ -83,15 +84,14 @@ export const Getnotice =async(req,res)=>{
 
 
 export const Viewfaculty = async(req,res)=>{
-   const errors = {backenderror:String , facultyerror:String}
+   let errors = {backenderror:"" , facultyerror:""}
    try{
        const {division , year} = req.body;
        console.log(req.body);
           const data = await Faculty.find({class:{$elemMatch:{division:division , year:year}}})
-          console.log(data);
-          console.log
-          if(!data){
-            errors.facultyerror="no faculty yet assigned";
+          if(data.length===0){
+            errors.facultyerror="no faculty assigned yet pleae contact admin....!";
+            console.log( errors.facultyerror);
             return res.status(404).send({error:errors})
           }else{
           const resp=[];
@@ -108,8 +108,6 @@ export const Viewfaculty = async(req,res)=>{
               }
               resp.push(obj1);
            }
-           console.log("rait");
-           console.log(resp);
             return res.status(200).send({message:"faculty received" , response:resp})
           }
    }catch(err){
@@ -127,8 +125,8 @@ export const Getmark = async(req,res)=>{
      console.log(data);
       const marks = await Examination.find({student:data._id ,  depart:data.depart , exam:data.exam })
       console.log(marks);
-      if(!marks){
-          errors.markerror="marks have not yet uploaded"
+      if(marks.length===0){
+          errors.markerror="marks have not yet uploaded ....!"
           return res.status(404).send({error:errors})
       }else{
         var totalmark=0;
@@ -242,7 +240,7 @@ export const viewattendanc = async(req,res)=>{
       let temp=[];
         for(var p=0;p<subjects.length;p++){
             const atte = await attendance.findOne({student:data._id , subject:subjects[p]._id});
-            let percentage= (atte.totalLecturesByFaculty[m].value/atte.lectureAttended[m].value)*100;
+            let percentage= (atte.lectureAttended[m].value/atte.totalLecturesByFaculty[m].value)*100;
              const obj={
               _id:atte._id,
               subject:subjects[p].subjectName,
@@ -255,8 +253,6 @@ export const viewattendanc = async(req,res)=>{
         }
         monthly.push(temp);
      }
-     console.log(monthly);
-     console.log(overal);
      return res.status(200).send({message:"sended",month:monthly , overall:overal});
   }catch(err){
     errors.backenderror=err;
@@ -269,6 +265,7 @@ export const viewdates = async(req,res)=>{
   const errors = {backenderror:String , atterror:String}
   try{
       const data =req.body;
+      console.log(data);
       const subjects = await Subjects.find({depart:data.depart , year:data.year})
       let curmonth=[];
       let prevmonth=[];
@@ -277,10 +274,23 @@ export const viewdates = async(req,res)=>{
         const month = date.getMonth()+1;
         const vaar = await attendance.findOne({student:data._id , subject:subjects[i]._id});
          const curdates = await attenddates.find({attendance:vaar._id , month:month});
-         curmonth(curdates);
+         const subj1={
+          subjectname:subjects[i].subjectName,
+          subjectcode:subjects[i].subjectCode,
+          dates:curdates
+         }
+         curmonth.push(subj1);
          const prevdates = await attenddates.find({attendance:vaar._id , month:month-1});
-         prevmonth
+         const subj2={
+          subjectname:subjects[i].subjectName,
+          subjectcode:subjects[i].subjectCode,
+          dates:prevdates
+         }
+         prevmonth.push(subj2);
       }
+      console.log(curmonth);
+      console.log(prevmonth);
+      return res.status(200).send({message:"sended",curmonth:curmonth,prevmonth:prevmonth});
       }catch(err){
     errors.backenderror=err;
     console.log(err);

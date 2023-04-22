@@ -5,7 +5,7 @@ import './Body.css';
 const Body = () => {
     const [value, onChange] = useState(new Date());
   return (
-       <div className="similarbody">
+       <div className="tsimilarbody">
         <div className="calendar">
             <Calender onChange={onChange} value={value}/>
         </div>

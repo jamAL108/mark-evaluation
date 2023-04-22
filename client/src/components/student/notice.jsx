@@ -2,45 +2,69 @@ import React, { useEffect , useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getnotice } from '../../redux/action/studentaction';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { STUD_GET_NOTICE } from '../../redux/actiontype';
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 function Notice() {
-  const [error , seterror] = useState({})
+  const [error , seterror] = useState({});
   const store = useSelector((state)=>state);
   const [noticeswitch , setnoticeswitch] = useState(false);
   const [headnotice , setheadnotice] = useState([]);
   const [notice , setnotice] = useState({});
   const dispatch = useDispatch();
+  const [display ,setdisplay]=useState(false);
+  const array=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   
   useEffect(()=>{
+    if(Object.keys(store.student.getnoticeerror).length!==0){
     seterror(store.student.getnoticeerror);
+    setdisplay(false);
+    }
   },[store.student.getnoticeerror])
   
   useEffect(()=>{
-     setheadnotice(store.student.notice)
+    if(store.student.notice.length!==0){
+     setheadnotice(store.student.notice);
+     console.log(store.student.notice);
+     setdisplay(true);
+    }
       },[store.student.notice])
+
+
+      useEffect(()=>{
+        for(var i=0;i<headnotice;i++){
+          const months = headnotice[i].date.split("-");
+          console.log(months);
+          const month = months[1];
+          console.log(month);
+        }
+      },[headnotice])
   
   useEffect(()=>{
      dispatch(getnotice());
   },[dispatch])
 
   return (
-    <div className="notice" style={{background:"white"}}>
-      <h1 className='head'>Notice</h1>
+<>
+      <h1 className='headdd'>Notice</h1>
+      {display===false && (
+      <div className="error">
+      <ErrorOutlineRoundedIcon className='icon' />
       <h1>{error.noticeerror}</h1>
-      {noticeswitch===false && Object.keys(error).length === 0 &&(
+      </div>
+      )}
+      {display===true && noticeswitch===false && Object.keys(error).length === 0 &&(
       <div className="headercont">
+
       {headnotice?.map((fac,idx)=>(
-        <button onClick={(e)=>{
+        <div className='toast' onClick={(e)=>{
           setnoticeswitch(true)
           setnotice(fac);
         }}>
-   <div
+          <div className="container-1">
+             
+          </div>
+    <div 
          key={idx}
-     className="cont">
-        <h1
-      className="cont">
-      {idx + 1}
-     </h1>
+     className="container-2">
      <h1
      className="cont">
      {fac.from}
@@ -54,7 +78,8 @@ function Notice() {
     {fac.date}
     </h1>
     </div>
-    </button>
+    </div>
+
             ) )}
       </div>
       )
@@ -75,7 +100,7 @@ function Notice() {
     </div>
    </div>
 ) }
-    </div>
+  </>
 )
 }
 

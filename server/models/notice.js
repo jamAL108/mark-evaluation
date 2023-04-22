@@ -9,8 +9,7 @@ const notice = mongoose.Schema({
         required:true
     },
     too:{
-        type:String,
-        enum:["teachers","students","all"]
+        type:String
     },
     from:{
         type:String,

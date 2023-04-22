@@ -1,0 +1,9 @@
+.header{
+    position: sticky;
+    top: 0;
+    left: 17%;
+    height: 8%;
+    background-color: #ddd;
+    display: flex;
+    justify-content: space-around;
+}

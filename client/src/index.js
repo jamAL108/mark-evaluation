@@ -8,6 +8,7 @@ import { createStore, applyMiddleware, compose } from "redux";
 import {BrowserRouter } from 'react-router-dom';
 import reducers from "./redux/reducers";
 import thunk from "redux-thunk";
+import { ProSidebarProvider } from 'react-pro-sidebar';
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
@@ -16,7 +17,9 @@ root.render(
   <BrowserRouter>
   <React.StrictMode>
   <Provider store={store}>
+   <ProSidebarProvider>
     <App />
+    </ProSidebarProvider>
     </Provider>
   </React.StrictMode>
   </BrowserRouter>

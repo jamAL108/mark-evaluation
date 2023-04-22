@@ -13,7 +13,7 @@ import { STUDENT_LOGIN,
    MONTH_ATTENDANCE , 
   ATTENDANCE_ERROR ,
   OVERALL_ATTENDANCE,
-  ATTENDANCE_DATES , RESULT ,RESULT_ERROR  } from "../actiontype";
+  CURRENT_DATES , PREVIOUS_DATES , RESULT ,RESULT_ERROR  } from "../actiontype";
   import {BASE_URL} from '../helper.js';
 const URL= "http://localhost:8000";
 
@@ -107,6 +107,7 @@ export const Viewfaculty = (formdata)=>async(dispatch)=>{
     if(data.status===200){
      dispatch({type:VIEW_FACULTY , payload:msg.response})
     }else if(data.status===404){
+      console.log(msg.error)
      dispatch({type:VIEW_FACULTY_ERROR , payload:msg.error})
     }
    }catch(err){
@@ -188,7 +189,7 @@ export const viewattendance = (formdata) =>async(dispatch)=>{
 
 export const getdates = (formdata)=>async(dispatch)=>{
     try{
-      const api = `${URL}/stud/attenddates`
+      const api = `${URL}/stud/dates`
       const data = await fetch(api,{
         method:"POST",
         headers:{
@@ -200,8 +201,8 @@ export const getdates = (formdata)=>async(dispatch)=>{
     const msg = await data.json();
     console.log(msg);
     if(data.status===200){
-      console.log("hiiiii");
-     dispatch({type:ATTENDANCE_DATES , payload:msg.dates})
+     dispatch({type:CURRENT_DATES , payload:msg.curmonth})
+     dispatch({type:PREVIOUS_DATES , payload:msg.prevmonth})
     }else if(data.status===404){
      dispatch({type:ATTENDANCE_ERROR , payload:msg.error})
     }

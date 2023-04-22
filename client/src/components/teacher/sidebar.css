@@ -1,0 +1,23 @@
+.sidebar {
+    width: 17%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #333333;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+  }
+  
+  .sidebar .a {
+    width: auto;
+    height: auto;
+    margin-left: 3rem;
+    margin-top: 3rem;
+    display: flex;
+  }
+  
+  .sidebar .a:hover {
+    background-color: #e9ecef;
+  }
+  
+  

@@ -60,12 +60,35 @@ const Body = () => {
      },[store.student.overralatterror])
 
   return (
-       <div className="similarbody" style={{background:"white"}}>
+       <div className="ssimilarbody" style={{background:"#E4DAE6"}}>
         <div className="upper">
           <div className="attenchart">
             <h1>overall Attendance</h1>
             <div className="circle" style={{width:"250px" , height:"250px" , paddingBottom:"20px"}}>
             <CircularProgressbar
+             className='progress'
+  value={percentag}
+  text={`${percentag}%`}
+  style={{}}
+  styles={buildStyles({
+    rotation: 0,
+    strokeLinecap: 'round',
+    textSize: '16px',
+    pathTransitionDuration: 1.5,
+    pathColor: color,
+    textColor: '#000',
+    trailColor: '#d6d6d6',
+    backgroundColor: '#3e98c7'
+  })}
+/>
+<h2>Lec attended:{lectureatt} | Overall Lec:{overall}</h2>
+</div>
+</div>
+          <div className="attenchart">
+          <h1>overall Attendance</h1>
+            <div className="circle" style={{width:"250px" , height:"250px" , paddingBottom:"20px"}}>
+            <CircularProgressbar
+            className='progress'
   value={percentag}
   text={`${percentag}%`}
   style={{}}
@@ -81,10 +104,7 @@ const Body = () => {
   })}
 />
 <h2>{lectureatt}/{overall}</h2>
-</div>
-          </div>
-        <div className="calendar">
-            <Calender onChange={onChange} value={value}/>
+        </div>
         </div>
         </div>
         <div className="notice">

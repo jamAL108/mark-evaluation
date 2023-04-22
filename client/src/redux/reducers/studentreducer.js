@@ -20,6 +20,9 @@ import {
      , OVERALL_ATTENDANCE
      , ATTENDANCE_ERROR
      , ATTENDANCE_DATES,
+PREVIOUS_DATES
+ , 
+     CURRENT_DATES,
      RESULT ,
      RESULT_ERROR
 } from '../actiontype.js';
@@ -46,7 +49,9 @@ const initialstate={
     monthattendance:[],
     overallattendance:[],
     result:{},
-    resulterror:""
+    resulterror:"",
+    curmonth:[],
+    prevmonth:[]
 }
 
 const student =(state=initialstate , action) =>{
@@ -84,7 +89,9 @@ const student =(state=initialstate , action) =>{
             monthattendance:[],
             overallattendance:[],
             result:{},
-            resulterror:""
+            resulterror:"",
+    curmonth:[],
+    prevmonth:[]
 
         }
     case STUD_UPDATE_PASSWORD: 
@@ -135,10 +142,14 @@ const student =(state=initialstate , action) =>{
         return{
             ...state , attendanceerror:action.payload
         }
-    case ATTENDANCE_DATES:
+    case CURRENT_DATES:
         return{
-            ...state , dates:action.payload
+            ...state , curmonth:action.payload
         }
+    case PREVIOUS_DATES:
+        return{
+            ...state , prevmonth:action.payload
+        }    
     case RESULT:
         return{
             ...state , result:action.payload

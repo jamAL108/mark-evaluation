@@ -1,26 +1,92 @@
-/* .sidebar{
-    width: 240px;
-    background: #1e1e1e;
-    height: 100vh;
+.sidebar{
     position: fixed;
-    top:0;
-    left:0;
-    transition: all .3s;
+    width: 17%;
+    height: 100vh;
+    background: #ffffff;
+    transition: left 0.4s ease;
+    box-shadow: 0px 11px 111px -6px rgba(0,0,0,0.71);
   }
-  .sidebar .a{
-    height: 65px;
-    outline: none;
+  .sidebar .text{
+    color: white;
+    background: #E4DAE6;
+    letter-spacing: 1px;
+    height: 3.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  .sidebar .a h1{
-    display: block;
+
+    .sidebar .text #preview{
+      width: 3rem;
+      height: 3rem;
+      border-radius: 35px;
+    }
+
+    .sidebar .text .details {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    
+    .sidebar .text .details h4{
+      color: white;
+       font-size: 0.8rem;
+       font-weight: 500;
+       text-transform: capitalize;
+    }
+    .sidebar .text .details p{
+      font-size: 0.9rem;
+      color: white;
+      font-weight: 300;
+   }
+    
+
+  nav ul{
+    background: #ffffff;
     height: 100%;
     width: 100%;
-    line-height: 70px;
-    font-size: 20px;
-    color: white;
-    padding-left: 10%;
-    background: #1e1e1e;
-    border-top: 1px solid rgba(255,255,255,.1);
-    border-bottom: 1px solid black;
-    border-left: 5px solid transparent;
-  } */
+    list-style: none;
+  }
+  nav ul li{
+    line-height: 60px;
+    height: 3.6rem;
+    width: 100%;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-left: 3px solid transparent;
+    border-bottom: 1.5px solid transparent;
+    position: relative;
+  }
+  nav ul li:hover{
+    cursor: pointer;
+  }
+  nav ul li:last-child{
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  nav ul li .h1{
+    position: absolute;
+    color: #808080;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 300;
+    display: block;
+    width: auto;
+    left: 1rem;
+  }
+
+  nav ul li.active {
+    background:#fff;
+    border-left-color: #C9243F;
+    border-bottom-color: #C9243F;
+  }
+  nav ul  .li{
+    line-height: 42px;
+    border-top: none;
+  }
+  nav ul li.active  .h1{
+    color: #C9243F;
+    border-left-color: transparent;
+  }
+  nav ul  li .h1:hover{
+    color: #C9243F!important;
+    /* background: #1e1e1e!important; */
+  }

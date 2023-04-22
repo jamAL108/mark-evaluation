@@ -12,7 +12,7 @@ function Header(){
         navigate('/');
     }
     return(
-        <div className="header">
+        <div className="headerr">
             <img src={Logo} alt="" />
         <h3 className="head">Welcome</h3>
         <div className="logout">

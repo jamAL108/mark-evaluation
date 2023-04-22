@@ -121,11 +121,12 @@ export const Addnotice = async (req,res)=>{
        console.log("hello");
        const data = req.body;
        console.log(data);
-       const notice = await new Createnotice(data);
+       const notice =  new Createnotice(data);
        await notice.save();
        console.log("done");
        return res.status(200).send({message:"notice added" , success:"OK" , response:notice});
   }catch(err){
+    console.log(err);
     errors.Backenderror = "backend error";
     return res.status(404).send({error:errors});
   }

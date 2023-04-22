@@ -1,6 +1,7 @@
 import React, { useEffect ,useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getresult } from '../../../redux/action/studentaction';
+import './body.css';
 
 const Body = () => {
   const user = JSON.parse(localStorage.getItem("user"));

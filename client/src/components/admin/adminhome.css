@@ -18,7 +18,7 @@
     flex-direction: column;
 }
 
-.main-container .header{
+.main-container .headerr{
     width: 100%;
     height: 8%;
     display: flex;
@@ -27,13 +27,13 @@
 
 }
 
-.main-container .header img {
+.main-container .headerr img {
        width: auto;
        height: 100%;
        transform: translateX(-6rem);
 }
 
-.main-container .header h3{
+.main-container .headerr h3{
   font-style: semibold;
   color: black;
 }
@@ -61,14 +61,14 @@ grid-template-columns: 18% 82%;
 
 
 }
-.main-container .sidebar {
+.main-container .sidebarr {
     height: 100%;
 }
-.main-container .sidebar .side{
+.main-container .sidebarr .side{
     border: 1px solid black;
 }
 
-.sidebar h1 {
+.sidebarr h1 {
     color: black;
     font-size: 0.7rem;
 } 

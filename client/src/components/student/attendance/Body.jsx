@@ -2,6 +2,7 @@ import React , {useEffect , useState} from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {useSelector , useDispatch} from "react-redux"
 import { ATTENDANCE, ATTENDANCE_DATES, ATTENDANCE_ERROR } from '../../../redux/actiontype';
+import './body.css';
 import { viewattendance ,getdates } from '../../../redux/action/studentaction';
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,12 +14,17 @@ function Body() {
   const dispatch = useDispatch();
   const [arrow, setarrow] = useState(false);
   const [data, setdata] = useState([]);
+  const [namemonth , setnamemonth]=useState("");
   const [main, setmain] = useState([]);
-  const [dates, setdates] = useState([]);
+  const [subj , setsubj]= useState("");
+  const [curdates, setcurdates] = useState([]);
+  const [prevdates,setprevdates]=useState([]);
+  const [dates , setdates]=useState([]);
   const [display, setdisplay] = useState(false);
   const [month, setmonth] = useState("");
   const [make, setmake] = useState(false);
   const array = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+  const array2 = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
   const [value, setvalue] = useState({
     _id: user.data._id,
     depart: user.data.depart,
@@ -33,7 +39,7 @@ function Body() {
 
   useEffect(() => {
     dispatch(viewattendance(value));
-    // dispatch(getdates(value));
+    dispatch(getdates(value));
   }, [dispatch]);
 
   useEffect(() => {
@@ -59,6 +65,7 @@ function Body() {
       if (month !== "Overall") {
         for (var i = 0; i < array.length; i++) {
           if (array[i] === month) {
+            setnamemonth(array2[i]);
             setmain(data[i]);
             console.log(data[i]);
           }
@@ -79,12 +86,22 @@ function Body() {
     }
   }, [main]);
 
+
+
   useEffect(() => {
-    if (store.student.dates) {
-      setdates(store.student.dates);
-      console.log(store.student.dates);
+    if (store.student.curmonth) {
+      setcurdates(store.student.curmonth);
+      console.log(store.student.curmonth);
     }
-  }, [store.student.dates]);
+  }, [store.student.curmonth]);
+
+  useEffect(() => {
+    if (store.student.prevmonth) {
+      setprevdates(store.student.prevmonth);
+      console.log(store.student.prevmonth);
+    }
+  }, [store.student.curmonth]);
+
 
   useEffect(() => {
     if (dates.length !== 0) {
@@ -94,24 +111,52 @@ function Body() {
 
 
   const getattendancedate = async (subject) => {
+    console.log("heelo");
     const date = new Date();
     const curmonth = date.getMonth();
-    let prevmonth;
-    if (curmonth === 0) {
-      prevmonth = 11;
-    } else {
-      prevmonth = curmonth - 1;
-    }
-    for (var i = 0; i < array.length; i++) {
-      if (array[i] === month) {
-        if (i === curmonth || i === prevmonth) {
+    console.log(curmonth);
+    let previous=0;
+    if (month !== "Overall") {
+      for (var i = 0; i < array.length; i++) {
+        if (array[i] === month) {
+          console.log(i);
+            if(i===0){
+              previous=11;
+            }else{
+              previous=curmonth-1;
+              console.log(previous);
+            }
+            if(i===curmonth){
+               for(var k=0;k<curdates.length;k++){
+                if(curdates[k].subjectcode===subject.subjectCode){
+                  console.log(curdates[k]);
+                  console.log("bkudbkwue");
+                  setsubj(subject);
+                   setdates(curdates[k].dates);
+                }
+               }
+            }else if(i===previous){
+              for(var k=0;k<prevdates.length;k++){
+               if(prevdates[k].subjectCode===subject.subjectCode){
+                  setdates(curdates[k].dates);
+                  setsubj(subject);
+               }
+              }
+           }
+            break;
         }
       }
+    } else {
+      console.log("namaste");
     }
   };
 
+  useEffect(()=>{
+     console.log(subj);
+  },[subj])
+
     return (
-      <div className="attce" style={{ background: "white" }}>
+      <div className="attce" >
         {arrow===false && (
           <div className="frontage">
             <div className="formgroup">
@@ -120,12 +165,14 @@ function Body() {
                 required
                 displayEmpty
                 sx={{ height: 36 }}
-                defaultValue=""
+                defaultValue="" 
+                className='select'
                 inputProps={{ "aria-label": "Without label" }}
                 value={month}
                 onChange={(e) => {
                   setmonth(e.target.value);
                   console.log(e.target.value);
+                  setnamemonth("");
                 } }>
                 <MenuItem value="">None</MenuItem>
                 <MenuItem value="Overall">Overall</MenuItem>
@@ -144,9 +191,9 @@ function Body() {
               </Select>
             </div>
             {display === true && main.length !== 0 && (
-              <table className='styled-table'>
-                <thead>
-                  <tr>
+              <div className="tablee">
+              <table className='style-table'>
+              <tr id='headering'>
                     <th className="heading">
                       Sr no.
                     </th>
@@ -163,16 +210,15 @@ function Body() {
                       percentage
                     </th>
                   </tr>
-                </thead>
-                <tbody>
                   {main?.map((attend, idx) => (
                     <tr
                       key={idx}
-                      className="cont">
+                      className="cont" onClick={(e) => {
+                        console.log("heelo");
+                        getattendancedate(attend);
+                      }} >
                       <td
-                        className="contiii" onClick={(e) => {
-                          getattendancedate(attend);
-                        } }>
+                        className="contiii">
                         {idx + 1}
                       </td>
                       <td
@@ -193,23 +239,28 @@ function Body() {
                       </td>
                     </tr>
                   ))}
-                </tbody>
               </table>
+              </div>
             )}
           </div>
         )}
 
+
+
+
         {arrow === true && dates.length !== 0 && (
           <div className="secondpage">
-            <ArrowBackIcon onClick={(e) => {
+            <ArrowBackIcon className='icon' onClick={(e) => {
               setarrow(false);
-              dispatch({ type: ATTENDANCE_DATES, payload: [] });
-              dispatch({ type: ATTENDANCE_ERROR, payload: {} });
               setdates([]);
+              setsubj({});
             } } />
-            <table className='styled-table'>
-              <thead>
-                <tr>
+               <div className="textarea">
+                <h1>{namemonth} : {subj.subject}</h1>
+               </div>
+               <div className="tableee">
+            <table>
+            <tr id='headering' >
                   <th className="heading">
                     Sr no.
                   </th>
@@ -217,15 +268,13 @@ function Body() {
                     Date
                   </th>
                   <th className="heading">
-                    lecture
+                    Lecture
                   </th>
                   <th className="heading">
                     Attendance
                   </th>
                 </tr>
-              </thead>
-              <tbody>
-                {dates?.map((date, idx) => (
+                { dates.map((date, idx) => (
                   <tr
                     key={idx}
                     className="cont">
@@ -239,16 +288,16 @@ function Body() {
                     </td>
                     <td
                       className="cont">
-                      {date.lecture}
+                      {date.time}
                     </td>
                     <td
                       className="cont">
-                      {date.attendance}
+                      {date.status}
                     </td>
                   </tr>
                 ))}
-              </tbody>
             </table>
+            </div>
           </div>
         )}
 

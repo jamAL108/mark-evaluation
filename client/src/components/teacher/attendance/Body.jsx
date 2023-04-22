@@ -4,6 +4,7 @@ import moment from "moment";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { attendancestudentfetch, MarkAttendance } from '../../../redux/action/facultyaction';
 import {  ATTENDANCE_MARKED, ATTENDANCE_MARKED_ERROR , T_GET_ALL_STUDENT_ERROR , T_GET_ALL_STUDENT} from '../../../redux/actiontype';
+import './body.css';
 const Body = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const clas =user.data.class;

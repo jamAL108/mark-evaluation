@@ -29,7 +29,7 @@ function Addnotice(){
       setValue({
         date:"",
         topic:"",
-        To:"",
+        too:"",
         from:"",
         content:""
        })
@@ -49,7 +49,7 @@ function Addnotice(){
        setValue({
         date:"",
         topic:"",
-        To:"",
+        too:"",
         from:"",
         content:""
        })
@@ -92,9 +92,9 @@ function Addnotice(){
                         displayEmpty
                         sx={{ height: 36 }}
                         inputProps={{ "aria-label": "Without label" }}
-                        value={value.To}
+                        value={value.too}
                         onChange={(e) =>
-                          setValue({ ...value, To: e.target.value })
+                          setValue({ ...value, too: e.target.value })
                         }>
                         <MenuItem value="">None</MenuItem>
                         <MenuItem value="Students">students</MenuItem>

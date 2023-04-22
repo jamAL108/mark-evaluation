@@ -5,11 +5,15 @@ import Scrollbar from '../scrollbar';
 
 function attendance(){
   return (
-    <>
+    <div className="studmain">
+    <div className="studmain-container">
     <Header/>
+    <div className="studsub">
     <Scrollbar/>
     <Body/>
-    </>
+    </div>
+    </div>
+    </div>
   )
 }
 

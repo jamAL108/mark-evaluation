@@ -1,12 +1,17 @@
-import React from 'react';
-import Logo from '../../images/logo.png';
-import LogoutSharpIcon from '@mui/icons-material/LogoutSharp';
+import React ,{useState , useEffect} from 'react';
+import Logo from '../../images/logobgremove.png';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch , useSelector } from 'react-redux';
-
+import Logout from '../../images/signout.png';
+import './navbar.css';
 function Header(){
     const navigate =  useNavigate();
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem("user"));
+    const [name , setname]= useState("");
+    useEffect(()=>{
+        setname(user.data.name.substring(0, user.data.name.indexOf(' ')));
+    },[user])
     const logout=(e)=>{
         dispatch({type:"TEACHER_LOGOUT" });
         navigate('/');
@@ -14,12 +19,14 @@ function Header(){
     return(
         <div className="header">
         <div className="logo">
-            <img src={Logo} alt="" />
+            <img src={Logo} alt={"dylogo"} />
         </div>
-        <div className="head">Welcome</div>
-        <div className="logout">
-            <p>admin</p>
-            <button onClick={logout}><LogoutSharpIcon /></button>
+        <div className="head">
+            <p>Welcome , {name}</p>
+        </div>
+            <div className="logout">
+            <p>sign out</p>
+            <img src={Logout} alt="" onClick={logout} />
         </div>
         </div>
         );

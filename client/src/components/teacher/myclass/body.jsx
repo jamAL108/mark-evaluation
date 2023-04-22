@@ -1,5 +1,5 @@
 import React , {useState} from 'react'
-
+import './body.css';
 const Body = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [error , seterror] = useState("");
@@ -9,7 +9,7 @@ const Body = () => {
     seterror("You have not being yet initialized with any class pls contact the admin");
   }
   return (
-    <div className="dabba">
+    <div className="dabba" style={{background:"white"}}>
       <span>{error}</span>
       {error==="" && (
                   <table className='styled-table'>
