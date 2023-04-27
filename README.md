@@ -47,7 +47,7 @@
 
 ## Student session
 ![image](https://user-images.githubusercontent.com/115083239/234983424-9fef9bdd-b832-43c5-bc78-e9d8d7e820ac.png)
-![image](https://user-images.githubusercontent.com/115083239/234983082-a7edd7b0-d907-4d7e-9159-59af1f3fd1b9.png)
+![image](https://user-images.githubusercontent.com/115083239/234984332-c91ce73d-3d69-48d3-987d-d7a20f9a383a.png)
 ![image](https://user-images.githubusercontent.com/115083239/234983362-28d313c3-574c-4779-88f1-dac571f9d1d0.png)
 ![image](https://user-images.githubusercontent.com/115083239/234983632-bfe8e506-a2f5-4d73-a7fd-667a77aad275.png)
 ![image](https://user-images.githubusercontent.com/115083239/234983833-48710b70-f42f-4f8e-ad01-a8e629778dbd.png)
