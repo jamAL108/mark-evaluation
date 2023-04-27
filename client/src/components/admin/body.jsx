@@ -75,8 +75,9 @@ function Body(){
     },[store.admin.evensemupdated])
 
     const function_1 = () => {
-      const obj ={
-        per:store.admin.percent
+      console.log(user.data.defpercent);
+      const obj = {
+        per:user.data.defpercent
       }
       console.log("why brrooo");
       console.log(obj);

@@ -1,5 +1,5 @@
 import { formControlLabelClasses } from "@mui/material";
-import { FACULTY_LOGIN, FACULTY_LOGIN_ERROR, TEACH_UPDATE_PASSWORD , TEACH_UPDATE_PASSWORD_ERROR , FACULTY_LOG , TEACH_GET_NOTICE , TEACH_GET_NOTICE_ERROR , T_GET_ALL_STUDENT_ERROR , T_GET_ALL_STUDENT ,MARKS_UPLOADED , MARKS_UPLOAD_ERROR, ATTENDANCE_MARKED , ATTENDANCE_MARKED_ERROR , CC_DEFAULTER , GET_DEFAULTER , GET_DEFAULTER_ERROR , T_SUBJECT} from "../actiontype";
+import { FACULTY_LOGIN, FACULTY_LOGIN_ERROR, TEACH_UPDATE_PASSWORD , TEACH_UPDATE_PASSWORD_ERROR , FACULTY_LOG , TEACH_GET_NOTICE , TEACH_GET_NOTICE_ERROR , T_GET_ALL_STUDENT_ERROR , T_GET_ALL_STUDENT ,MARKS_UPLOADED , MARKS_UPLOAD_ERROR, ATTENDANCE_MARKED , ATTENDANCE_MARKED_ERROR , CC_DEFAULTER , GET_DEFAULTER , GET_DEFAULTER_ERROR , T_SUBJECT , OTHER_INFO} from "../actiontype";
 import {BASE_URL} from '../helper.js';
 const URL= "http://localhost:8000";
 
@@ -18,6 +18,7 @@ export const facultylogin =(formdata , navigate) => async (dispatch) =>{
           const ft = msg.response.passwordupdated;
           console.log(ft);
         dispatch({type:FACULTY_LOGIN, payload:msg.response})
+        dispatch({type:OTHER_INFO,payload:msg.otherinfo});
         dispatch({type:FACULTY_LOG , payload:true})
         if(ft===true){
           navigate("/teacher")

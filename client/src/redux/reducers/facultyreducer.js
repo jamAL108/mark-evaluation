@@ -21,7 +21,8 @@ import {
     GET_DEFAULTER,
     CC_DEFAULTER,
     GET_DEFAULTER_ERROR,
-    T_SUBJECT
+    T_SUBJECT , 
+    OTHER_INFO
   } from "../actiontype";
 
 const initialstate={
@@ -53,6 +54,9 @@ const faculty =(state=initialstate , action) =>{
         const data = action.payload;
         localStorage.setItem("user",JSON.stringify({data}));
         return { ...state, authordata: action.payload };
+    case OTHER_INFO:
+        const dataa =action.payload
+        localStorage.setItem("otherinfo",JSON.stringify({dataa}));
     case FACULTY_LOG:
         return {
             ...state , facultylogin:action.payload

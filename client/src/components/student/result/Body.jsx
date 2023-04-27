@@ -2,7 +2,7 @@ import React, { useEffect ,useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getresult } from '../../../redux/action/studentaction';
 import './body.css';
-
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 const Body = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const store = useSelector((state)=>state);
@@ -14,7 +14,6 @@ const Body = () => {
   const [practical , setpractical] = useState([]);
   const [totalmark , settotalmark] = useState(0);
   const [status,setstatus] = useState("Successful");
-   
   useEffect(()=>{
     const obj={
       _id:user.data._id
@@ -49,11 +48,18 @@ const Body = () => {
 
 
 return(
-  <div className="reefewv" style={{background:"white"}}>
+  <div className="reefewv">
+         {display===false && Object.keys(error).length!==0 &&(
+            <div className="error">
+                 <h1> <ErrorOutlineRoundedIcon className='icon' /> Ooops.. {error.resulterror}</h1>
+                 </div>
+         )}
           {display===true  && (
             <div className="mainresult">
+              <div className="upper">
               <h2>Name: {user.data.name}</h2>
               <h2>Rollno: {user.data.Rollno}</h2>
+              </div>
               <table>
                <thead>
                 <tr>
@@ -143,13 +149,15 @@ return(
                 <td colspan="2">Grand Total</td>
                 <td colSpan={3}>{totalmark}</td>
                 <td>{result.grandtotal}</td>
-                <td>{result.totalcredits}</td>
+                <td>{result.totalcredit}</td>
                 <td colSpan={3}>{result.totalCxG}</td>
                </tr>
                </tbody>
               </table>
+              <div className="lower">
               <h3>SGPI:{result.SGPI}</h3>
               <h3>Status:{status}</h3>
+              </div>
             </div>
           )}
         </div>

@@ -74,7 +74,7 @@ const faqsfunc=(e)=>{
 			/>
         <div className="details">
           <h4>{user.data.name}</h4>
-          <p>{`${year} ${user.data.division} div ${depart}`}</p>
+          <p>{`${year} ${user.data.division} div ${depart}`}.</p>
         </div>
          </div>
 

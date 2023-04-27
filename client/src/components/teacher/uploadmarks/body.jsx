@@ -229,7 +229,7 @@ const Body = () => {
 
 ////jsx coddeee
   return (
-    <div className="uploadmark" style={{background:"white"}}>
+    <div className="uploadmark">
        {cond===false  && (
         <div className="select-class">
           {clas?.map((dat,idx)=>(

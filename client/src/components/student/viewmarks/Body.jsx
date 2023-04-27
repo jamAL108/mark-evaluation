@@ -72,10 +72,8 @@ const Body = () => {
       </div>
       {display===false && marks.length===0 && Object.keys(error).length!==0  && (
       <div className="error">
-         <div className="error">
             <h1><ErrorOutlineRoundedIcon className='icon' /> {error.markerror}</h1>
             </div>
-     </div>
      )}
      { display===true && Object.keys(error).length===0 && marks.length!==0 && (
       <div className="marks">

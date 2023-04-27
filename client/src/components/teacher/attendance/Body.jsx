@@ -5,18 +5,21 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { attendancestudentfetch, MarkAttendance } from '../../../redux/action/facultyaction';
 import {  ATTENDANCE_MARKED, ATTENDANCE_MARKED_ERROR , T_GET_ALL_STUDENT_ERROR , T_GET_ALL_STUDENT} from '../../../redux/actiontype';
 import './body.css';
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 const Body = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const clas =user.data.class;
   const dispatch = useDispatch();
   const [cond , setcond] = useState(false);
   const [error , seterror] = useState({});
+  const [ownerror , setownerror] = useState("");
   const [students , setstudents] = useState([])
   const [value , setValue] = useState({
     date:moment().format('YYYY-MM-DD'),
     time:""
   });
   const [display , setdisplay] = useState(false);
+  const [maindisplay , setmaindisplay] = useState(false);
 
   const [subj , setsubj] = useState({
     depart:"",
@@ -28,6 +31,15 @@ const Body = () => {
   const store = useSelector((state)=>state)
   const [checkedValue, setCheckedValue] = useState([]);
   
+    
+  useEffect(()=>{
+    if(user.data.class.length===0){
+      setmaindisplay(false);
+      setownerror("You have not being yet initialized with any class pls contact the admin...!");
+    }else{
+      setmaindisplay(true);
+    }
+  },[user])
 
 const handlecheckbox=(e)=>{
        const tempCheck = checkedValue;
@@ -76,11 +88,34 @@ const uploadattendance=()=>{
 }
 
   return (
-    <div className="markattendance" style={{background:"white"}}>
-       {cond===false  && (
-        <div className="select-class">
-          {clas?.map((dat,idx)=>(
-             <button key={idx} onClick={(e)=>{
+    <div className="markattendance">
+   { maindisplay===false && (          
+            <div className="error">
+            <h1><ErrorOutlineRoundedIcon className='icon' />{ownerror}</h1>
+            </div>)}
+
+   {maindisplay===true && (
+      <div className="main-content">
+       {cond===false && (
+        <div className="tablee">
+          <table>
+            <tr id='headering' >
+              <th>
+                Sr no.
+              </th>
+               <th>
+                 Year
+               </th>
+               <th>
+                 Division
+               </th>
+               <th>
+                 Subject
+               </th>
+            </tr>
+            <tbody>
+            {clas?.map((dat,idx)=>(
+             <tr key={idx} onClick={(e)=>{
               e.preventDefault();
                 setcond(true)
                 setdisplay(false)
@@ -91,18 +126,20 @@ const uploadattendance=()=>{
                   subject:dat.subject
                 })
              }}>
-               <h1>Year: {dat.year}</h1>
-               <h1>Division : {dat.division}</h1>
-               <h1>Subject : {dat.subject}</h1>
-             </button>
+              <td>{idx+1}</td>
+               <td>{dat.year}</td>
+               <td>{dat.division}</td>
+               <td>{dat.subject}</td>
+             </tr>
           ))}
+            </tbody>
+          </table>       
         </div>
        )}
 
-      
-    {cond===true && (
+    {cond===true  && (
       <div className="attendance">
-          <ArrowBackIcon onClick={(e)=>{
+          <ArrowBackIcon className='icon' onClick={(e)=>{
                setcond(false);
                setsubj({depart:"", year:"", division:"",subject:""
               });
@@ -113,32 +150,35 @@ const uploadattendance=()=>{
                dispatch({type:T_GET_ALL_STUDENT , payload:[]})
                dispatch({type:T_GET_ALL_STUDENT_ERROR , payload:{}})
       }}/>
-        <div className="formgroup">
-                  <h1 className="DOB">Date :</h1>
+        <div className="details">
+        <div className="formgroupp">
+                  <h1 >Date :</h1>
                   <input
                     required
                     placeholder="YYYY-MM-DD"
-                    className="inpit"
                     type="date"
-                    value={moment().format('YYYY-MM-DD')}
+                    value={value.date}
                     onChange={(e) =>{
-                      setValue({ ...value, dob: e.target.value })
+                      setValue({ ...value, date: e.target.value })
                       console.log(value.date)
                     }
                     }
                   />
                 </div>
-        <div className="formgroup">
-        <h1 className="Time">Time :</h1>
-        <input type="text" name="Time" placeholder="Enter Time" id="Time" autoComplete='off' className="form-control" value={value.time} onChange={(e)=>{
+        <div className="formgroupp">
+        <h1>Time :</h1>
+        <input type="text" name="Time" placeholder="Enter Time" id="Time" autoComplete='off' className="" value={value.time} onChange={(e)=>{
       setValue( {...value , time:e.target.value})
      }} />
+       </div>
+       </div>
+
 
         <div className="entry">
          <h1>Attendance {value.date} : {value.time}</h1>
-         <table className='styled-table'>
-                  <thead>
-                   <tr>
+         <div className="tablee">
+         <table>
+                   <tr id='headering'>
                          <th className="heading">
                            Sr no.
                          </th>
@@ -152,7 +192,6 @@ const uploadattendance=()=>{
                            Attendance
                          </th>
                          </tr>
-                       </thead>
                        <tbody>
          {students?.map((student,idx)=>(
         <tr
@@ -178,11 +217,14 @@ const uploadattendance=()=>{
               ) )}
                   </tbody>
              </table>
-             <button onClick={uploadattendance}>Upload</button>
-         </div> 
-
-        </div>
+             </div> 
+             <div className="butn">
+             <button className='btn' onClick={uploadattendance}>Upload</button>
+             </div>
       </div>
+      </div>
+    )}
+    </div>
     )}
     </div>
   )

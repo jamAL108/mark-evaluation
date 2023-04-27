@@ -7,16 +7,18 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import './body.css';
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 const Body = () => {
   const user = JSON.parse(localStorage.getItem("user"));
+  const otherinfo = JSON.parse(localStorage.getItem("otherinfo"));
   const clas = user.data.class;
   const [other,setother] = useState({});
   const [cc,setcc] = useState({});
   const store = useSelector((state)=>state);
   const [doo,setdoo] = useState(true);
   const [ccdata,setccdata] = useState([]);
-  const [ccdisplay , setccdisplay] = useState(false);
-  const [otherdisplay , setotherdisplay] = useState(false);
+  const [ccdisplay , setccdisplay] = useState(true);
+  const [otherdisplay , setotherdisplay] = useState(true);
   const [otherdata,setotherdata] = useState({});
   const [othermain , setothermain] = useState([]);
   const [ccmonth , setccmonth] = useState("");
@@ -31,15 +33,36 @@ const Body = () => {
   const [tempotherdata,settempotherdata] = useState({});
   const array =["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
   const year=["FE","SE","TE","BE"];
+  const date = new Date();
+  const month = date.getMonth()+1;
 
+  const [montharray , setmontharray]=useState([]);
+
+  useEffect(()=>{
+    let arr=[];
+    for(var i=0;i<month;i++){
+      const val=i+1;
+      const obj={
+        month:array[i],
+        value:val.toString()
+      }
+      arr.push(obj);
+    }
+    setmontharray(arr);
+    console.log(arr);
+  },[month])
+ 
+    const [display , setdisplay]=useState(false);
     const lenn = clas.length;
     const noclasserror ="you have not been assigned to any classroom yet!";
     const dispatch = useDispatch();
     useEffect(()=>{
       if(lenn!==0){
         setsort([...clas].sort((a, b) => b.sort - a.sort));
+        setdisplay(true);
        }else{
         seterr(true);
+        setdisplay(false);
        }
     },[lenn])
 
@@ -54,7 +77,7 @@ const Body = () => {
         const obj={
           class:clas,
           depart:user.data.depart,
-          percent:store.admin.percent
+          percent:otherinfo.dataa.defpercent
         }
        dispatch(getdefaulter(obj));
       }
@@ -79,11 +102,13 @@ const Body = () => {
       setccdata([]);
       if(Object.keys(cc).length!==0 && ccmonth!==""){
         const moth = Number(ccmonth);
+        console.log(moth);
         if(ccmonth==="Overall"){
           setccdata(cc.overall);
           const yer = year[tempdata.year-1];
           setxls(`${yer} ${tempdata.division} Div ${ccmonth} DEFAULTER`);
         }else{
+          console.log(cc.monthly[0]);
            for(var i=0;i<cc.monthly.length;i++){
                if(cc.monthly[i].month===moth){
                 console.log(cc.monthly[i].student);
@@ -132,6 +157,7 @@ const Body = () => {
                if(otherdata.monthly[i].month===moth){
                 console.log(otherdata.monthly[i].students);
                 setothermain(otherdata.monthly[i].students);
+                console.log(otherdata);
                   break;
                }
            }
@@ -156,7 +182,7 @@ const Body = () => {
           }
           setccshow(true);
           settempdata(fac);
-          dispatch(getsubjects(obj))
+          dispatch(getsubjects(obj));
          }else{
           setothershow(true);
           settempotherdata(fac);
@@ -172,14 +198,27 @@ const Body = () => {
     },[store.faculty.subject])
 
   return (
-    <div className="deff" style={{background:"white"}}>
-      {err===true && doo===false &&  (
-        <span>{noclasserror}</span>
+    <div className="deff">
+      {ccshow===false && othershow===false && (
+     <div className="content">
+        <h1>Defaulter List: </h1>
+            </div>
+            )}
+            {display===false && (
+      <div className="error">
+      {err===true && doo===false  && (
+    <h1><ErrorOutlineRoundedIcon className='icon' />{noclasserror}</h1>
       )}
+          </div>
+      )}
+
+   {display===true && (
+    <div className="main-contenttt">
+
     { doo === true && err===false && (
-        <table className='styled-table'>
-        <thead>
-         <tr>
+      <div className="tablee">
+        <table>
+         <tr id='headering'>
                <th className="heading">
                  Sr no.
                </th>
@@ -193,7 +232,6 @@ const Body = () => {
                  Subject
                </th>
                </tr>
-             </thead>
              <tbody>
        {sorted.map((fac,idx)=>(
             <tr
@@ -220,24 +258,29 @@ className="cont">
     ) )}
         </tbody>
    </table>
+   </div>
     )
     }
 
-    {doo===false && ccshow===true &&(
-      <div className="ccdisplay">
-      <div className="upperpartt">
-       <ArrowBackIcon onClick={(e)=>{
-        setccshow(false);
-        setdoo(true);
-        setccdata([]);
-        setccmonth("");
-     }}/>
-     </div>
-     <div className="downcontent">
-       <h1>{tempdata.year}nd Year {tempdata.division} Defualter List</h1>
 
-       <div className="form-group">
-                  <h1 className="section">Month :</h1>
+
+    {doo===false && ccshow===true && (
+      <div className="ccdisplay">
+
+          <ArrowBackIcon onClick={(e)=>{
+            console.log("bhdef");
+           setccshow(false);
+           setdoo(true);
+           setccdata([]);
+           setccmonth("");
+        }}
+        className='icon'
+        />
+
+     <div className="downcontent">
+       <h1>{tempdata.year}nd Year {tempdata.division} Div Defualter List :</h1>
+       <div className="form-grouppp">
+                  <h4 className="section">Month :</h4>
                   <Select 
                     required
                     displayEmpty
@@ -245,38 +288,29 @@ className="cont">
                     defaultValue=""
                     inputProps={{ "aria-label": "Without label" }}
                     value={ccmonth}
+                    className='select'
                     onChange={(e) =>{
                       setccmonth(e.target.value)
                     }
                     }>
                     <MenuItem value="">None</MenuItem>
                     <MenuItem value="Overall">Overall</MenuItem>
-                    <MenuItem value="1">jan</MenuItem>
-                    <MenuItem value="2">feb</MenuItem>
-                    <MenuItem value="3">mar</MenuItem>
-                    <MenuItem value="4">apr</MenuItem>
-                    <MenuItem value="5">may</MenuItem>
-                    <MenuItem value="6">jun</MenuItem>
-                    <MenuItem value="7">jul</MenuItem>
-                    <MenuItem value="8">aug</MenuItem>
-                    <MenuItem value="9">sep</MenuItem>
-                    <MenuItem value="10">oct</MenuItem>
-                    <MenuItem value="11">nov</MenuItem>
-                    <MenuItem value="12">dec</MenuItem>
+                    {montharray.map((fac,idx)=>(
+                      <MenuItem Key={idx} value={fac.value}>{fac.month}</MenuItem>
+                    ))}
                   </Select>
                 </div>
      {ccdisplay===true && ccdata.length!==0 && (
-      <div className="ccdef">
+      <div className="tablee">
              <ReactHTMLTableToExcel
              id="test-table-xls-button"
-             className="download-table-xls-button"
+             className="btn"
              table="table-to-xls"
              filename="Defaulterlist"
              sheet={xls}
              buttonText="Download as XLS"/>
-       <table className='styled-table' id='table-to-xls'>
-        <thead>
-         <tr>
+       <table id='table-to-xls'>
+         <tr id="headering">
                <th className="heading">
                  Sr no.
                </th>
@@ -295,7 +329,6 @@ className="cont">
                  Overall
                </th>
                </tr>
-             </thead>
              <tbody>
        {ccdata?.map((fac,idx)=>(
             <tr
@@ -335,21 +368,32 @@ className="cont">
      </div>
     )}
 
+
+
+
+
+
+
+
+
+
+
      {doo===false && othershow===true && (
       <div className="otherdisplay">
-          <div className="upperpartt">
           <ArrowBackIcon onClick={(e)=>{
+            console.log("bhdef");
            setothershow(false);
            setdoo(true);
            setothermain([]);
            setothermonth("");
-        }}/>
-        </div>
+        }}
+        className='icon'
+        />
         <div className="downcontet">
         <h1>{tempotherdata.year}nd Year {tempotherdata.division} Division {tempotherdata.subject} Defualter List</h1>
 
-        <div className="form-group">
-                  <h1 className="section">Month :</h1>
+        <div className="form-grouppp">
+                  <h4 className="section">Month :</h4>
                   <Select 
                     required
                     displayEmpty
@@ -363,24 +407,15 @@ className="cont">
                     }>
                     <MenuItem value="">None</MenuItem>
                     <MenuItem value="Overall">Overall</MenuItem>
-                    <MenuItem value="1">jan</MenuItem>
-                    <MenuItem value="2">feb</MenuItem>
-                    <MenuItem value="3">mar</MenuItem>
-                    <MenuItem value="4">apr</MenuItem>
-                    <MenuItem value="5">may</MenuItem>
-                    <MenuItem value="6">jun</MenuItem>
-                    <MenuItem value="7">jul</MenuItem>
-                    <MenuItem value="8">aug</MenuItem>
-                    <MenuItem value="9">sep</MenuItem>
-                    <MenuItem value="10">oct</MenuItem>
-                    <MenuItem value="11">nov</MenuItem>
-                    <MenuItem value="12">dec</MenuItem>
+                    {montharray.map((fac,idx)=>(
+                     <MenuItem Key={idx} value={fac.value}>{fac.month}</MenuItem>
+                    ))}
                   </Select>
                 </div>
         {otherdisplay===true && otherdata.length!==0 && (
-                   <table className='styled-table'>
-                   <thead>
-                    <tr>
+          <div className="tablee">
+                   <table>
+                    <tr id='headering' >
                           <th className="heading">
                             Sr no.
                           </th>
@@ -394,7 +429,6 @@ className="cont">
                               {tempotherdata.subject}
                            </th>
                           </tr>
-                        </thead>
                         <tbody>
                   {othermain?.map((fac,idx)=>(
                        <tr
@@ -410,18 +444,21 @@ className="cont">
                  </td>
                     <td
                      className="cont">
-                    {fac.Rollno || "-"}
+                    {fac.ROllno || "-"}
                          </td>
                        <td
                        className="cont" >
-                      {fac.percent || "0"}
+                      {fac.percentage || "0"}%
                            </td>
            </tr>
                ) )}
                    </tbody>
               </table> 
+              </div>
         )}
         </div>
+     </div>
+     )}
      </div>
      )}
     </div> 

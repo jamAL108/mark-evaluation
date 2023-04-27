@@ -8,6 +8,7 @@ function Header(){
     const navigate =  useNavigate();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem("user"));
+    console.log(user);
     const [name , setname]= useState("");
     useEffect(()=>{
         setname(user.data.name.substring(0, user.data.name.indexOf(' ')));

@@ -306,7 +306,7 @@ export const monthlydefaulter = async(req,res)=>{
   const errors ={studentnotfound:String , backenderror:String}
   try{
     await defaulter.deleteMany({});
-    const data = req.body;
+    const { per } = req.body;
      const date = new Date();
      let month = date.getMonth()+1;
      let moon ;
@@ -322,7 +322,7 @@ export const monthlydefaulter = async(req,res)=>{
         for(var m=0;m<3;m++){
     const students = await StudentSetUp.find({year:i , depart:depart[j] , division:divi[m]})
     const dee =[];
-    if(students.length!==0 && students.length!==1){
+    if(students.length!==0 && divi[m]==="C"){
       const subjects = await Subjects.find({depart:depart[j] , year:i});
       const obbj ={
         year:i,
@@ -340,14 +340,16 @@ export const monthlydefaulter = async(req,res)=>{
          for(var z=0;z<students.length;z++){
           let sum =0;
          for(var p=0;p<subjects.length;p++){
-          const lecturecount = await attendance.findOne({depart:depart[j] , year:i , division:divi[m] , subject:subjects[p]._id , student:students[z]._id})
+          const lecturecount = await attendance.findOne({depart:depart[j] , year:i , division:divi[m] , subject:subjects[p]._id , student:students[z]._id});
               const totallec = lecturecount.totalLecturesByFaculty[moon].value;
               const lecattended = lecturecount.lectureAttended[moon].value;
               const percen = (lecattended/totallec)*100;
               sum=sum+percen; 
           }
           const avg = sum/subjects.length;
-          if(avg<data.per){
+          console.log(per);
+          if(avg<per){
+            console.log("hubce");
             const obj={
               _id:students[z]._id,
               name:students[z].name,
@@ -357,6 +359,7 @@ export const monthlydefaulter = async(req,res)=>{
             array.push(obj);
           }
          }
+         console.log(array);
          await defaulter.findByIdAndUpdate({_id:deff._id},{$set:{defaulter:array,status:true}});
         }
     }
@@ -364,6 +367,7 @@ export const monthlydefaulter = async(req,res)=>{
     }
        await defaulter.deleteMany({status:false});
        const deffo = await defaulter.find({status:true});
+       console.log(deffo);
        return res.status(200).send({response:deffo});
   }catch(err){
     errors.backenderror=err;

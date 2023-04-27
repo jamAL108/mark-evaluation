@@ -14,7 +14,7 @@ export const INITIATE_CLASS_ERROR = "INITIATE_CLASS_ERROR";
 
 export const CCS = "CCS";
 
-
+export const OTHER_INFO = "OTHER_INFO";
 
 export const CHANGE_TIMER = "CHANGE_TIMER";
 

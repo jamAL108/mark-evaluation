@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs"
 import attendance from "../models/attendance.js";
 import attenddates from "../models/attend_dates.js";
 import defaulter from "../models/defaulter.js";
+import otherinfos from "../models/otherinfos.js";
  export const Facultylogn = async(req,res)=>{
   const errors={passwordError:String , emailError:String , backenderror:String}
     try{
@@ -19,13 +20,15 @@ import defaulter from "../models/defaulter.js";
        }
       const passwordcorrect = await bcrypt.compare(password , data.password);
      if(passwordcorrect){
-      return res.status(200).send({message:"login successfull" , response:data});
+      const daatas = await otherinfos.findOne({});
+      return res.status(200).send({message:"login successfull" , response:data , otherinfo:daatas});
       }else if(!passwordcorrect){
         errors.passwordError="invalid credentials";
         return res.status(404).send({error:errors});
       }
     }catch(err){
       errors.backenderror=err;
+      console.log(err);
       return res.status(404).send({error:errors})
     }
 };
@@ -61,8 +64,8 @@ export const Updatepassword = async(req,res)=>{
 export const Getnotice =async(req,res)=>{
     const errors = {backenderror:String , noticeerror:String}
     try{
-         const data = await Notice.find({too:"teachers"})
-         if(!data){
+         const data = await Notice.find({too:{ $in: ["Teachers", "All"] }})
+         if(data.length===0){
           errors.noticeerror = "no notice have being released in recent days"
           return res.status(404).send({error:errors})
          }else{
@@ -371,15 +374,16 @@ export const Getdefaulter = async(req,res)=>{
           monthly:[]
         };
         let other=[];
-        if(data.class.length!==0){
+        if(data.class.length!==0 ){
             for(var i=0;i<data.class.length;i++){
+              if(data.class[i].division==="C"){
                 if(data.class[i].sort===1){
                   const subjects = await Subject.find({depart:data.depart,year:data.class[i].year})
                    const overal = await defaulter.find({depart:data.depart , division:data.class[i].division , year:data.class[i].year ,status:true })
                    for(var a=0;a<overal.length;a++){
                     const month = overal[a].month;
                     const moth={
-                      month:month,
+                      month:month+1,
                       student:[]
                     }
                     for(var q =0;q<overal[a].defaulter.length;q++){
@@ -440,7 +444,12 @@ export const Getdefaulter = async(req,res)=>{
 
 
 
+
+
+
                 if(data.class[i].sort===0){
+                  const daate = new Date();
+                  const mooonth = daate.getMonth()+1;
                 const subbbj = await Subject.findOne({subjectName:data.class[i].subject})
                 const ownsubjstud = await attendance.find({subject:subbbj._id , division:data.class[i].division , year:data.class[i].year})
                   let clas ={
@@ -451,7 +460,8 @@ export const Getdefaulter = async(req,res)=>{
                       monthly:[]
                   }
                 let monthly=[];
-                for(var j=0;j<12;j++){
+                
+                for(var j=0;j<mooonth;j++){
                   let month={
                     month:j+1,
                     students:[]
@@ -461,6 +471,7 @@ export const Getdefaulter = async(req,res)=>{
                     const lecattend=ownsubjstud[k].lectureAttended[j].value;
                     const perc = (lecattend/totallec)*100;
                     const sttttud = await Student.findOne({_id:ownsubjstud[k].student})
+                    console.log(data.percent);
                     if(perc<data.percent){
                         const obj = {
                           student:sttttud.name,
@@ -480,7 +491,7 @@ export const Getdefaulter = async(req,res)=>{
                 for(var q=0;q<ownsubjstud.length;q++){
                   let lecattend=0;
                   let totallec=0;
-                for(var p=0;p<12;p++){
+                for(var p=0;p<mooonth;p++){
                     lecattend+=ownsubjstud[q].lectureAttended[p].value;
                     totallec+=ownsubjstud[q].totalLecturesByFaculty[p].value;
                 }
@@ -499,7 +510,12 @@ export const Getdefaulter = async(req,res)=>{
               other.push(clas);
           }
         }
+      }
         }
+        console.log("cc");
+        console.log(cc);
+        console.log("other");
+        console.log(other);
         return res.status(200).send({cc:cc,other:other})
      }catch(err){
       errors.backenderror=err;
