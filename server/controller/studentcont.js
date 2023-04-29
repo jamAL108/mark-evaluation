@@ -182,7 +182,7 @@ export const Getattendance = async(req,res)=>{
         console.log(atte);
         console.log("HEEEELOO");
         console.log(subjects[i].subjectName);
-        if(Object.keys(atte).length!==0){
+        if(atte){
         for(var j=0;j<12;j++){
           totallec=totallec+atte.totalLecturesByFaculty[j].value;
           lecattend=lecattend+atte.lectureAttended[j].value;
@@ -216,9 +216,11 @@ export const viewattendanc = async(req,res)=>{
      ///overall
      let overal=[];
      for(var i=0;i<subjects.length;i++){
-      const atte = await attendance.findOne({student:data._id , subject:subjects[i]._id});
+const attee = await attendance.find({student:data._id , subject:subjects[i]._id});
+const atte = attee[0];
       let totallec=0;
       let attended=0;
+      if(atte){
       for(var j=0;j<12;j++){
          totallec+=atte.totalLecturesByFaculty[j].value;
          attended+=atte.lectureAttended[j].value;
@@ -233,6 +235,7 @@ export const viewattendanc = async(req,res)=>{
         percentage:percentage
       }
       overal.push(obj);
+    }
      }
      ////monthly 
      let monthly=[];
@@ -253,6 +256,8 @@ export const viewattendanc = async(req,res)=>{
         }
         monthly.push(temp);
      }
+     console.log(monthly);
+     console.log(overal);
      return res.status(200).send({message:"sended",month:monthly , overall:overal});
   }catch(err){
     errors.backenderror=err;
@@ -265,15 +270,18 @@ export const viewdates = async(req,res)=>{
   const errors = {backenderror:String , atterror:String}
   try{
       const data =req.body;
-      console.log(data);
       const subjects = await Subjects.find({depart:data.depart , year:data.year})
       let curmonth=[];
       let prevmonth=[];
       for(var i=0;i<subjects.length;i++){
-        const date = new Date();
+        console.log(subjects[i].subjectName);
+         const date = new Date();
         const month = date.getMonth()+1;
-        const vaar = await attendance.findOne({student:data._id , subject:subjects[i]._id});
-         const curdates = await attenddates.find({attendance:vaar._id , month:month});
+ const vaari = await attendance.find({student:data._id , subject:subjects[i]._id});
+const vaar=vaari[0];
+console.log(vaar._id);
+console.log(month);
+   const curdates = await attenddates.find({attendance:vaar._id , month});
          const subj1={
           subjectname:subjects[i].subjectName,
           subjectcode:subjects[i].subjectCode,
@@ -288,8 +296,6 @@ export const viewdates = async(req,res)=>{
          }
          prevmonth.push(subj2);
       }
-      console.log(curmonth);
-      console.log(prevmonth);
       return res.status(200).send({message:"sended",curmonth:curmonth,prevmonth:prevmonth});
       }catch(err){
     errors.backenderror=err;

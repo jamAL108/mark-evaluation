@@ -444,11 +444,11 @@ className="cont">
                  </td>
                     <td
                      className="cont">
-                    {fac.ROllno || "-"}
+                    {fac.ROllno || fac.rollno ||  "-"}
                          </td>
                        <td
                        className="cont" >
-                      {fac.percentage || "0"}%
+                      {fac.percentage.toFixed(2) || "0"}%
                            </td>
            </tr>
                ) )}

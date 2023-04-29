@@ -196,6 +196,7 @@ export const Studentfetch = async(req,res)=>{
       const subjet = await Subject.findOne({subjectName:data.subject});
       for(var i=0;i<students.length;i++){
       const attend = await attendance.findOne({student:students[i]._id , subject:subjet._id})
+      console.log(attend);
        if(!attend){
          const user = new attendance({
            student:students[i]._id,
@@ -322,10 +323,8 @@ export const Markattendance = async(req,res)=>{
      const subjet = await Subject.findOne({subjectName:data.subj.subject});
       const lecturecount = await attendance.find({depart:data.subj.depart , year:data.subj.year , division:data.subj.division , subject:subjet._id })
       for(var i=0;i<lecturecount.length;i++){
-        const totallec = lecturecount[i].totalLecturesByFaculty[month-1].value +1 ;
+        const totallec = lecturecount[i].totalLecturesByFaculty[month-1].value + 1 ;
          await attendance.updateOne({_id:lecturecount[i]._id , "totalLecturesByFaculty.id":month} , {$set: {"totalLecturesByFaculty.$.value":totallec}});
-        //  const date = new Date();
-        //  const month = date.getMonth() +1;
          const neew = new attenddates({
            attendance:lecturecount[i]._id,
            month: month,
@@ -339,8 +338,8 @@ export const Markattendance = async(req,res)=>{
       const da = new Date();
       const mont = da.getMonth() +1;
       for(var j=0;j<data.checkedValue.length;j++){
-      const atte = await attendance.findOne({student:data.checkedValue[j] , subject:subjet._id})
-      const lecattend = atte.lectureAttended[mont-1].value +1 ;
+      const atte = await attendance.findOne({student:data.checkedValue[j] , subject:subjet._id});
+      const lecattend = atte.lectureAttended[mont-1].value + 1 ;
      await  attendance.updateOne({_id:atte._id , "lectureAttended.id":mont} , {$set: {"lectureAttended.$.value":lecattend}});
      console.log(lecattend);
       const date = new Date();

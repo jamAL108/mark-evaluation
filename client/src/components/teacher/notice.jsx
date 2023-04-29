@@ -25,7 +25,7 @@ function Notice() {
   },[dispatch])
 
   return (
-    <div className="notice" style={{background:"white"}}>
+    <div className="notice">
       <h1 className='head'>Notice</h1>
       <h1>{error.noticeerror}</h1>
       {noticeswitch===false && Object.keys(error).length === 0 &&(

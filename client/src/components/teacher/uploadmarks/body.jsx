@@ -5,10 +5,11 @@ import { useDispatch } from 'react-redux';
 import {getstudent , uploadmark } from '../../../redux/action/facultyaction.js';
 import { MARKS_UPLOADED, MARKS_UPLOAD_ERROR, T_GET_ALL_STUDENT , T_GET_ALL_STUDENT_ERROR } from '../../../redux/actiontype.js';
 import './body.css';
-
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 const Body = () => {
   const user = JSON.parse(localStorage.getItem("user"))
   const clas =user.data.class;
+  const [maindisplay , setmaindisplay]=useState(false);
   const [cond , setcond] = useState(false);
   const [display , setdisplay] = useState(false);
   const [marks , setmarks] = useState([]);
@@ -27,6 +28,7 @@ const Body = () => {
   const [error , seterror] =useState({});
   const store = useSelector((state)=>state)
   const dispatch = useDispatch();
+  let ownerror ="You have not being yet initialized with any class pls contact the admin...!";
   const [students , setstudents] = useState([]);
   const [uploaderror , setuploaderror] = useState({})
   const [arraymark , setarraymark] = useState([]);
@@ -42,6 +44,14 @@ const Body = () => {
   },[store.faculty.students])
 
 
+
+  useEffect(()=>{
+    if(user.data.class.length!==0){
+      setmaindisplay(true);
+    }else{
+      setmaindisplay(false);
+    }
+  },[user])
 
 
 // mark updating into states
@@ -230,10 +240,30 @@ const Body = () => {
 ////jsx coddeee
   return (
     <div className="uploadmark">
+    {maindisplay===false && (
+     <div className="uppererror">
+         <div className="content">
+               <h1>My Classrooms :</h1>
+                  </div>
+       <div className="error">
+      <h1><ErrorOutlineRoundedIcon className='icon' />{ownerror}</h1>
+          </div>
+          </div>
+    )}
+    {maindisplay===true && (
+    <div className="mark">
        {cond===false  && (
-        <div className="select-class">
-          {clas?.map((dat,idx)=>(
-             <button key={idx} onClick={(e)=>{
+        <div className="tablee">
+          <table>
+            <tr>
+              <th>Sr no.</th>
+              <th>Year</th>
+              <th>Division</th>
+              <th>Subject</th>
+            </tr>
+            <tbody>
+            {clas?.map((dat,idx)=>(
+             <tr key={idx} onClick={(e)=>{
               e.preventDefault();
                 setcond(true)
                 setdisplay(false)
@@ -256,11 +286,13 @@ const Body = () => {
                 }
          dispatch(getstudent(item))
              }}>
-               <h1>Year: {dat.year}</h1>
-               <h1>Division : {dat.division}</h1>
-               <h1>Subject : {dat.subject}</h1>
-             </button>
+               <td>{dat.year}</td>
+               <td>{dat.division}</td>
+               <td>{dat.subject}</td>
+             </tr>
           ))}
+            </tbody>
+          </table>
         </div>
        ) }
 
@@ -504,6 +536,8 @@ const Body = () => {
 
 
 
+</div>
+)}
 </div>
   )
 }

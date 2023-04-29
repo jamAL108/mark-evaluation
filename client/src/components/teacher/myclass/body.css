@@ -4,8 +4,7 @@
     width: 83%;
     height: 100vh;
     display: flex;
-    flex-direction: column;
-    background:  #E4DAE6;  
+    flex-direction: column; 
 }
 
 .dabbaa .content{

@@ -6,7 +6,6 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    background-color: #E4DAE6;
 }
 .faculties .content{
     height: 20%;
