@@ -40,6 +40,28 @@
  2. contest for students
  3. mobile responsiveness and css
  
+# Preview
+## Login
+![image](https://user-images.githubusercontent.com/115083239/234982792-47984150-0373-42ee-90f8-d95e2706f77a.png)
+![image](https://user-images.githubusercontent.com/115083239/234982944-3b2bcd9d-c437-4c41-93ab-1a36afdf5223.png)
+
+## Student session
+![image](https://user-images.githubusercontent.com/115083239/234983424-9fef9bdd-b832-43c5-bc78-e9d8d7e820ac.png)
+![image](https://user-images.githubusercontent.com/115083239/234984332-c91ce73d-3d69-48d3-987d-d7a20f9a383a.png)
+![image](https://user-images.githubusercontent.com/115083239/234983362-28d313c3-574c-4779-88f1-dac571f9d1d0.png)
+![image](https://user-images.githubusercontent.com/115083239/234983632-bfe8e506-a2f5-4d73-a7fd-667a77aad275.png)
+![image](https://user-images.githubusercontent.com/115083239/234983833-48710b70-f42f-4f8e-ad01-a8e629778dbd.png)
+
+
+## Teacher Session
+![image](https://user-images.githubusercontent.com/115083239/234984038-a4dcb245-f9be-4f0e-b73c-66e72576c978.png)
+
+
+
+
+
+
+
     
  
  
