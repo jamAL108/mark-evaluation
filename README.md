@@ -1,5 +1,5 @@
 # mark-evaluation
-  mark-evaluation and attendance managemnet system using mern stack 
+  student marksheet and attendance management system using mern stack 
  
  
  # TechStack
