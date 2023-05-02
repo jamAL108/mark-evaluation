@@ -7,10 +7,10 @@
  * Run the following commands :
 
  * For frontend :
- bash
-  install all the dependencies mentioned in package.json from client folder
+ ```bash
+   install all the dependencies mentioned in package.json from client folder
   and run the command : npm start   (inside client folder)
-
+```
  <br/>
 
  * For Backend :
