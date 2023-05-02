@@ -6,10 +6,9 @@
  ### Clone this repository in your PC.
  ### Run the following commands :
 
- ### For frontend :
- 
+ ### For frontend :<br/>
    install all the dependencies mentioned in package.json from client folder
-   and run the command (inside client folder) : 
+   and run the command: (inside client folder)  
     ```bash
     npm start   
     ```  
@@ -26,13 +25,14 @@
  ### For database :<br/>
    Either use mongoDB compass or mongoDB atlas
    <br/>
+   <br/><br/>
    ![image](https://user-images.githubusercontent.com/115083239/235641063-890fb003-4642-41a1-8d06-544af6e9a4ac.png)
-   <br/>
+   <br/><br/>
    in the server/server.js page ..... const DB = ///ur mongodb atlas database link !
  <br/>
  
  ### For adminsection :<br/>
-   Go to
+   Go to<br/>
     ```bash
     http://localhost:8000/adminlogin
     ```
