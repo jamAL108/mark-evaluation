@@ -1,6 +1,42 @@
 # mark-evaluation
   student marksheet and attendance management system using mern stack 
  
+# Installation
+
+ ### Clone this repository in your PC.
+ ### Run the following commands :
+
+ ### For frontend :<br/>
+   install all the dependencies mentioned in package.json from client folder
+   and run the command: (inside client folder)  
+   ```bash
+   npm start   
+   ```  
+   <br/>
+
+ ### For Backend :<br/>
+   install all the dependencies mentioned in package.json from server folder
+   and run the command :    (inside server folder)
+   ```bash
+   npm run dev
+   ```
+ <br/>
+
+ ### For database :<br/>
+   Either use mongoDB compass or mongoDB atlas
+   <br/>
+   <br/><br/>
+   ![image](https://user-images.githubusercontent.com/115083239/235641063-890fb003-4642-41a1-8d06-544af6e9a4ac.png)
+   <br/><br/>
+   in the server/server.js page ..... const DB = ///ur mongodb atlas database link !
+ <br/>
+ 
+ ### For adminsection :<br/>
+   Go to<br/>
+   ```bash
+   http://localhost:8000/adminlogin
+   ```
+ <br/>
  
  # TechStack
  
@@ -57,7 +93,10 @@
 ![image](https://user-images.githubusercontent.com/115083239/234984038-a4dcb245-f9be-4f0e-b73c-66e72576c978.png)
 
 
-
+<br/><br/>
+Regards,<br/>
+Jamal Mydeen. 
+ 
 
 
 
