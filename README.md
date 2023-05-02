@@ -7,21 +7,22 @@
  * Run the following commands :
 
  * For frontend :
- ```bash
-   install all the dependencies mentioned in package.json from client folder
-  and run the command : npm start   (inside client folder)
-```
+       install all the dependencies mentioned in package.json from client folder
+       and run the command (inside client folder) : 
+    ```bash
+    npm start   
+    ```  
  <br/>
 
  * For Backend :
- bash
-  install all the dependencies mentioned in package.json from server folder
-  and run the command : npm run dev   (inside server folder)
-
+      install all the dependencies mentioned in package.json from server folder
+      and run the command :    (inside server folder)
+   ```bash
+   npm run dev
+   ```
  <br/>
 
  * For database :
- bash
    Either use mongoDB compass or mongoDB atlas 
    ![image](https://user-images.githubusercontent.com/115083239/235641063-890fb003-4642-41a1-8d06-544af6e9a4ac.png)
    in the server/server.js page ..... const DB = ///ur mongodb atlas database link !
@@ -29,7 +30,10 @@
  
   * For adminsection :
  bash
-    Go to http://localhost:8000/adminlogin
+    Go to
+    ```bash
+    http://localhost:8000/adminlogin
+    ```
  <br/>
  
  # TechStack
