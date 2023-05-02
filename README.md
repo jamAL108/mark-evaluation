@@ -2,7 +2,7 @@
   student marksheet and attendance management system using mern stack 
  
  
-## Installation
+# Installation
 
 * Clone this repository in your PC.
 * Run the following commands :
