@@ -9,10 +9,10 @@
  ### For frontend :<br/>
    install all the dependencies mentioned in package.json from client folder
    and run the command: (inside client folder)  
-    ```bash
-    npm start   
-    ```  
- <br/>
+   ```bash
+   npm start   
+   ```  
+   <br/>
 
  ### For Backend :<br/>
    install all the dependencies mentioned in package.json from server folder
@@ -33,9 +33,9 @@
  
  ### For adminsection :<br/>
    Go to<br/>
-    ```bash
-    http://localhost:8000/adminlogin
-    ```
+   ```bash
+   http://localhost:8000/adminlogin
+   ```
  <br/>
  
  # TechStack
