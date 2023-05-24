@@ -44,7 +44,9 @@ function Notice() {
 
   return (
 <>
-      <h1 className='headdd'>Notice</h1>
+      <div className="headdd">
+      <h1>Notice</h1>
+      </div>
       {display===false && (
       <div className="error">
       <ErrorOutlineRoundedIcon className='icon' />
@@ -59,15 +61,10 @@ function Notice() {
           setnoticeswitch(true)
           setnotice(fac);
         }}>
-          <div className="container-1">
-             
-          </div>
-    <div 
-         key={idx}
-     className="container-2">
+     <h1>{idx+1}</h1>     
      <h1
      className="cont">
-     {fac.from}
+     From: {fac.from}
         </h1>
         <h1
     className="cont">
@@ -75,11 +72,9 @@ function Notice() {
     </h1>
     <h1
     className="cont">
-    {fac.date}
+    Date: {fac.date}
     </h1>
     </div>
-    </div>
-
             ) )}
       </div>
       )
@@ -91,9 +86,9 @@ function Notice() {
       <ArrowBackIcon onClick={(e)=>{
          setnoticeswitch(false)
       }}/>
-      <h1>{notice.from}</h1>
+      <h1> From : {notice.from}</h1>
       <h1>{notice.topic}</h1>
-      <h1>{notice.date}</h1>
+      <h1>  Date : {notice.date}</h1>
     </div>
     <div className="downpart">
       <p>{notice.content}</p>
