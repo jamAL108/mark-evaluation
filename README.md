@@ -91,6 +91,9 @@
 
 ## Teacher Session
 ![image](https://user-images.githubusercontent.com/115083239/234984038-a4dcb245-f9be-4f0e-b73c-66e72576c978.png)
+![image](https://github.com/jamAL108/mark-evaluation/assets/115083239/5645a5a4-0db8-48c7-8547-e1546959e381)
+![image](https://github.com/jamAL108/mark-evaluation/assets/115083239/0e769b5b-5e32-487c-842f-1379e4d790b9)
+
 
 
 <br/><br/>
