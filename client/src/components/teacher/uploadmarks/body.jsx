@@ -35,12 +35,16 @@ const Body = () => {
   const [arraypractermmark , setarraypractermmark] = useState([]);
   const [arraypracoralmark , setarraypracoralmark] = useState([]);
   const [arraycreditmark , setarraycreditmark] = useState([]);
+  const [loader,setloader] =useState(false);
+
+  const arr = ["GE","FE","SE","TE","BE"];
   useEffect(()=>{
     seterror(store.faculty.getstudenterror)
   },[store.faculty.getstudenterror])
 
   useEffect(()=>{
      setstudents(store.faculty.students);
+     setloader(false);
   },[store.faculty.students])
 
 
@@ -129,6 +133,7 @@ const Body = () => {
     }
     setstudents({})
      dispatch(getstudent(value))
+     setloader(true);
   },[value.exam])
 
 
@@ -240,9 +245,12 @@ const Body = () => {
 ////jsx coddeee
   return (
     <div className="uploadmark">
+           {loader==true && (
+      <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        )} 
     {maindisplay===false && (
      <div className="uppererror">
-         <div className="content">
+             <div className="content">
                <h1>My Classrooms :</h1>
                   </div>
        <div className="error">
@@ -253,9 +261,13 @@ const Body = () => {
     {maindisplay===true && (
     <div className="mark">
        {cond===false  && (
+        <div className="dabba">
+                 <div className="content">
+               <h1>My Classrooms :</h1>
+                  </div>
         <div className="tablee">
           <table>
-            <tr>
+            <tr id='headering'>
               <th>Sr no.</th>
               <th>Year</th>
               <th>Division</th>
@@ -286,6 +298,7 @@ const Body = () => {
                 }
          dispatch(getstudent(item))
              }}>
+               <td>{idx+1}</td>
                <td>{dat.year}</td>
                <td>{dat.division}</td>
                <td>{dat.subject}</td>
@@ -294,11 +307,12 @@ const Body = () => {
             </tbody>
           </table>
         </div>
+        </div>
        ) }
 
       {cond===true && (
           <div className="mainnnn">
-                <ArrowBackIcon onClick={(e)=>{
+                <ArrowBackIcon className='icon' onClick={(e)=>{
                setcond(false);
                setvalue({...value , year:"", division:"",subject:"",exam:"" , practical:false
               });
@@ -318,23 +332,26 @@ const Body = () => {
                dispatch({type:T_GET_ALL_STUDENT , payload:[]})
                dispatch({type:T_GET_ALL_STUDENT_ERROR , payload:{}})
       }}/>
-
+      
+      <div className="info">
+        <h1>{arr[value.year]} {value.division} Division , {value.subject} : </h1>
+      </div>
 
       <div className="exams">
-        <button onClick={()=>{
+        <button className="btn" onClick={()=>{
           setvalue({...value , exam:"IA" , practical:false , credits:false})
           setdisplay(true)
           setdatafrprac(false);
       }}>IA</button>
 
-        <button onClick={(e)=>{
+        <button className="btn" onClick={(e)=>{
           setvalue({...value , exam:"MIDSEM"  , practical:false , credits:false})
           setdisplay(true)
           setdatafrprac(false);
           }}>MIDSEM</button>
 
     {practical===true && (
-        <button onClick={(e)=>{
+        <button className="btn" onClick={(e)=>{
           setvalue({...value , exam:"PRACTICAL" , practical:true ,  credits:false})
           setdisplay(true)
           setdatafrprac(true);
@@ -342,13 +359,13 @@ const Body = () => {
       )
         }
 
-        <button onClick={(e)=>{
+        <button className='btn' onClick={(e)=>{
           setvalue({...value , exam:"ENDSEM"  , practical:false ,  credits:false})
           setdisplay(true)
           setdatafrprac(false);
           }}>ENDSEM</button>
 
-        <button onClick={(e)=>{
+        <button className="btn" onClick={(e)=>{
           setvalue({...value , exam:"CREDITS"  , practical:false ,  credits:true})
           setdisplay(true)
           setdatafrprac(false);
@@ -356,26 +373,26 @@ const Body = () => {
           }}>CREDITS</button>
 
       </div>
+
        {display===true && datafrprac===false && creditswitch===false && (
         <div className="marks">
          <h1>{value.exam} : marks</h1>
-         <table className='styled-table'>
-                  <thead>
-                   <tr>
-                         <th className="heading">
+         <div className="tablee">
+         <table>
+                   <tr id='headering'>
+                         <th>
                            Sr no.
                          </th>
-                         <th className="heading">
+                         <th>
                            Rollno
                          </th>
-                         <th className="heading">
+                         <th>
                            Name
                          </th>
-                         <th className="heading">
+                         <th>
                            Marks
                          </th>
                          </tr>
-                       </thead>
                        <tbody>
                  {students?.map((student,idx)=>(
         <tr
@@ -405,7 +422,10 @@ const Body = () => {
               ) )}
                   </tbody>
              </table>
-             <button onClick={uploadmarks}>Upload marks</button>
+             </div>
+             <div className="hey">
+             <button className='bts' onClick={uploadmarks}>Upload marks</button>
+         </div>
          </div>
        )}
 
@@ -413,26 +433,26 @@ const Body = () => {
         {display===true && datafrprac===true && creditswitch===false && (
         <div className="marks">
          <h1>{value.exam} : marks</h1>
-         <table className='styled-table'>
-                  <thead>
-                   <tr>
-                         <th className="heading">
+         <div className="tablee">
+         <table>
+
+                   <tr id='headering'>
+                         <th >
                            Sr no.
                          </th>
-                         <th className="heading">
+                         <th >
                            Rollno
                          </th>
-                         <th className="heading">
+                         <th >
                            Name
                          </th>
-                         <th className="heading">
+                         <th >
                            Term work
                          </th>
-                         <th className="heading">
+                         <th >
                            Orals
                          </th>
                          </tr>
-                       </thead>
                        <tbody>
                  {students?.map((student,idx)=>(
         <tr
@@ -463,14 +483,14 @@ const Body = () => {
            oralvalue(idx+1 , e.target.value)
           } }/>
          </td>
-
-
-
          </tr>
               ) )}
                   </tbody>
              </table>
-             <button onClick={uploadmarks}>Upload marks</button>
+             </div>
+             <div className="hey">
+             <button className='bts' onClick={uploadmarks}>Upload marks</button>
+             </div>
          </div>
        )}
 
@@ -480,23 +500,22 @@ const Body = () => {
 {display===true && datafrprac===false && creditswitch===true && (
         <div className="marks">
          <h1>{value.exam} : marks</h1>
-         <table className='styled-table'>
-                  <thead>
-                   <tr>
-                         <th className="heading">
+         <div className="tablee">
+         <table>
+                   <tr id='headering'>
+                         <th>
                            Sr no.
                          </th>
-                         <th className="heading">
+                         <th>
                            Rollno
                          </th>
-                         <th className="heading">
+                         <th>
                            Name
                          </th>
-                         <th className="heading">
+                         <th>
                            Credits
                          </th>
                          </tr>
-                       </thead>
                        <tbody>
                  {students?.map((student,idx)=>(
         <tr
@@ -526,7 +545,10 @@ const Body = () => {
               ) )}
                   </tbody>
              </table>
-             <button onClick={uploadmarks}>Upload marks</button>
+             </div>
+             <div className="hey">
+             <button className='bts' onClick={uploadmarks}>Upload marks</button>
+         </div>
          </div>
        )}
       

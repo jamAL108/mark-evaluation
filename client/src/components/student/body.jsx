@@ -60,7 +60,7 @@ const Body = () => {
      },[store.student.overralatterror])
 
   return (
-       <div className="ssimilarbody" style={{background:"#E4DAE6"}}>
+       <div className="ssimilarbody">
         <div className="upper">
           <div className="attenchart">
             <h1>overall Attendance</h1>
